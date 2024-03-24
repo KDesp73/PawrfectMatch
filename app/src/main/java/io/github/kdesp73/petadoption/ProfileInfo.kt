@@ -11,15 +11,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.github.kdesp73.petadoption.enums.Gender
+import io.github.kdesp73.petadoption.enums.ProfileType
 
 
 class ProfileInfo(
-    private var firstName: String,
-    private var lastName: String,
-    private var email: String,
-    private var phone: String,
-    private var location: String,
-    private var gender: Gender
+    private var firstName: String = "John",
+    private var lastName: String = "Doe",
+    private var email: String = "example@mail.com",
+    private var phone: String = "1234567890",
+    private var location: String = "Thessaloniki",
+    private var gender: Gender = Gender.MALE,
+    var profileType: ProfileType = ProfileType.INDIVIDUAL
 ) {
     @Composable
     fun ToComposable(height: Dp){

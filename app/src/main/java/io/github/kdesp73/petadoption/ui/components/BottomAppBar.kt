@@ -25,8 +25,7 @@ fun BottomBar(navController: NavController) {
         actions = {
             Row (
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement
-                    .SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceAround
             ){
                 IconButton(onClick = {
                     navController.navigate("Home"){

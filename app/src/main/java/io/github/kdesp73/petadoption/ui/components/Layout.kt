@@ -1,4 +1,4 @@
-package io.github.kdesp73.petadoption
+package io.github.kdesp73.petadoption.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
@@ -12,9 +12,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import io.github.kdesp73.petadoption.ui.components.AppBar
-import io.github.kdesp73.petadoption.ui.components.BottomBar
-import io.github.kdesp73.petadoption.ui.components.Drawer
 import io.github.kdesp73.petadoption.ui.theme.PetAdoptionTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

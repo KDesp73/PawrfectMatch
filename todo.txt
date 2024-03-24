@@ -1,0 +1,24 @@
+TODO: PetPreview Component
+TODO: Settings
+TODO: Sign Up
+TODO: Log In
+TODO: Search using filters
+TODO: Firebase DB Connection
+TODO: Firebase DB structure
+TODO: SQLite DB Connection (Room API)
+TODO: SQLite DB structure
+TODO: Add Pet
+TODO: Home Page
+TODO: Drawer Content
+TODO: Location Selector
+TODO: Distance Calculator
+TODO: Toy Exchange
+TODO: Landscape orientation features
+TODO: Full Pet Page
+TODO: Dog Breeds
+TODO: Switch Languages
+TODO: Switch Themes
+DONE: Notifications
+DONE: AccountPreview Component
+DONE: Routing
+DONE: Layout

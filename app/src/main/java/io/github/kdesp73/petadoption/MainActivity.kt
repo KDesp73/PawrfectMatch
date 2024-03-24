@@ -24,6 +24,7 @@ import io.github.kdesp73.petadoption.routes.Favourites
 import io.github.kdesp73.petadoption.routes.Home
 import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.SignIn
+import io.github.kdesp73.petadoption.ui.components.Layout
 
 
 class MainActivity : ComponentActivity() {

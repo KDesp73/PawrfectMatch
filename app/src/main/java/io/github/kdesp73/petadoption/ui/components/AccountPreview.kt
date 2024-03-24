@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.google.firebase.auth.FirebaseUser
-import io.github.kdesp73.petadoption.Gender
 import io.github.kdesp73.petadoption.ProfileInfo
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.ui.utils.Center
@@ -115,6 +114,6 @@ fun AccountPreview(user: FirebaseUser?, pic: Int, info: ProfileInfo, navControll
 @Preview
 @Composable
 private fun AccountPreviewPreview(){
-    val info = ProfileInfo("Konstantinos", "Despoinidis", "kdesp2003@gmail.com", "123456789", "Thessaloniki", Gender.MALE)
+    val info = ProfileInfo()
     AccountPreview(null, R.drawable.profile_pic_placeholder, info, null)
 }
