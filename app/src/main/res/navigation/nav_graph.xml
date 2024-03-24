@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@+id/Home">
+
+    <fragment
+        android:id="@+id/Home"
+        android:name="io.github.kdesp73.petadoption.routes.Home"
+        android:label="Home" />
+
+    <fragment
+        android:id="@+id/Search"
+        android:name="io.github.kdesp73.petadoption.routes.Search"
+        android:label="Search" />
+
+    <fragment
+        android:id="@+id/About"
+        android:name="io.github.kdesp73.petadoption.routes.About"
+        android:label="About" />
+
+    <fragment
+        android:id="@+id/Account"
+        android:name="io.github.kdesp73.petadoption.routes.Account"
+        android:label="Account" />
+
+    <fragment
+        android:id="@+id/EditAccount"
+        android:name="io.github.kdesp73.petadoption.routes.EditAccount"
+        android:label="Edit Account" />
+</navigation>
