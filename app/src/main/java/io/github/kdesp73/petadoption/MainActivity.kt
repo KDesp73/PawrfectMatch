@@ -20,6 +20,7 @@ import com.google.firebase.FirebaseApp
 import io.github.kdesp73.petadoption.routes.About
 import io.github.kdesp73.petadoption.routes.Account
 import io.github.kdesp73.petadoption.routes.EditAccount
+import io.github.kdesp73.petadoption.routes.Favourites
 import io.github.kdesp73.petadoption.routes.Home
 import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.SignIn
@@ -60,6 +61,7 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController, startDestination = "Home") {
                     composable("Home") { Home() }
                     composable("Search") { Search() }
+                    composable("Favourites") { Favourites() }
                     composable("About") { About() }
                     composable("Account") { Account(navController) }
                     composable("Edit Account") { EditAccount() }

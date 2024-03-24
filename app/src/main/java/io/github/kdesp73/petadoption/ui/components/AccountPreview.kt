@@ -34,7 +34,7 @@ import com.google.firebase.auth.FirebaseUser
 import io.github.kdesp73.petadoption.Gender
 import io.github.kdesp73.petadoption.ProfileInfo
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.ui.components.utils.Center
+import io.github.kdesp73.petadoption.ui.utils.Center
 
 
 @Composable
@@ -61,7 +61,7 @@ private fun ProfileImage(modifier: Modifier = Modifier, pic: Int, size: Dp) {
 @Composable
 fun AccountPreview(user: FirebaseUser?, pic: Int, info: ProfileInfo, navController: NavController?){
     val imageSize = 135.dp
-    val containerHeight = imageSize + 40.dp
+    val containerHeight = imageSize + 50.dp
 
     Surface(
         color = MaterialTheme.colorScheme.primary,
@@ -70,7 +70,7 @@ fun AccountPreview(user: FirebaseUser?, pic: Int, info: ProfileInfo, navControll
             .fillMaxWidth()
             .height(containerHeight)
             .clickable(onClick = {
-                navController?.navigate(if (user == null) "Sign In" else "Edit Account") {
+                navController?.navigate(if (user != null) "Sign In" else "Edit Account") { // TODO: reverse
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
@@ -79,9 +79,9 @@ fun AccountPreview(user: FirebaseUser?, pic: Int, info: ProfileInfo, navControll
 
                 }
             })
-            .padding(4.dp)
+            .padding(8.dp)
     ) {
-        if (user == null){
+        if (user != null){ // TODO: reverse
             Center(modifier = Modifier) {
                 Row (
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
@@ -93,7 +93,7 @@ fun AccountPreview(user: FirebaseUser?, pic: Int, info: ProfileInfo, navControll
                     )
                     Text(
                         fontSize = 6.em,
-                        text = "Sign In / Log In"
+                        text = "Sign Up / Log In"
                     )
                 }
             }

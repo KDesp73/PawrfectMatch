@@ -1,4 +1,4 @@
-package io.github.kdesp73.petadoption.ui.components.utils
+package io.github.kdesp73.petadoption.ui.utils
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.ui.components.utils.Center
+import io.github.kdesp73.petadoption.ui.utils.Center
 
 @Composable
 fun AuthActionButton(textModifier: Modifier, iconButtonModifier: Modifier, contentDesciption: String, label: String, icon: ImageVector, action: () -> Unit){
@@ -60,6 +60,7 @@ private fun firebaseAuthWithGoogle(idToken: String, auth: FirebaseAuth) {
         }
 }
 */
+
 @Composable
 fun SignIn(){
     val textModifier: Modifier = Modifier

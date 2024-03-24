@@ -18,9 +18,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -43,10 +39,10 @@ fun Drawer(
     navController: NavHostController,
     content: @Composable () -> Unit
 ) {
-    val routes = listOf("Home", "Search", "About")
-    val size by remember { mutableStateOf(IntSize.Zero) }
+    val routes = listOf("Home", "Search", "About") // TODO: remove home and search
 
     ModalNavigationDrawer(
+        modifier = modifier,
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
@@ -113,5 +109,5 @@ fun ListItem(width: Dp, text: String, navController: NavHostController, drawerSt
 fun ListItemPreview(){
     val navController = rememberNavController() // Doesn't matter
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed) // Doesn't matter
-    ListItem(150.dp, "Search", navController, drawerState);
+    ListItem(150.dp, "Search", navController, drawerState)
 }

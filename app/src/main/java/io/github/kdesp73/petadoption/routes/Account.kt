@@ -15,6 +15,7 @@ fun Account(navController: NavController?){
     val info = ProfileInfo("Konstantinos", "Despoinidis", "kdesp2003@gmail.com", "123456789", "Thessaloniki", Gender.MALE)
     val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
+
     AccountPreview(user, pic = R.drawable.profile_pic_placeholder, info = info, navController = navController)
 }
 
