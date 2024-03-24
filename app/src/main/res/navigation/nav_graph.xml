@@ -27,4 +27,9 @@
         android:id="@+id/EditAccount"
         android:name="io.github.kdesp73.petadoption.routes.EditAccount"
         android:label="Edit Account" />
+
+    <fragment
+        android:id="@+id/SignIn"
+        android:name="io.github.kdesp73.petadoption.routes.SignIn"
+        android:label="Sign In" />
 </navigation>
