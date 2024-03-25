@@ -1,36 +1,98 @@
 package io.github.kdesp73.petadoption.ui.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import io.github.kdesp73.petadoption.enums.CustomAlignment
 import kotlinx.coroutines.launch
 
+class DrawerIcons{
+    object Settings{
+        val icon: ImageVector = Icons.Filled.Settings
+        const val description: String = "Settings Drawer Button"
+    }
+
+    object About{
+        val icon: ImageVector = Icons.Filled.Info
+        const val description: String = "About Drawer Button"
+    }
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+private fun DrawerContent(
+    navController: NavHostController?,
+    width: Dp = 250.dp,
+    drawerState: DrawerState
+){
+    val scope = rememberCoroutineScope()
+    val iconColor = MaterialTheme.colorScheme.primary
+    val iconSize = 45.dp
+
+    ModalDrawerSheet (
+        modifier = Modifier
+            .width(width)
+    ){
+        VerticalScaffold(
+            bottomAlignment = CustomAlignment.END,
+            top = { Text(text = "TODO")},
+            center = { Text(text = "TODO")},
+            bottom = {
+                Row (
+                    horizontalArrangement = Arrangement.spacedBy(15.dp),
+                    modifier = Modifier.padding(8.dp)
+                ){
+                    CircularIconButton(icon = DrawerIcons.About.icon, description = DrawerIcons.About.description, bg = iconColor, size = iconSize) {
+                        navController?.navigate("About") {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }
+                    CircularIconButton(icon = DrawerIcons.Settings.icon, description = DrawerIcons.Settings.description, bg = iconColor, size = iconSize) {
+                        navController?.navigate("Settings") {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }
+                }
+            }
+        )
+    }
+
+}
 
 @Composable
 fun Drawer(
@@ -39,75 +101,22 @@ fun Drawer(
     navController: NavHostController,
     content: @Composable () -> Unit
 ) {
-    val routes = listOf("Home", "Search", "About") // TODO: remove home and search
+    val configuration = LocalConfiguration.current
+
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
 
     ModalNavigationDrawer(
         modifier = modifier,
         drawerState = drawerState,
-        drawerContent = {
-            ModalDrawerSheet {
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    routes.forEach { route ->
-                        ListItem(600.dp, text = route, navController, drawerState)
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
-                }
-            }
-        }
+        drawerContent = { DrawerContent(width = screenWidth - 40.dp, navController = navController, drawerState = drawerState) }
     ) {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            content()
-        }
+        content()
     }
 }
 
-@Composable
-fun ListItem(width: Dp, text: String, navController: NavHostController, drawerState: DrawerState) {
-    val scope = rememberCoroutineScope()
-
-    Surface(
-        color = MaterialTheme.colorScheme.primary,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
-        shape = RoundedCornerShape(30.dp),
-        modifier = Modifier
-            .padding(2.dp)
-            .height(60.dp)
-            .width(width)
-    ) {
-        Text(
-            text = text,
-
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .clickable {
-                    navController.navigate(text){
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                    scope.launch {
-                        drawerState.close()
-                    }
-                }
-                .padding(18.dp)
-        )
-    }
-}
 @Preview
 @Composable
-fun ListItemPreview(){
-    val navController = rememberNavController() // Doesn't matter
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed) // Doesn't matter
-    ListItem(150.dp, "Search", navController, drawerState)
+fun DrawerContentPreview(){
+    DrawerContent(null, drawerState = DrawerState(initialValue = DrawerValue.Open))
 }

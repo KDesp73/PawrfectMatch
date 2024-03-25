@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import com.google.firebase.auth.FirebaseUser
 import io.github.kdesp73.petadoption.ProfileInfo
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.ui.utils.Center
@@ -58,7 +57,7 @@ private fun ProfileImage(modifier: Modifier = Modifier, pic: Int, size: Dp) {
 }
 
 @Composable
-fun AccountPreview(user: FirebaseUser?, pic: Int, info: ProfileInfo, navController: NavController?){
+fun AccountPreview(pic: Int, info: ProfileInfo?, navController: NavController?){
     val imageSize = 135.dp
     val containerHeight = imageSize + 50.dp
 
@@ -69,7 +68,7 @@ fun AccountPreview(user: FirebaseUser?, pic: Int, info: ProfileInfo, navControll
             .fillMaxWidth()
             .height(containerHeight)
             .clickable(onClick = {
-                navController?.navigate(if (user != null) "Sign In" else "Edit Account") { // TODO: reverse
+                navController?.navigate(if (info != null) "Sign In" else "Edit Account") { // TODO: reverse
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
@@ -80,7 +79,7 @@ fun AccountPreview(user: FirebaseUser?, pic: Int, info: ProfileInfo, navControll
             })
             .padding(8.dp)
     ) {
-        if (user != null){ // TODO: reverse
+        if (info != null){ // TODO: reverse
             Center(modifier = Modifier) {
                 Row (
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
@@ -105,7 +104,7 @@ fun AccountPreview(user: FirebaseUser?, pic: Int, info: ProfileInfo, navControll
                 verticalAlignment = Alignment.CenterVertically
             ){
                 ProfileImage(pic = pic, size = imageSize)
-                info.ToComposable(containerHeight)
+                info?.ToComposable(containerHeight)
             }
         }
     }
@@ -115,5 +114,5 @@ fun AccountPreview(user: FirebaseUser?, pic: Int, info: ProfileInfo, navControll
 @Composable
 private fun AccountPreviewPreview(){
     val info = ProfileInfo()
-    AccountPreview(null, R.drawable.profile_pic_placeholder, info, null)
+    AccountPreview(R.drawable.profile_pic_placeholder, info, null)
 }

@@ -24,6 +24,11 @@
         android:label="About" />
 
     <fragment
+        android:id="@+id/Settings"
+        android:name="io.github.kdesp73.petadoption.routes.Settings"
+        android:label="Settings" />
+
+    <fragment
         android:id="@+id/Account"
         android:name="io.github.kdesp73.petadoption.routes.Account"
         android:label="Account" />

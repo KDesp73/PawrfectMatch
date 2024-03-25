@@ -23,6 +23,7 @@ import io.github.kdesp73.petadoption.routes.EditAccount
 import io.github.kdesp73.petadoption.routes.Favourites
 import io.github.kdesp73.petadoption.routes.Home
 import io.github.kdesp73.petadoption.routes.Search
+import io.github.kdesp73.petadoption.routes.Settings
 import io.github.kdesp73.petadoption.routes.SignIn
 import io.github.kdesp73.petadoption.ui.components.Layout
 
@@ -64,6 +65,7 @@ class MainActivity : ComponentActivity() {
                     composable("Search") { Search() }
                     composable("Favourites") { Favourites() }
                     composable("About") { About() }
+                    composable("Settings") { Settings() }
                     composable("Account") { Account(navController) }
                     composable("Edit Account") { EditAccount() }
                     composable("Sign In") { SignIn() }

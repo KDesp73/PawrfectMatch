@@ -9,7 +9,7 @@ class PetInfo (
     private var name: String = "Rex",
     private var age: PetAge = PetAge.YOUNG,
     private var gender: Gender = Gender.MALE,
-    private var location: String = "Thessaloniki",
+    private var location: String = "Tatooine",
     private var type: PetType = PetType.DOG,
     private var size: PetSize = PetSize.LARGE,
 ){
