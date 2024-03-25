@@ -61,7 +61,7 @@ private fun DrawerContent(
             bottom = {
                 Row (
                     horizontalArrangement = Arrangement.spacedBy(15.dp),
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(10.dp)
                 ){
                     CircularIconButton(icon = DrawerIcons.About.icon, description = DrawerIcons.About.description, bg = iconColor, size = iconSize) {
                         navController?.navigate("About") {

@@ -20,7 +20,7 @@ class ProfileInfo(
     private var lastName: String = "Doe",
     private var email: String = "example@mail.com",
     private var phone: String = "1234567890",
-    private var location: String = "Thessaloniki",
+    private var location: String = "Tatooine",
     private var gender: Gender = Gender.MALE,
     var profileType: ProfileType = ProfileType.INDIVIDUAL
 ) {

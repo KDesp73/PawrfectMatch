@@ -68,7 +68,7 @@ fun AccountPreview(pic: Int, info: ProfileInfo?, navController: NavController?){
             .fillMaxWidth()
             .height(containerHeight)
             .clickable(onClick = {
-                navController?.navigate(if (info != null) "Sign In" else "Edit Account") { // TODO: reverse
+                navController?.navigate(if (info == null) "Sign In" else "Edit Account") {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
@@ -79,7 +79,7 @@ fun AccountPreview(pic: Int, info: ProfileInfo?, navController: NavController?){
             })
             .padding(8.dp)
     ) {
-        if (info != null){ // TODO: reverse
+        if (info == null){
             Center(modifier = Modifier) {
                 Row (
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
