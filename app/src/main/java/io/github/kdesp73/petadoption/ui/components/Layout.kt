@@ -12,6 +12,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import io.github.kdesp73.petadoption.ThemeName
+import io.github.kdesp73.petadoption.enums.Routes
 import io.github.kdesp73.petadoption.ui.theme.PetAdoptionTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -22,7 +24,9 @@ fun Layout(topAppBarText: String, navController: NavHostController, content: @Co
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    PetAdoptionTheme {
+    PetAdoptionTheme (
+        theme = ThemeName.DARK
+    ){
         Drawer(
             drawerState = drawerState,
             navController = navController
@@ -33,7 +37,7 @@ fun Layout(topAppBarText: String, navController: NavHostController, content: @Co
                         topAppBarText = topAppBarText,
                         menuAction = { menuAction(scope, drawerState) },
                         accountAction = {
-                            navController.navigate("Account"){
+                            navController.navigate(Routes.ACCOUNT.label){
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }

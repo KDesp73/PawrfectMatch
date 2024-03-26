@@ -18,6 +18,11 @@ TODO: Full Pet Page
 TODO: Dog Breeds
 TODO: Switch Languages
 TODO: Switch Themes
+TODO: Add more types of notifications
+TODO: Fix text expanded notification
+TODO: Add actions to notifications
+TODO: Take picture from inside the app
+TODO: Select picture from device
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing

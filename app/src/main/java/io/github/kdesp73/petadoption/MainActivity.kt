@@ -17,8 +17,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.FirebaseApp
+import io.github.kdesp73.petadoption.enums.Routes
 import io.github.kdesp73.petadoption.routes.About
 import io.github.kdesp73.petadoption.routes.Account
+import io.github.kdesp73.petadoption.routes.AddPet
+import io.github.kdesp73.petadoption.routes.AddToy
 import io.github.kdesp73.petadoption.routes.EditAccount
 import io.github.kdesp73.petadoption.routes.Favourites
 import io.github.kdesp73.petadoption.routes.Home
@@ -53,22 +56,24 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
-            var currentRoute by remember { mutableStateOf("Home") }
+            var currentRoute by remember { mutableStateOf(Routes.HOME.label) }
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination?.route
 
             currentRoute = currentDestination ?: ""
 
             Layout(topAppBarText = currentRoute, navController = navController) {
-                NavHost(navController, startDestination = "Home") {
-                    composable("Home") { Home() }
-                    composable("Search") { Search() }
-                    composable("Favourites") { Favourites() }
-                    composable("About") { About() }
-                    composable("Settings") { Settings() }
-                    composable("Account") { Account(navController) }
-                    composable("Edit Account") { EditAccount() }
-                    composable("Sign In") { SignIn() }
+                NavHost(navController, startDestination = Routes.HOME.label) {
+                    composable(Routes.HOME.label) { Home() }
+                    composable(Routes.SEARCH.label) { Search() }
+                    composable(Routes.FAVOURITES.label) { Favourites() }
+                    composable(Routes.ABOUT.label) { About() }
+                    composable(Routes.SETTINGS.label) { Settings() }
+                    composable(Routes.ACCOUNT.label) { Account(navController) }
+                    composable(Routes.EDIT_ACCOUNT.label) { EditAccount() }
+                    composable(Routes.SIGN_IN.label) { SignIn() }
+                    composable(Routes.ADD_PET.label) { AddPet() }
+                    composable(Routes.ADD_TOY.label) { AddToy() }
                 }
             }
         }

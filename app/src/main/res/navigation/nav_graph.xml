@@ -42,4 +42,14 @@
         android:id="@+id/SignIn"
         android:name="io.github.kdesp73.petadoption.routes.SignIn"
         android:label="Sign In" />
+
+    <fragment
+        android:id="@+id/AddPet"
+        android:name="io.github.kdesp73.petadoption.routes.AddPet"
+        android:label="Add Pet" />
+
+    <fragment
+        android:id="@+id/AddToy"
+        android:name="io.github.kdesp73.petadoption.routes.AddToy"
+        android:label="Add Toy" />
 </navigation>

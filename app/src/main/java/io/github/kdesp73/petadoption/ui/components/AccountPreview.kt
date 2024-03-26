@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import io.github.kdesp73.petadoption.ProfileInfo
 import io.github.kdesp73.petadoption.R
+import io.github.kdesp73.petadoption.enums.Routes
 import io.github.kdesp73.petadoption.ui.utils.Center
 
 
@@ -68,7 +69,7 @@ fun AccountPreview(pic: Int, info: ProfileInfo?, navController: NavController?){
             .fillMaxWidth()
             .height(containerHeight)
             .clickable(onClick = {
-                navController?.navigate(if (info == null) "Sign In" else "Edit Account") {
+                navController?.navigate(if (info == null) Routes.SIGN_IN.label else Routes.EDIT_ACCOUNT.label) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }

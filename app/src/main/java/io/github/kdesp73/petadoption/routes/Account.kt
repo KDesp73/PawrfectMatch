@@ -11,14 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import io.github.kdesp73.petadoption.ProfileInfo
 import io.github.kdesp73.petadoption.R
+import io.github.kdesp73.petadoption.enums.Routes
 import io.github.kdesp73.petadoption.ui.components.AccountPreview
 import io.github.kdesp73.petadoption.ui.components.HalfButton
 
 @Composable
 fun Account(navController: NavController?){
-    val info = ProfileInfo()
+    // val info = ProfileInfo()
+    val info = null
     // val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
     // TODO: Get info from user
@@ -35,10 +36,10 @@ fun Account(navController: NavController?){
                 .fillMaxWidth()
         ){
             HalfButton (icon = Icons.Filled.Add, text = "Add a Pet"){
-                // TODO: Action
+                navController?.navigate(Routes.ADD_PET.label)
             }
             HalfButton (icon = Icons.Filled.Add, text = "Add a Toy"){
-                // TODO: Action
+                navController?.navigate(Routes.ADD_TOY.label)
             }
         }
     }

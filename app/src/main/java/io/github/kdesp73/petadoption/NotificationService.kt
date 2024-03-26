@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.Builder
 import kotlin.random.Random
 
 
@@ -14,7 +15,7 @@ class NotificationService (
     private val notificationManager=context.getSystemService(NotificationManager::class.java)
 
     fun showBasicNotification(channel: String, title: String, content: String, importance: Int){
-        val notification= NotificationCompat.Builder(context, channel)
+        val notification= Builder(context, channel)
             .setContentTitle(title)
             .setContentText(content)
             .setPriority(importance)
@@ -28,8 +29,8 @@ class NotificationService (
         )
     }
 
-    fun showExpandableNotification(channel: String, title: String, content: String, importance: Int){
-        val notification= NotificationCompat.Builder(context, channel)
+    fun showExpandableNotification(channel: String, title: String, content: String, @DrawableRes resId: Int, importance: Int){
+        val notification= Builder(context, channel)
             .setContentTitle(title)
             .setContentText(content)
             .setPriority(importance)
@@ -39,11 +40,20 @@ class NotificationService (
                 NotificationCompat
                     .BigPictureStyle()
                     .bigPicture(
-                        context.bitmapFromResource(
-                            R.drawable.ic_launcher_foreground
-                        )
+                        context.bitmapFromResource(resId)
                     )
             )
+            .build()
+        notificationManager.notify(Random.nextInt(),notification)
+    }
+
+    fun showExpandableNotification(channel: String, title: String, content: String, expandedContent: String, importance: Int){
+        val notification= Builder(context, channel)
+            .setContentTitle(title)
+            .setContentText(content)
+            .setPriority(importance)
+            .setSmallIcon(R.drawable.bell)
+            .setAutoCancel(true)
             .build()
         notificationManager.notify(Random.nextInt(),notification)
     }

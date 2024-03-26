@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 
 @Composable
-fun HalfButton(icon: ImageVector = Icons.Filled.Place, text: String = "Button", height: Dp = 60.dp, action: () -> Unit){
+fun HalfButton(icon: ImageVector? = Icons.Filled.Place, text: String = "Button", height: Dp = 60.dp, action: () -> Unit){
     val configuration = LocalConfiguration.current
 
     val screenHeight = configuration.screenHeightDp.dp
@@ -39,7 +39,9 @@ fun HalfButton(icon: ImageVector = Icons.Filled.Place, text: String = "Button", 
         Row (
             horizontalArrangement = Arrangement.spacedBy(15.dp)
         ){
-            Icon(imageVector = icon, contentDescription = text)
+            if(icon != null){
+                Icon(imageVector = icon, contentDescription = text)
+            }
             Text(text = text, fontSize = 4.em)
         }
     }

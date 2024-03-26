@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import io.github.kdesp73.petadoption.enums.Routes
 
 @Composable
 fun BottomBar(navController: NavController) {
@@ -28,7 +29,7 @@ fun BottomBar(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceAround
             ){
                 IconButton(onClick = {
-                    navController.navigate("Home"){
+                    navController.navigate(Routes.HOME.label){
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -43,7 +44,7 @@ fun BottomBar(navController: NavController) {
                     )
                 }
                 IconButton(onClick = {
-                    navController.navigate("Search"){
+                    navController.navigate(Routes.SEARCH.label){
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -58,7 +59,7 @@ fun BottomBar(navController: NavController) {
                     )
                 }
                 IconButton(onClick = {
-                    navController.navigate("Favourites"){
+                    navController.navigate(Routes.FAVOURITES.label){
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
