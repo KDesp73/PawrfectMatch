@@ -29,22 +29,24 @@ fun PetAdoptionTheme(
             if (darkColorScheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        theme == ThemeName.DARK && darkColorScheme -> Theme.Dark.colors
-        theme == ThemeName.EXAMPLE && darkColorScheme -> Theme.Example.colors
-        else -> Theme.Light.colors
+        theme == ThemeName.DARK && darkColorScheme -> Theme.getTheme(ThemeName.DARK)?.colors
+        theme == ThemeName.EXAMPLE && darkColorScheme -> Theme.getTheme(ThemeName.EXAMPLE)?.colors
+        else -> Theme.getTheme(ThemeName.LIGHT)?.colors
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = colorScheme!!.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkColorScheme
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    if (colorScheme != null) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }

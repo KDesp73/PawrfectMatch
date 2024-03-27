@@ -1,5 +1,6 @@
 package io.github.kdesp73.petadoption
 
+import androidx.compose.runtime.Composable
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
@@ -13,4 +14,8 @@ class PetInfo (
     private var type: PetType = PetType.DOG,
     private var size: PetSize = PetSize.LARGE,
 ){
+    @Composable
+    fun ToComposable(){
+        TODO()
+    }
 }

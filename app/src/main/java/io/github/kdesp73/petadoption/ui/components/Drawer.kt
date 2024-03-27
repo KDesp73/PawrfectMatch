@@ -26,6 +26,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import io.github.kdesp73.petadoption.enums.CustomAlignment
 import io.github.kdesp73.petadoption.enums.Routes
+import io.github.kdesp73.petadoption.ui.utils.VerticalScaffold
 import kotlinx.coroutines.launch
 
 class DrawerIcons{

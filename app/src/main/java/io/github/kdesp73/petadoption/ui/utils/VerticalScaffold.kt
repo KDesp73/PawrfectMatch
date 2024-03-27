@@ -1,4 +1,4 @@
-package io.github.kdesp73.petadoption.ui.components
+package io.github.kdesp73.petadoption.ui.utils
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
