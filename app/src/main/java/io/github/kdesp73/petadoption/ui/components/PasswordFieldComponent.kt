@@ -6,6 +6,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -17,16 +18,19 @@ import io.github.kdesp73.petadoption.enums.TextFieldType
 
 @Composable
 fun PasswordTextFieldComponent(
+    value: MutableState<String> = mutableStateOf(""),
     labelValue: String,
     icon: ImageVector,
     iconDescriptor: String = "Text field icon",
-    type: TextFieldType = TextFieldType.NORMAL
+    type: TextFieldType = TextFieldType.NORMAL,
+    isError: Boolean = false,
 ) {
-    var password by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { value }
 
     when(type){
         TextFieldType.NORMAL -> {
             TextField(
+                isError = isError,
                 value = password,
                 onValueChange = { password = it },
                 label = { Text(labelValue) },
@@ -37,6 +41,7 @@ fun PasswordTextFieldComponent(
         }
         TextFieldType.OUTLINED -> {
             OutlinedTextField(
+                isError = isError,
                 value = password,
                 onValueChange = { password = it },
                 label = { Text(labelValue) },

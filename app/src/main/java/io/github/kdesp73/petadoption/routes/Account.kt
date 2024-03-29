@@ -39,10 +39,10 @@ fun Account(navController: NavController?){
         ){
             val buttonHeight: Dp = 80.dp
             HalfButton (height = buttonHeight, icon = Icons.Filled.Add, text = "Add a Pet"){
-                navController?.navigate(Routes.ADD_PET.label)
+                navController?.navigate(Routes.ADD_PET.tag)
             }
             HalfButton (height = buttonHeight, icon = Icons.Filled.Add, text = "Add a Toy"){
-                navController?.navigate(Routes.ADD_TOY.label)
+                navController?.navigate(Routes.ADD_TOY.tag)
             }
         }
     }

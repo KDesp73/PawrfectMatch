@@ -37,7 +37,7 @@ fun Layout(topAppBarText: String, navController: NavHostController, content: @Co
                         topAppBarText = topAppBarText,
                         menuAction = { menuAction(scope, drawerState) },
                         accountAction = {
-                            navController.navigate(Routes.ACCOUNT.label){
+                            navController.navigate(Routes.ACCOUNT.tag){
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }

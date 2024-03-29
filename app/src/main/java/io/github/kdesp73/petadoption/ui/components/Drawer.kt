@@ -66,7 +66,7 @@ private fun DrawerContent(
                     modifier = Modifier.padding(10.dp)
                 ){
                     CircularIconButton(icon = DrawerIcons.About.icon, description = DrawerIcons.About.description, bg = iconColor, size = iconSize) {
-                        navController?.navigate(Routes.ABOUT.label) {
+                        navController?.navigate(Routes.ABOUT.tag) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
@@ -78,7 +78,7 @@ private fun DrawerContent(
                         }
                     }
                     CircularIconButton(icon = DrawerIcons.Settings.icon, description = DrawerIcons.Settings.description, bg = iconColor, size = iconSize) {
-                        navController?.navigate(Routes.SETTINGS.label) {
+                        navController?.navigate(Routes.SETTINGS.tag) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }

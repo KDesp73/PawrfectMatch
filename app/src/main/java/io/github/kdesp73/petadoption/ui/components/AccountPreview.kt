@@ -69,7 +69,7 @@ fun AccountPreview(pic: Int, info: ProfileInfo?, navController: NavController?){
             .fillMaxWidth()
             .height(containerHeight)
             .clickable(onClick = {
-                navController?.navigate(if (info == null) Routes.SIGN_IN.label else Routes.EDIT_ACCOUNT.label) {
+                navController?.navigate(if (info == null) Routes.SIGN_IN.tag else Routes.EDIT_ACCOUNT.tag) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }

@@ -120,7 +120,7 @@ fun SignIn(navController: NavController?){
                     label = "Email",
                     icon = Icons.Filled.Email
                 ) {
-                    navController?.navigate(Routes.CREATE_ACCOUNT.label) {
+                    navController?.navigate(Routes.CREATE_ACCOUNT.tag) {
                         launchSingleTop = true
                         restoreState = true
                     }
@@ -154,7 +154,7 @@ fun SignIn(navController: NavController?){
                     label = "Email",
                     icon = Icons.Filled.Email
                 ) {
-                    navController?.navigate(Routes.LOGIN.label) {
+                    navController?.navigate(Routes.LOGIN.tag) {
                         launchSingleTop = true
                         restoreState = true
                     }

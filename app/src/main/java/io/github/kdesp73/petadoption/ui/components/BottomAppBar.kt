@@ -29,7 +29,7 @@ fun BottomBar(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceAround
             ){
                 IconButton(onClick = {
-                    navController.navigate(Routes.HOME.label){
+                    navController.navigate(Routes.HOME.tag){
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -44,7 +44,7 @@ fun BottomBar(navController: NavController) {
                     )
                 }
                 IconButton(onClick = {
-                    navController.navigate(Routes.SEARCH.label){
+                    navController.navigate(Routes.SEARCH.tag){
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -59,7 +59,7 @@ fun BottomBar(navController: NavController) {
                     )
                 }
                 IconButton(onClick = {
-                    navController.navigate(Routes.FAVOURITES.label){
+                    navController.navigate(Routes.FAVOURITES.tag){
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }

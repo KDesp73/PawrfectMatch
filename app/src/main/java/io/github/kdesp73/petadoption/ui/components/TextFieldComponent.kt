@@ -7,6 +7,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,16 +18,19 @@ import io.github.kdesp73.petadoption.enums.TextFieldType
 
 @Composable
 fun TextFieldComponent(
+    value: MutableState<String> = mutableStateOf(""),
     labelValue: String,
     icon: ImageVector,
     iconDescriptor: String = "Text field icon",
-    type: TextFieldType = TextFieldType.NORMAL
+    type: TextFieldType = TextFieldType.NORMAL,
+    isError: Boolean = false,
 ) {
-    var text by remember { mutableStateOf("") }
+    var text by remember { value }
 
     when (type) {
         TextFieldType.NORMAL -> {
             TextField(
+                isError = isError,
                 value = text,
                 onValueChange = { text = it },
                 label = { Text(labelValue) },
@@ -35,6 +39,7 @@ fun TextFieldComponent(
         }
         TextFieldType.OUTLINED -> {
             OutlinedTextField(
+                isError = isError,
                 value = text,
                 onValueChange = { text = it },
                 label = { Text(labelValue) },
@@ -47,5 +52,5 @@ fun TextFieldComponent(
 @Preview
 @Composable
 private fun TextFieldPreview(){
-    TextFieldComponent(labelValue = "Text", Icons.Filled.Place)
+    TextFieldComponent(labelValue = "Text", icon = Icons.Filled.Place)
 }
