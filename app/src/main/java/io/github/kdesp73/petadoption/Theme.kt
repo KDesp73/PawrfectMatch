@@ -11,7 +11,7 @@ import io.github.kdesp73.petadoption.ui.theme.PurpleGrey40
 import io.github.kdesp73.petadoption.ui.theme.PurpleGrey80
 
 enum class ThemeName {
-    DARK, LIGHT, EXAMPLE 
+    DARK, LIGHT, AUTO
 }
 
 class Theme (
@@ -47,7 +47,7 @@ class Theme (
                 )
             ),
             Theme(
-                name = ThemeName.EXAMPLE,
+                name = ThemeName.AUTO,
                 colors = darkColorScheme()
             )
         )

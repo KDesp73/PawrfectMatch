@@ -22,9 +22,11 @@ import io.github.kdesp73.petadoption.routes.About
 import io.github.kdesp73.petadoption.routes.Account
 import io.github.kdesp73.petadoption.routes.AddPet
 import io.github.kdesp73.petadoption.routes.AddToy
+import io.github.kdesp73.petadoption.routes.CreateAccount
 import io.github.kdesp73.petadoption.routes.EditAccount
 import io.github.kdesp73.petadoption.routes.Favourites
 import io.github.kdesp73.petadoption.routes.Home
+import io.github.kdesp73.petadoption.routes.Login
 import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.Settings
 import io.github.kdesp73.petadoption.routes.SignIn
@@ -71,9 +73,11 @@ class MainActivity : ComponentActivity() {
                     composable(Routes.SETTINGS.label) { Settings() }
                     composable(Routes.ACCOUNT.label) { Account(navController) }
                     composable(Routes.EDIT_ACCOUNT.label) { EditAccount() }
-                    composable(Routes.SIGN_IN.label) { SignIn() }
+                    composable(Routes.SIGN_IN.label) { SignIn(navController) }
                     composable(Routes.ADD_PET.label) { AddPet() }
                     composable(Routes.ADD_TOY.label) { AddToy() }
+                    composable(Routes.CREATE_ACCOUNT.label) { CreateAccount()}
+                    composable(Routes.LOGIN.label) { Login() }
                 }
             }
         }

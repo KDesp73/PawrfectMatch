@@ -1,29 +1,31 @@
 package io.github.kdesp73.petadoption.routes
 
-import android.app.NotificationManager
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.ui.utils.Center
+import io.github.kdesp73.petadoption.enums.Routes
 
 @Composable
 fun AuthActionButton(textModifier: Modifier, iconButtonModifier: Modifier, contentDesciption: String, label: String, icon: ImageVector, action: () -> Unit){
@@ -33,13 +35,30 @@ fun AuthActionButton(textModifier: Modifier, iconButtonModifier: Modifier, conte
     ) {
         Row (
             horizontalArrangement = Arrangement.spacedBy(5.dp)
-
         ){
             Icon(imageVector = icon, contentDescription = contentDesciption)
             Text(modifier = textModifier, text = label)
         }
     }
+}
 
+@Composable
+fun AuthActionButton(textModifier: Modifier, iconButtonModifier: Modifier, contentDesciption: String, label: String, painterRes: Int, action: () -> Unit){
+    IconButton(
+        modifier = iconButtonModifier,
+        onClick = action
+    ) {
+        Row (
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ){
+            Icon(
+                modifier = Modifier.size(20.dp),
+                painter = painterResource(id = painterRes),
+                contentDescription = contentDesciption
+            )
+            Text(modifier = textModifier, text = label)
+        }
+    }
 }
 
 /*
@@ -62,49 +81,69 @@ private fun firebaseAuthWithGoogle(idToken: String, auth: FirebaseAuth) {
 */
 
 @Composable
-fun SignIn(){
+fun SignIn(navController: NavController?){
     val textModifier: Modifier = Modifier
     val iconButtonModifier: Modifier = Modifier.fillMaxWidth()
+    val cardModifier: Modifier = Modifier.padding(12.dp)
     val notificationService = NotificationService(context = LocalContext.current)
 
-    BoxWithConstraints(modifier = Modifier
-        .background(MaterialTheme.colorScheme.background)
-        .fillMaxSize()
-    ){
-        Center(modifier = Modifier.fillMaxSize()) {
-            Column (modifier = Modifier.fillMaxSize()){
-                Text(modifier = textModifier, text = "Create an Account")
+    Column (
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    )
+    {
+        Card (modifier = cardModifier){
+            Column (
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(8.dp)
+            )
+            {
+                Text(
+                    modifier = textModifier,
+                    text = "Create an Account using",
+                    fontSize = 5.em
+                )
                 AuthActionButton(
                     textModifier = textModifier,
                     iconButtonModifier = iconButtonModifier,
                     contentDesciption = "Sign Up with Google",
-                    label = "Using Google",
-                    icon = Icons.Filled.AccountCircle // TODO: Replace with Google icon
+                    label = "Google",
+                    painterRes = R.drawable.google
                 ) {
                     // TODO: Sign Up with google action
-                    notificationService.showBasicNotification(
-                        R.string.DEBUG.toString(),
-                        "Email Sign up",
-                        "Sign Up with Email pressed",
-                        NotificationManager.IMPORTANCE_HIGH
-                    )
                 }
                 AuthActionButton(
                     textModifier = textModifier,
                     iconButtonModifier = iconButtonModifier,
                     contentDesciption = "Sign Up with Email",
-                    label = "Using Email",
+                    label = "Email",
                     icon = Icons.Filled.Email
                 ) {
-                    // TODO: Sign Up with email action
+                    navController?.navigate(Routes.CREATE_ACCOUNT.label) {
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
-                Text(text = "Or Log In")
+            }
+        }
+        Card (modifier = cardModifier){
+            Column (
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(8.dp)
+            )
+            {
+                Text(
+                    modifier = textModifier,
+                    text = "Log In using",
+                    fontSize = 5.em
+                )
                 AuthActionButton(
                     textModifier = textModifier,
                     iconButtonModifier = iconButtonModifier,
                     contentDesciption = "Log In with Google",
-                    label = "Using Google",
-                    icon = Icons.Filled.AccountCircle // TODO: Replace with Google icon
+                    label = "Google",
+                    painterRes = R.drawable.google
                 ) {
                     // TODO: Log in with google action
                 }
@@ -112,19 +151,21 @@ fun SignIn(){
                     textModifier = textModifier,
                     iconButtonModifier = iconButtonModifier,
                     contentDesciption = "Log In with Email",
-                    label = "Using Email",
+                    label = "Email",
                     icon = Icons.Filled.Email
                 ) {
-                    // TODO: Log in with email action
+                    navController?.navigate(Routes.LOGIN.label) {
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
-            }
-
-        }
-    }
+            } // Column
+        } // Card
+    } // Column
 }
 
 @Preview
 @Composable
 fun SignInPreview(){
-    SignIn()
+    SignIn(null)
 }

@@ -23,7 +23,12 @@ TODO: Fix text expanded notification
 TODO: Add actions to notifications
 TODO: Take picture from inside the app
 TODO: Select picture from device
+TODO: Refactor strings to xml file
+TODO: use uri routing correctly
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
 DONE: Layout
+DONE: login with email ui
+DONE: create account with email ui
+DONE: Settings ui

@@ -29,9 +29,9 @@ fun HalfButton(icon: ImageVector? = Icons.Filled.Place, text: String = "Button",
 
     Button(
         modifier = Modifier
-            .width(screenWidth / 2 - 4.dp)
+            .width(screenWidth / 2 - 2.dp)
             .height(height)
-            .padding(8.dp),
+            .padding(5.dp),
         onClick = {
             action()
         }

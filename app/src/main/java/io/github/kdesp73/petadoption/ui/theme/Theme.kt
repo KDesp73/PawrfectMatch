@@ -29,8 +29,13 @@ fun PetAdoptionTheme(
             if (darkColorScheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        theme == ThemeName.DARK && darkColorScheme -> Theme.getTheme(ThemeName.DARK)?.colors
-        theme == ThemeName.EXAMPLE && darkColorScheme -> Theme.getTheme(ThemeName.EXAMPLE)?.colors
+        theme == ThemeName.DARK -> Theme.getTheme(ThemeName.DARK)?.colors
+        theme == ThemeName.AUTO -> {
+            if(darkColorScheme)
+                Theme.getTheme(ThemeName.DARK)?.colors
+            else
+                Theme.getTheme(ThemeName.LIGHT)?.colors
+        }
         else -> Theme.getTheme(ThemeName.LIGHT)?.colors
     }
     val view = LocalView.current
