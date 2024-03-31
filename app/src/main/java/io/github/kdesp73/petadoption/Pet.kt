@@ -6,13 +6,13 @@ import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
 import io.github.kdesp73.petadoption.enums.PetType
 
-class PetInfo (
-    private var name: String = "Rex",
-    private var age: PetAge = PetAge.YOUNG,
-    private var gender: Gender = Gender.MALE,
-    private var location: String = "Tatooine",
-    private var type: PetType = PetType.DOG,
-    private var size: PetSize = PetSize.LARGE,
+data class Pet (
+    var name: String = "Rex",
+    var age: PetAge = PetAge.YOUNG,
+    var gender: Gender = Gender.MALE,
+    var location: String = "Tatooine",
+    var type: PetType = PetType.DOG,
+    var size: PetSize = PetSize.LARGE,
 ){
     @Composable
     fun ToComposable(){

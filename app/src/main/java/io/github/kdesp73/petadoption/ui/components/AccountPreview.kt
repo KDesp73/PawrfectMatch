@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import io.github.kdesp73.petadoption.ProfileInfo
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.enums.Routes
+import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.User
 import io.github.kdesp73.petadoption.ui.utils.Center
 
 
@@ -58,7 +58,7 @@ private fun ProfileImage(modifier: Modifier = Modifier, pic: Int, size: Dp) {
 }
 
 @Composable
-fun AccountPreview(pic: Int, info: ProfileInfo?, navController: NavController?){
+fun AccountPreview(pic: Int, info: User?, navController: NavController?){
     val imageSize = 135.dp
     val containerHeight = imageSize + 50.dp
 
@@ -69,7 +69,7 @@ fun AccountPreview(pic: Int, info: ProfileInfo?, navController: NavController?){
             .fillMaxWidth()
             .height(containerHeight)
             .clickable(onClick = {
-                navController?.navigate(if (info == null) Routes.SIGN_IN.tag else Routes.EDIT_ACCOUNT.tag) {
+                navController?.navigate(if (info == null) Route.SignIn.route else Route.EditAccount.route) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
@@ -105,7 +105,7 @@ fun AccountPreview(pic: Int, info: ProfileInfo?, navController: NavController?){
                 verticalAlignment = Alignment.CenterVertically
             ){
                 ProfileImage(pic = pic, size = imageSize)
-                info?.ToComposable(containerHeight)
+                info.ToComposable(containerHeight)
             }
         }
     }
@@ -114,6 +114,6 @@ fun AccountPreview(pic: Int, info: ProfileInfo?, navController: NavController?){
 @Preview
 @Composable
 private fun AccountPreviewPreview(){
-    val info = ProfileInfo()
+    val info = null
     AccountPreview(R.drawable.profile_pic_placeholder, info, null)
 }

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.enums.Routes
+import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.ui.components.AccountPreview
 import io.github.kdesp73.petadoption.ui.components.HalfButton
 
@@ -39,10 +39,10 @@ fun Account(navController: NavController?){
         ){
             val buttonHeight: Dp = 80.dp
             HalfButton (height = buttonHeight, icon = Icons.Filled.Add, text = "Add a Pet"){
-                navController?.navigate(Routes.ADD_PET.tag)
+                navController?.navigate(Route.AddPet.route)
             }
             HalfButton (height = buttonHeight, icon = Icons.Filled.Add, text = "Add a Toy"){
-                navController?.navigate(Routes.ADD_TOY.tag)
+                navController?.navigate(Route.AddToy.route)
             }
         }
     }

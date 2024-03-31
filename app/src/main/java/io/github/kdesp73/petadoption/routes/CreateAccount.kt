@@ -28,48 +28,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.navigation.NavController
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
+import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.User
+import io.github.kdesp73.petadoption.UserManager
+import io.github.kdesp73.petadoption.enums.Gender
+import io.github.kdesp73.petadoption.enums.ProfileType
 import io.github.kdesp73.petadoption.enums.TextFieldType
 import io.github.kdesp73.petadoption.ui.components.CheckboxComponent
 import io.github.kdesp73.petadoption.ui.components.EmailFieldComponent
 import io.github.kdesp73.petadoption.ui.components.PasswordTextFieldComponent
 import io.github.kdesp73.petadoption.ui.components.TextFieldComponent
-import java.security.MessageDigest
+import io.github.kdesp73.petadoption.ui.utils.checkEmail
+import io.github.kdesp73.petadoption.ui.utils.checkName
+import io.github.kdesp73.petadoption.ui.utils.hash
+import io.github.kdesp73.petadoption.ui.utils.validatePassword
 
-fun checkName(name: String): Boolean {
-    return name.all { it.isLetter() } && name.isNotBlank() && name.isNotEmpty()
-}
-
-fun checkEmail(email: String): Boolean {
-    val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$"
-    return email.matches(emailRegex.toRegex())
-}
-
-const val ERR_LEN = "Password must have at least eight characters!"
-const val ERR_WHITESPACE = "Password must not contain whitespace!"
-const val ERR_DIGIT = "Password must contain at least one digit!"
-const val ERR_UPPER = "Password must have at least one uppercase letter!"
-const val ERR_SPECIAL = "Password must have at least one special character, such as: _%-=+#@"
-
-fun validatePassword(pwd: String) = runCatching {
-    require(pwd.length >= 8) { ERR_LEN }
-    require(pwd.none { it.isWhitespace() }) { ERR_WHITESPACE }
-    require(pwd.any { it.isDigit() }) { ERR_DIGIT }
-    require(pwd.any { it.isUpperCase() }) { ERR_UPPER }
-    require(pwd.any { !it.isLetterOrDigit() }) { ERR_SPECIAL }
-}
-
-fun hash(pass: String): String {
-    val bytes = pass.toByteArray()
-    val md = MessageDigest.getInstance("SHA-256")
-    val digest = md.digest(bytes)
-    return digest.fold("") { str, it -> str + "%02x".format(it) }
-}
 
 private const val TAG = "CreateAccount"
 @Composable
-fun CreateAccount(){
+fun CreateAccount(navController: NavController?){
+    val dbRef = Firebase.firestore
     val notificationService = NotificationService(context = LocalContext.current)
 
     var conditionsAccepted = false
@@ -150,11 +133,29 @@ fun CreateAccount(){
                             else -> "Success"
                         }
 
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                        if (message != "Success"){
+                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                        } else {
+                            val newUser = User(
+                                firstName = fnameState.value,
+                                lastName = lnameState.value,
+                                email = emailState.value,
+                                password = hash(passwordState.value),
+                                gender = Gender.OTHER.label,
+                                phone = "",
+                                location = "",
+                                profileType = ProfileType.INDIVIDUAL.id
+                            )
 
-                        if(message == "Success"){
-                            // TODO: Create account
-                            notificationService.showBasicNotification(R.string.MAIN.toString(), "Success", "Account created successfully", NotificationManager.IMPORTANCE_HIGH)
+                            val userManager = UserManager()
+                            userManager.addUser(newUser){ success, message ->
+                                notificationService.showBasicNotification(R.string.MAIN.toString(), if(success) "Success" else "Failure", message, NotificationManager.IMPORTANCE_HIGH)
+
+                                if(success){
+                                    navController?.navigate(Route.Login.route+ "?email=${newUser.email}")
+                                }
+                            }
+
                         }
                     }
                 ) {

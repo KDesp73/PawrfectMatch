@@ -1,5 +1,7 @@
 package io.github.kdesp73.petadoption.routes
 
+import android.app.NotificationManager
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,21 +19,32 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import io.github.kdesp73.petadoption.NotificationService
+import io.github.kdesp73.petadoption.R
+import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.UserManager
 import io.github.kdesp73.petadoption.enums.TextFieldType
 import io.github.kdesp73.petadoption.ui.components.EmailFieldComponent
 import io.github.kdesp73.petadoption.ui.components.PasswordTextFieldComponent
+import io.github.kdesp73.petadoption.ui.utils.checkEmail
+import io.github.kdesp73.petadoption.ui.utils.hash
 
 @Composable
-fun Login(){
+fun Login(navController: NavController, email: String?){
+    val context = LocalContext.current
     val notificationService = NotificationService(context = LocalContext.current)
 
-    val enabled: Boolean = false
-    var conditionsAccepted: Boolean = false
+    val emailState = remember { mutableStateOf(email ?: "") }
+    val passwordState = remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -47,16 +60,40 @@ fun Login(){
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                Text(fontSize = 6.em, text = "Log In")
                 Spacer(modifier = Modifier.height(20.dp))
 
-                EmailFieldComponent(labelValue = "Email", icon = Icons.Filled.Email, type = TextFieldType.OUTLINED)
-                PasswordTextFieldComponent(labelValue = "Password", icon = Icons.Filled.Lock, type = TextFieldType.OUTLINED)
+                EmailFieldComponent(emailState, labelValue = "Email", icon = Icons.Filled.Email, type = TextFieldType.OUTLINED)
+                PasswordTextFieldComponent(passwordState, labelValue = "Password", icon = Icons.Filled.Lock, type = TextFieldType.OUTLINED)
 
                 Spacer(modifier = Modifier.height(30.dp))
                 ElevatedButton(
-                    enabled = enabled,
                     onClick = {
-                        // TODO: Submit
+                        val userManager = UserManager()
+                        if(checkEmail(emailState.value)){
+                            userManager.getUserByEmail(emailState.value){ list ->
+                                if(list.isNotEmpty()) {
+                                    userManager.getPasswordHash(emailState.value){ hash ->
+                                        if(hash?.let { hash(passwordState.value).compareTo(it) } == 0){
+                                            // TODO: Log in
+                                            notificationService.showBasicNotification(R.string.MAIN.toString(), "Success", "You are logged in", NotificationManager.IMPORTANCE_HIGH)
+                                            navController.navigate(Route.Account.route) {
+                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                    saveState = true
+                                                }
+                                                launchSingleTop = true
+                                                restoreState = true
+                                            }
+                                        } else {
+                                            Toast.makeText(context, "Incorrect Password", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            Toast.makeText(context, "Invalid Email", Toast.LENGTH_SHORT).show()
+                        }
+
                     }
                 ) {
                     Row (

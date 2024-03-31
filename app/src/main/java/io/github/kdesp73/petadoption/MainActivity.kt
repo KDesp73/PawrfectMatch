@@ -12,8 +12,10 @@ import androidx.annotation.RequiresApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
-import io.github.kdesp73.petadoption.enums.Routes
+import com.google.firebase.firestore.firestore
 import io.github.kdesp73.petadoption.routes.About
 import io.github.kdesp73.petadoption.routes.Account
 import io.github.kdesp73.petadoption.routes.AddPet
@@ -36,6 +38,7 @@ class MainActivity : ComponentActivity() {
         Log.wtf(TAG, "Application Started")
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this);
+        val db = Firebase.firestore
 
         val debugChannel= NotificationChannel(
             R.string.DEBUG.toString(),
@@ -64,19 +67,26 @@ class MainActivity : ComponentActivity() {
              */
 
             Layout(topAppBarText = "PetAdoption", navController = navController) {
-                NavHost(navController, startDestination = Routes.HOME.tag) {
-                    composable(Routes.HOME.tag) { Home() }
-                    composable(Routes.SEARCH.tag) { Search() }
-                    composable(Routes.FAVOURITES.tag) { Favourites() }
-                    composable(Routes.ABOUT.tag) { About() }
-                    composable(Routes.SETTINGS.tag) { Settings() }
-                    composable(Routes.ACCOUNT.tag) { Account(navController) }
-                    composable(Routes.EDIT_ACCOUNT.tag) { EditAccount() }
-                    composable(Routes.SIGN_IN.tag) { SignIn(navController) }
-                    composable(Routes.ADD_PET.tag) { AddPet() }
-                    composable(Routes.ADD_TOY.tag) { AddToy() }
-                    composable(Routes.CREATE_ACCOUNT.tag) { CreateAccount()}
-                    composable(Routes.LOGIN.tag) { Login() }
+                NavHost(navController, startDestination = Route.Home.route) {
+                    composable(Route.Home.route) { Home() }
+                    composable(Route.Search.route) { Search() }
+                    composable(Route.Favourites.route) { Favourites() }
+                    composable(Route.About.route) { About() }
+                    composable(Route.Settings.route) { Settings() }
+                    composable(Route.Account.route) { Account(navController) }
+                    composable(Route.EditAccount.route) { EditAccount() }
+                    composable(Route.SignIn.route) { SignIn(navController) }
+                    composable(Route.AddPet.route) { AddPet() }
+                    composable(Route.AddToy.route) { AddToy() }
+                    composable(Route.CreateAccount.route) { CreateAccount(navController)}
+                    composable(
+                        route = Route.Login.route + "?email={email}",
+                        arguments = listOf(navArgument(
+                            name = "email",
+                        ) { defaultValue = "" })
+                    ) { backStackEntry ->
+                        Login(navController, backStackEntry.arguments?.getString("email"))
+                    }
                 }
             }
         }

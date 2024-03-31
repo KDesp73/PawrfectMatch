@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.enums.CustomAlignment
-import io.github.kdesp73.petadoption.enums.Routes
 import io.github.kdesp73.petadoption.ui.utils.VerticalScaffold
 import kotlinx.coroutines.launch
 
@@ -66,7 +66,7 @@ private fun DrawerContent(
                     modifier = Modifier.padding(10.dp)
                 ){
                     CircularIconButton(icon = DrawerIcons.About.icon, description = DrawerIcons.About.description, bg = iconColor, size = iconSize) {
-                        navController?.navigate(Routes.ABOUT.tag) {
+                        navController?.navigate(Route.About.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
@@ -78,7 +78,7 @@ private fun DrawerContent(
                         }
                     }
                     CircularIconButton(icon = DrawerIcons.Settings.icon, description = DrawerIcons.Settings.description, bg = iconColor, size = iconSize) {
-                        navController?.navigate(Routes.SETTINGS.tag) {
+                        navController?.navigate(Route.Settings.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }

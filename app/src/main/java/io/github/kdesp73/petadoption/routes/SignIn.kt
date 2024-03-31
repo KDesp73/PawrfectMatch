@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.enums.Routes
+import io.github.kdesp73.petadoption.Route
 
 @Composable
 fun AuthActionButton(textModifier: Modifier, iconButtonModifier: Modifier, contentDesciption: String, label: String, icon: ImageVector, action: () -> Unit){
@@ -120,7 +120,7 @@ fun SignIn(navController: NavController?){
                     label = "Email",
                     icon = Icons.Filled.Email
                 ) {
-                    navController?.navigate(Routes.CREATE_ACCOUNT.tag) {
+                    navController?.navigate(Route.CreateAccount.route) {
                         launchSingleTop = true
                         restoreState = true
                     }
@@ -154,7 +154,7 @@ fun SignIn(navController: NavController?){
                     label = "Email",
                     icon = Icons.Filled.Email
                 ) {
-                    navController?.navigate(Routes.LOGIN.tag) {
+                    navController?.navigate(Route.Login.route) {
                         launchSingleTop = true
                         restoreState = true
                     }
