@@ -13,9 +13,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.room.Room
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.firestore
+import io.github.kdesp73.petadoption.room.AppDatabase
+import io.github.kdesp73.petadoption.room.LocalUser
 import io.github.kdesp73.petadoption.routes.About
 import io.github.kdesp73.petadoption.routes.Account
 import io.github.kdesp73.petadoption.routes.AddPet
@@ -31,14 +34,27 @@ import io.github.kdesp73.petadoption.routes.SignIn
 import io.github.kdesp73.petadoption.ui.components.Layout
 
 private const val TAG = "MainActivity"
+
 class MainActivity : ComponentActivity() {
+    private fun roomInit(roomDatabase: AppDatabase){
+        roomDatabase.settingsDao().insert(io.github.kdesp73.petadoption.room.Settings(theme = ThemeName.LIGHT.name, language = "en"))
+        roomDatabase.userDao().insert(LocalUser("", false))
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n", "RestrictedApi", "StateFlowValueCalledInComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.wtf(TAG, "Application Started")
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this);
-        val db = Firebase.firestore
+        val firestore = Firebase.firestore
+        val room = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "local-db"
+        ).build()
+
+        roomInit(room)
 
         val debugChannel= NotificationChannel(
             R.string.DEBUG.toString(),
@@ -73,7 +89,7 @@ class MainActivity : ComponentActivity() {
                     composable(Route.Favourites.route) { Favourites() }
                     composable(Route.About.route) { About() }
                     composable(Route.Settings.route) { Settings() }
-                    composable(Route.Account.route) { Account(navController) }
+                    composable(Route.Account.route) { Account(navController, firestore, room) }
                     composable(Route.EditAccount.route) { EditAccount() }
                     composable(Route.SignIn.route) { SignIn(navController) }
                     composable(Route.AddPet.route) { AddPet() }
@@ -85,7 +101,7 @@ class MainActivity : ComponentActivity() {
                             name = "email",
                         ) { defaultValue = "" })
                     ) { backStackEntry ->
-                        Login(navController, backStackEntry.arguments?.getString("email"))
+                        Login(navController, backStackEntry.arguments?.getString("email"), room)
                     }
                 }
             }

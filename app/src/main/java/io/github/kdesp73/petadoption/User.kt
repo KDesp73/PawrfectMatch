@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.kdesp73.petadoption.enums.Gender
+import io.github.kdesp73.petadoption.enums.ProfileType
 
 
 data class User(
@@ -24,6 +25,18 @@ data class User(
     var password: String,
     var profileType: Int,
 ) {
+    companion object{
+        val example = User(
+            "John",
+            "Doe",
+            "example@gmail.com",
+            "",
+            "Tatooine",
+            "Male",
+            "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+            ProfileType.INDIVIDUAL.id
+        )
+    }
     @Composable
     fun ToComposable(height: Dp){
         val textModifier = Modifier

@@ -1,9 +1,7 @@
 TODO: PetPreview Component
 TODO: Settings
-TODO: Sign Up
 TODO: Log In
 TODO: Search using filters
-TODO: Firebase DB Connection
 TODO: Firebase DB structure
 TODO: SQLite DB Connection (Room API)
 TODO: SQLite DB structure
@@ -24,7 +22,6 @@ TODO: Add actions to notifications
 TODO: Take picture from inside the app
 TODO: Select picture from device
 TODO: Refactor strings to xml file
-TODO: use uri routing correctly
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -32,3 +29,6 @@ DONE: Layout
 DONE: login with email ui
 DONE: create account with email ui
 DONE: Settings ui
+DONE: use uri routing correctly
+DONE: Firebase DB Connection
+DONE: Sign Up

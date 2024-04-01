@@ -1,5 +1,7 @@
-package io.github.kdesp73.petadoption.ui.utils
+package io.github.kdesp73.petadoption
 
+import com.google.firebase.firestore.FirebaseFirestore
+import io.github.kdesp73.petadoption.room.AppDatabase
 import java.security.MessageDigest
 
 fun checkName(name: String): Boolean {
@@ -30,4 +32,8 @@ fun hash(pass: String): String {
     val md = MessageDigest.getInstance("SHA-256")
     val digest = md.digest(bytes)
     return digest.fold("") { str, it -> str + "%02x".format(it) }
+}
+
+fun getUser(email: String, firestore: FirebaseFirestore, roomDatabase: AppDatabase){
+
 }

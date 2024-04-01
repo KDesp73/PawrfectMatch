@@ -43,10 +43,10 @@ import io.github.kdesp73.petadoption.ui.components.CheckboxComponent
 import io.github.kdesp73.petadoption.ui.components.EmailFieldComponent
 import io.github.kdesp73.petadoption.ui.components.PasswordTextFieldComponent
 import io.github.kdesp73.petadoption.ui.components.TextFieldComponent
-import io.github.kdesp73.petadoption.ui.utils.checkEmail
-import io.github.kdesp73.petadoption.ui.utils.checkName
-import io.github.kdesp73.petadoption.ui.utils.hash
-import io.github.kdesp73.petadoption.ui.utils.validatePassword
+import io.github.kdesp73.petadoption.checkEmail
+import io.github.kdesp73.petadoption.checkName
+import io.github.kdesp73.petadoption.hash
+import io.github.kdesp73.petadoption.validatePassword
 
 
 private const val TAG = "CreateAccount"

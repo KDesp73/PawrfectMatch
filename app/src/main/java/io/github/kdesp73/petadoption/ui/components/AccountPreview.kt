@@ -58,7 +58,7 @@ private fun ProfileImage(modifier: Modifier = Modifier, pic: Int, size: Dp) {
 }
 
 @Composable
-fun AccountPreview(pic: Int, info: User?, navController: NavController?){
+fun AccountPreview(pic: Int, user: User?, navController: NavController?){
     val imageSize = 135.dp
     val containerHeight = imageSize + 50.dp
 
@@ -69,18 +69,17 @@ fun AccountPreview(pic: Int, info: User?, navController: NavController?){
             .fillMaxWidth()
             .height(containerHeight)
             .clickable(onClick = {
-                navController?.navigate(if (info == null) Route.SignIn.route else Route.EditAccount.route) {
+                navController?.navigate(if (user == null) Route.SignIn.route else Route.EditAccount.route) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
                     launchSingleTop = true
                     restoreState = true
-
                 }
             })
             .padding(8.dp)
     ) {
-        if (info == null){
+        if (user == null){
             Center(modifier = Modifier) {
                 Row (
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
@@ -105,7 +104,7 @@ fun AccountPreview(pic: Int, info: User?, navController: NavController?){
                 verticalAlignment = Alignment.CenterVertically
             ){
                 ProfileImage(pic = pic, size = imageSize)
-                info.ToComposable(containerHeight)
+                user.ToComposable(containerHeight)
             }
         }
     }

@@ -33,13 +33,15 @@ import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.UserManager
 import io.github.kdesp73.petadoption.enums.TextFieldType
+import io.github.kdesp73.petadoption.room.AppDatabase
+import io.github.kdesp73.petadoption.room.LocalUser
 import io.github.kdesp73.petadoption.ui.components.EmailFieldComponent
 import io.github.kdesp73.petadoption.ui.components.PasswordTextFieldComponent
-import io.github.kdesp73.petadoption.ui.utils.checkEmail
-import io.github.kdesp73.petadoption.ui.utils.hash
+import io.github.kdesp73.petadoption.checkEmail
+import io.github.kdesp73.petadoption.hash
 
 @Composable
-fun Login(navController: NavController, email: String?){
+fun Login(navController: NavController, email: String?, roomDatabase: AppDatabase){
     val context = LocalContext.current
     val notificationService = NotificationService(context = LocalContext.current)
 
@@ -75,7 +77,10 @@ fun Login(navController: NavController, email: String?){
                                 if(list.isNotEmpty()) {
                                     userManager.getPasswordHash(emailState.value){ hash ->
                                         if(hash?.let { hash(passwordState.value).compareTo(it) } == 0){
-                                            // TODO: Log in
+                                            val userDao = roomDatabase.userDao()
+
+                                            userDao.update(LocalUser(emailState.value, true))
+
                                             notificationService.showBasicNotification(R.string.MAIN.toString(), "Success", "You are logged in", NotificationManager.IMPORTANCE_HIGH)
                                             navController.navigate(Route.Account.route) {
                                                 popUpTo(navController.graph.findStartDestination().id) {
