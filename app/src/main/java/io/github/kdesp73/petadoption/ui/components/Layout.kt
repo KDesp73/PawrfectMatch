@@ -1,6 +1,7 @@
 package io.github.kdesp73.petadoption.ui.components
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerState
@@ -12,11 +13,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.room.Room
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.ThemeName
+import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.theme.PetAdoptionTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+
+private const val TAG = "Layout"
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

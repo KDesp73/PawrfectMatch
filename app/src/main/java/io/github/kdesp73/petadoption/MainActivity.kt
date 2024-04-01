@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -32,13 +33,18 @@ import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.Settings
 import io.github.kdesp73.petadoption.routes.SignIn
 import io.github.kdesp73.petadoption.ui.components.Layout
+import kotlinx.coroutines.launch
 
 private const val TAG = "MainActivity"
 
 class MainActivity : ComponentActivity() {
     private fun roomInit(roomDatabase: AppDatabase){
-        roomDatabase.settingsDao().insert(io.github.kdesp73.petadoption.room.Settings(theme = ThemeName.LIGHT.name, language = "en"))
-        roomDatabase.userDao().insert(LocalUser("", false))
+        lifecycleScope.launch {
+            if(roomDatabase.settingsDao().isFirstRun()){
+                roomDatabase.settingsDao().insert(io.github.kdesp73.petadoption.room.Settings(theme = ThemeName.LIGHT.name, language = "en", firstRun = false))
+                roomDatabase.userDao().insert(LocalUser())
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -52,7 +58,7 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             AppDatabase::class.java,
             "local-db"
-        ).build()
+        ).allowMainThreadQueries().fallbackToDestructiveMigration().build()
 
         roomInit(room)
 
@@ -89,7 +95,13 @@ class MainActivity : ComponentActivity() {
                     composable(Route.Favourites.route) { Favourites() }
                     composable(Route.About.route) { About() }
                     composable(Route.Settings.route) { Settings() }
-                    composable(Route.Account.route) { Account(navController, firestore, room) }
+                    composable(route = Route.Account.route) {
+                        Account(
+                            navController = navController,
+                            firestore = firestore,
+                            roomDatabase = room
+                        )
+                    }
                     composable(Route.EditAccount.route) { EditAccount() }
                     composable(Route.SignIn.route) { SignIn(navController) }
                     composable(Route.AddPet.route) { AddPet() }

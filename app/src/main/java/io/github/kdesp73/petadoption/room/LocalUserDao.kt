@@ -3,21 +3,17 @@ package io.github.kdesp73.petadoption.room
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.google.firebase.firestore.auth.User
 
 @Dao
 interface LocalUserDao {
     @Query("SELECT email FROM LocalUser")
-    fun getEmail(): String
+    fun getEmail(): List<String>
 
-    @Query("SELECT COUNT(*) FROM LocalUser")
-    fun count(): Int
-
-    @Update
-    fun update(user: LocalUser)
-
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg user: LocalUser)
 
     @Delete
@@ -25,4 +21,7 @@ interface LocalUserDao {
 
     @Query("DELETE FROM LocalUser")
     fun deleteAll()
+
+    @Query("SELECT * FROM LocalUser")
+    fun getUsers(): List<LocalUser>
 }

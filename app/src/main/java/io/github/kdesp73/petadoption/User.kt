@@ -11,32 +11,47 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.google.firebase.firestore.DocumentSnapshot
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.ProfileType
 
 
 data class User(
-    var firstName: String,
-    var lastName: String,
-    var email: String,
-    var phone: String = "",
-    var location: String = "",
-    var gender: String = Gender.OTHER.label,
-    var password: String,
-    var profileType: Int,
+    val firstName: String,
+    val lastName: String,
+    val email: String,
+    val phone: String = "",
+    val location: String = "",
+    val gender: String = Gender.OTHER.label,
+    val password: String,
+    val profileType: Int,
 ) {
     companion object{
         val example = User(
             "John",
             "Doe",
             "example@gmail.com",
-            "",
+            "1234567890",
             "Tatooine",
             "Male",
             "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
             ProfileType.INDIVIDUAL.id
         )
+
+        fun documentToObject(document: DocumentSnapshot): User {
+            return User(
+                firstName = document["firstName"].toString(),
+                lastName = document["lastName"].toString(),
+                email = document["email"].toString(),
+                phone = document["phone"].toString(),
+                location = document["location"].toString(),
+                gender = document["gender"].toString(),
+                password = document["password"].toString(),
+                profileType = document["profileType"].toString().toInt()
+            )
+        }
     }
+
     @Composable
     fun ToComposable(height: Dp){
         val textModifier = Modifier

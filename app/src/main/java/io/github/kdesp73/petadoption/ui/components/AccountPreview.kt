@@ -33,6 +33,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.User
+import io.github.kdesp73.petadoption.room.LocalUser
 import io.github.kdesp73.petadoption.ui.utils.Center
 
 
@@ -58,7 +59,7 @@ private fun ProfileImage(modifier: Modifier = Modifier, pic: Int, size: Dp) {
 }
 
 @Composable
-fun AccountPreview(pic: Int, user: User?, navController: NavController?){
+fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){
     val imageSize = 135.dp
     val containerHeight = imageSize + 50.dp
 
@@ -69,7 +70,7 @@ fun AccountPreview(pic: Int, user: User?, navController: NavController?){
             .fillMaxWidth()
             .height(containerHeight)
             .clickable(onClick = {
-                navController?.navigate(if (user == null) Route.SignIn.route else Route.EditAccount.route) {
+                navController?.navigate(if (user == null || !user.loggedIn) Route.SignIn.route else Route.EditAccount.route) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
@@ -79,7 +80,7 @@ fun AccountPreview(pic: Int, user: User?, navController: NavController?){
             })
             .padding(8.dp)
     ) {
-        if (user == null){
+        if (user == null || !user.loggedIn){
             Center(modifier = Modifier) {
                 Row (
                     horizontalArrangement = Arrangement.spacedBy(20.dp)

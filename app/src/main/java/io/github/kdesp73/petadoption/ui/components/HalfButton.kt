@@ -21,14 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 
 @Composable
-fun HalfButton(icon: ImageVector? = Icons.Filled.Place, text: String = "Button", height: Dp = 60.dp, action: () -> Unit){
+fun HalfButton(modifier: Modifier = Modifier, icon: ImageVector? = Icons.Filled.Place, text: String = "Button", height: Dp = 60.dp, action: () -> Unit){
     val configuration = LocalConfiguration.current
 
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
 
     Button(
-        modifier = Modifier
+        modifier = modifier
             .width(screenWidth / 2 - 2.dp)
             .height(height)
             .padding(5.dp),

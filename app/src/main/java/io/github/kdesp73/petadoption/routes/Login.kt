@@ -1,6 +1,7 @@
 package io.github.kdesp73.petadoption.routes
 
 import android.app.NotificationManager
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,6 +41,8 @@ import io.github.kdesp73.petadoption.ui.components.PasswordTextFieldComponent
 import io.github.kdesp73.petadoption.checkEmail
 import io.github.kdesp73.petadoption.hash
 
+private const val TAG = "Login"
+
 @Composable
 fun Login(navController: NavController, email: String?, roomDatabase: AppDatabase){
     val context = LocalContext.current
@@ -73,28 +76,34 @@ fun Login(navController: NavController, email: String?, roomDatabase: AppDatabas
                     onClick = {
                         val userManager = UserManager()
                         if(checkEmail(emailState.value)){
-                            userManager.getUserByEmail(emailState.value){ list ->
-                                if(list.isNotEmpty()) {
-                                    userManager.getPasswordHash(emailState.value){ hash ->
-                                        if(hash?.let { hash(passwordState.value).compareTo(it) } == 0){
-                                            val userDao = roomDatabase.userDao()
+                            userManager.getUserByEmail(emailState.value){ users ->
+                                Log.d(TAG, users.toString())
 
-                                            userDao.update(LocalUser(emailState.value, true))
+                                if(users.isNotEmpty()) {
+                                    val hash = users[0].password
+                                    if(hash.let { hash(passwordState.value).compareTo(it) } == 0){
+                                        val userDao = roomDatabase.userDao()
 
-                                            notificationService.showBasicNotification(R.string.MAIN.toString(), "Success", "You are logged in", NotificationManager.IMPORTANCE_HIGH)
-                                            navController.navigate(Route.Account.route) {
-                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                    saveState = true
-                                                }
-                                                launchSingleTop = true
-                                                restoreState = true
+                                        userDao.insert(LocalUser(user = users[0], loggedIn = true))
+
+                                        notificationService.showBasicNotification(R.string.MAIN.toString(), "Success", "You are logged in", NotificationManager.IMPORTANCE_HIGH)
+
+                                        navController.navigate(Route.Account.route + "?email=${emailState.value}") {
+                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                saveState = true
                                             }
-                                        } else {
-                                            Toast.makeText(context, "Incorrect Password", Toast.LENGTH_SHORT).show()
+                                            launchSingleTop = true
+                                            restoreState = true
                                         }
+                                    } else {
+                                        Toast.makeText(context, "Incorrect Password", Toast.LENGTH_SHORT).show()
                                     }
+                                } else {
+                                    Log.e(TAG, "There is no one with this email in the cloud db")
+                                    Toast.makeText(context, "There is no account using this email", Toast.LENGTH_LONG).show()
                                 }
                             }
+
                         } else {
                             Toast.makeText(context, "Invalid Email", Toast.LENGTH_SHORT).show()
                         }
