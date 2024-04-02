@@ -2,8 +2,6 @@ TODO: PetPreview Component
 TODO: Settings
 TODO: Search using filters
 TODO: Firebase DB structure
-TODO: SQLite DB Connection (Room API)
-TODO: SQLite DB structure
 TODO: Add Pet
 TODO: Home Page
 TODO: Drawer Content
@@ -32,3 +30,5 @@ DONE: use uri routing correctly
 DONE: Firebase DB Connection
 DONE: Sign Up
 DONE: Log In
+DONE: SQLite DB Connection (Room API)
+DONE: SQLite DB structure

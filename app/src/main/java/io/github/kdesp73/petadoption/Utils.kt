@@ -16,6 +16,7 @@ fun checkEmail(email: String): Boolean {
 const val ERR_LEN = "Password must have at least eight characters!"
 const val ERR_WHITESPACE = "Password must not contain whitespace!"
 const val ERR_DIGIT = "Password must contain at least one digit!"
+const val ERR_LOWER = "Password must have at least one lowercase letter!"
 const val ERR_UPPER = "Password must have at least one uppercase letter!"
 const val ERR_SPECIAL = "Password must have at least one special character, such as: _%-=+#@"
 
@@ -23,6 +24,7 @@ fun validatePassword(pwd: String) = runCatching {
     require(pwd.length >= 8) { ERR_LEN }
     require(pwd.none { it.isWhitespace() }) { ERR_WHITESPACE }
     require(pwd.any { it.isDigit() }) { ERR_DIGIT }
+    require(pwd.any { it.isLowerCase() }) { ERR_LOWER }
     require(pwd.any { it.isUpperCase() }) { ERR_UPPER }
     require(pwd.any { !it.isLetterOrDigit() }) { ERR_SPECIAL }
 }

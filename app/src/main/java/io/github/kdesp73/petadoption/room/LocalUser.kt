@@ -15,6 +15,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import io.github.kdesp73.petadoption.User
+import io.github.kdesp73.petadoption.enums.ProfileType
 
 @Entity
 data class LocalUser (
@@ -71,5 +72,20 @@ data class LocalUser (
             Text(modifier = textModifier, text = location)
             Text(modifier = textModifier, text = gender.toString().lowercase().replaceFirstChar { it.uppercase() })
         }
+    }
+
+
+    companion object {
+        val example = LocalUser(
+            0,
+            "example@gmail.com",
+            "John",
+            "Doe",
+            "Tatooine",
+            "Male",
+            ProfileType.INDIVIDUAL.id,
+            "1234567890",
+            true
+        )
     }
 }

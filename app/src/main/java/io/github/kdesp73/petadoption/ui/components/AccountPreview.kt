@@ -61,7 +61,7 @@ private fun ProfileImage(modifier: Modifier = Modifier, pic: Int, size: Dp) {
 @Composable
 fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){
     val imageSize = 135.dp
-    val containerHeight = imageSize + 50.dp
+    val containerHeight = imageSize + 100.dp
 
     Surface(
         color = MaterialTheme.colorScheme.primary,
@@ -114,6 +114,6 @@ fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){
 @Preview
 @Composable
 private fun AccountPreviewPreview(){
-    val info = null
+    val info = LocalUser.example
     AccountPreview(R.drawable.profile_pic_placeholder, info, null)
 }

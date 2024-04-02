@@ -98,7 +98,6 @@ class MainActivity : ComponentActivity() {
                     composable(route = Route.Account.route) {
                         Account(
                             navController = navController,
-                            firestore = firestore,
                             roomDatabase = room
                         )
                     }

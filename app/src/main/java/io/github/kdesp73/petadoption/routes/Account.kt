@@ -30,7 +30,7 @@ import io.github.kdesp73.petadoption.ui.utils.VerticalScaffold
 private const val TAG = "Account"
 
 @Composable
-fun Account(navController: NavController?, firestore: FirebaseFirestore?, roomDatabase: AppDatabase?){
+fun Account(navController: NavController?, roomDatabase: AppDatabase?){
     val userDao = roomDatabase?.userDao()
     val userList = userDao?.getUsers()
     var user: LocalUser? = null
@@ -43,22 +43,33 @@ fun Account(navController: NavController?, firestore: FirebaseFirestore?, roomDa
     VerticalScaffold(
         top = {
             Column (
-                modifier = Modifier.padding(12.dp),
+                modifier = Modifier.padding(6.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
 
             ){
                 AccountPreview(pic = R.drawable.profile_pic_placeholder, user = user, navController = navController)
-                Row (
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ){
-                    val buttonHeight: Dp = 80.dp
-                    HalfButton (height = buttonHeight, icon = Icons.Filled.Add, text = "Add a Pet"){
-                        navController?.navigate(Route.AddPet.route)
-                    }
-                    HalfButton (height = buttonHeight, icon = Icons.Filled.Add, text = "Add a Toy"){
-                        navController?.navigate(Route.AddToy.route)
+
+                if(user?.loggedIn == true) {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        val buttonHeight: Dp = 80.dp
+                        HalfButton(
+                            height = buttonHeight,
+                            icon = Icons.Filled.Add,
+                            text = "Add a Pet"
+                        ) {
+                            navController?.navigate(Route.AddPet.route)
+                        }
+                        HalfButton(
+                            height = buttonHeight,
+                            icon = Icons.Filled.Add,
+                            text = "Add a Toy"
+                        ) {
+                            navController?.navigate(Route.AddToy.route)
+                        }
                     }
                 }
             }
@@ -96,6 +107,5 @@ fun AccountPagePreview(){
     Account(
         null,
         null,
-        null
     )
 }
