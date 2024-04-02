@@ -11,10 +11,12 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.core.app.ActivityCompat.recreate
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.room.Room
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.Theme
 import io.github.kdesp73.petadoption.ThemeName
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.theme.PetAdoptionTheme
@@ -25,12 +27,13 @@ private const val TAG = "Layout"
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Layout(topAppBarText: String, navController: NavHostController, content: @Composable () -> Unit) {
+fun Layout(topAppBarText: String, navController: NavHostController, room: AppDatabase, content: @Composable () -> Unit) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
+    val themeName = room.settingsDao().getTheme()
     PetAdoptionTheme (
-        theme = ThemeName.DARK
+        theme = themeName
     ){
         Drawer(
             drawerState = drawerState,

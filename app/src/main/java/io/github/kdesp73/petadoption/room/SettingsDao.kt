@@ -3,20 +3,28 @@ package io.github.kdesp73.petadoption.room
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface SettingsDao {
     @Query("SELECT theme FROM Settings")
     fun getTheme(): String
 
+    @Query("SELECT language FROM Settings")
+    fun getLanguage(): String
+
     @Query("SELECT first_run FROM Settings")
     fun isFirstRun(): Boolean
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg settings: Settings)
 
     @Delete
     fun delete(settings: Settings)
+
+    @Update
+    fun updateTheme(vararg settings: Settings)
 
 }

@@ -1,6 +1,7 @@
 package io.github.kdesp73.petadoption.ui.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -22,20 +23,23 @@ import androidx.compose.ui.unit.dp
 class DropdownItem(
     val name: String,
     val action: () -> Unit
-){
-
-}
+)
 
 @Composable
-fun Dropdown(defaultExpanded: Boolean = false, title: String, items: List<DropdownItem>){
+fun Dropdown(startingLabel: String, defaultExpanded: Boolean = false, title: String, items: List<DropdownItem>){
     var expanded by remember { mutableStateOf(defaultExpanded) }
+    var selected by remember {
+        mutableStateOf(DropdownItem(startingLabel){})
+    }
 
-    Box(
+    Column(
         modifier = Modifier
-            .wrapContentSize(Alignment.TopEnd)
+            .wrapContentSize(Alignment.TopEnd),
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
+        Text(text = title)
         HalfButton (
-            text = title,
+            text = selected.name,
             icon = if(!expanded) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp
         ){
             expanded = !expanded
@@ -43,12 +47,16 @@ fun Dropdown(defaultExpanded: Boolean = false, title: String, items: List<Dropdo
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            offset = DpOffset(x = 20.dp, y = 5.dp)
+            offset = DpOffset(x = 25.dp, y = 5.dp)
         ) {
             items.forEach { item ->
                 DropdownMenuItem(
                     text = { Text(text = item.name) },
-                    onClick = { item.action() }
+                    onClick = {
+                        expanded = false
+                        selected = item
+                        item.action()
+                    }
                 )
             }
 
@@ -67,5 +75,6 @@ fun DropdownPreview(){
         DropdownItem("Example") {
         },
     )
-    Dropdown(defaultExpanded = true, title = "Theme", items = themes)
+    Dropdown("Dark", defaultExpanded = true, title = "Theme", items = themes)
+
 }

@@ -129,6 +129,7 @@ fun CreateAccount(navController: NavController?){
 
                                 if(success){
                                     navController?.navigate(Route.Login.route+ "?email=${newUser.email}")
+                                    viewModel.reset()
                                 }
                             }
                         }

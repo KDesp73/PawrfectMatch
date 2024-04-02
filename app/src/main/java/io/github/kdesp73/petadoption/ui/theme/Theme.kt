@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
@@ -17,7 +18,7 @@ import io.github.kdesp73.petadoption.ThemeName
 
 @Composable
 fun PetAdoptionTheme(
-    theme: ThemeName = ThemeName.DARK,
+    theme: String = ThemeName.DARK.label,
     darkColorScheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
@@ -29,20 +30,23 @@ fun PetAdoptionTheme(
             if (darkColorScheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        theme == ThemeName.DARK -> Theme.getTheme(ThemeName.DARK)?.colors
-        theme == ThemeName.AUTO -> {
-            if(darkColorScheme)
-                Theme.getTheme(ThemeName.DARK)?.colors
-            else
-                Theme.getTheme(ThemeName.LIGHT)?.colors
+        theme == ThemeName.DARK.label -> Theme.Dark.colors
+        theme == ThemeName.LIGHT.label -> Theme.Light.colors
+        theme == ThemeName.AUTO.label -> {
+            if (darkColorScheme){
+                Theme.Dark.colors
+            } else {
+                Theme.Light.colors
+            }
         }
-        else -> Theme.getTheme(ThemeName.LIGHT)?.colors
+        else -> Theme.Dark.colors
     }
+
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme!!.primary.toArgb()
+            window.statusBarColor = colorScheme?.primary?.toArgb()!!
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkColorScheme
         }
     }

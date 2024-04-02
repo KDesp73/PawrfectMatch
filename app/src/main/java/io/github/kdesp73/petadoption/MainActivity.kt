@@ -33,6 +33,7 @@ import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.Settings
 import io.github.kdesp73.petadoption.routes.SignIn
 import io.github.kdesp73.petadoption.ui.components.Layout
+import io.github.kdesp73.petadoption.viewmodels.ThemeViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "MainActivity"
@@ -53,7 +54,6 @@ class MainActivity : ComponentActivity() {
         Log.wtf(TAG, "Application Started")
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this);
-        val firestore = Firebase.firestore
         val room = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
@@ -88,28 +88,32 @@ class MainActivity : ComponentActivity() {
             currentRoute = currentDestination ?: ""
              */
 
-            Layout(topAppBarText = "PetAdoption", navController = navController) {
+            Layout(topAppBarText = "PetAdoption", navController = navController, room) {
                 NavHost(navController, startDestination = Route.Home.route) {
                     composable(Route.Home.route) { Home() }
                     composable(Route.Search.route) { Search() }
                     composable(Route.Favourites.route) { Favourites() }
                     composable(Route.About.route) { About() }
-                    composable(Route.Settings.route) { Settings() }
+                    composable(Route.Settings.route) { Settings(room) }
                     composable(route = Route.Account.route) {
                         Account(
                             navController = navController,
                             roomDatabase = room
                         )
                     }
-                    composable(Route.EditAccount.route) { EditAccount() }
+                    composable(Route.EditAccount.route) { EditAccount(navController, room) }
                     composable(Route.SignIn.route) { SignIn(navController) }
                     composable(Route.AddPet.route) { AddPet() }
                     composable(Route.AddToy.route) { AddToy() }
                     composable(Route.CreateAccount.route) { CreateAccount(navController)}
                     composable(
                         route = Route.Login.route + "?email={email}",
-                    ) {
-                        Login(navController, room)
+                        arguments = listOf(navArgument(
+                            name = "email",
+                        ) { defaultValue = "" })
+                    ) { backStackEntry ->
+                        backStackEntry.arguments?.getString("email")
+                            ?.let { Login(navController, it, room) }
                     }
                 }
             }

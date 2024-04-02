@@ -75,25 +75,7 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
             }
         },
         bottom = {
-            if(user?.loggedIn == true){
-                HalfButton (
-                    modifier = Modifier.padding(8.dp),
-                    text = "Log Out",
-                    icon = Icons.AutoMirrored.Filled.ExitToApp
-                ){
-                    userDao?.insert(LocalUser()) // Log out
-
-                    navController?.navigate(Route.Home.route){
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            }
         },
-        bottomAlignment = CustomAlignment.END,
         center = {
 
         }

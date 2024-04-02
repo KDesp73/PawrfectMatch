@@ -47,11 +47,13 @@ private const val TAG = "Login"
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun Login(navController: NavController, roomDatabase: AppDatabase){
+fun Login(navController: NavController, email: String, roomDatabase: AppDatabase){
     val context = LocalContext.current
     val notificationService = NotificationService(context = LocalContext.current)
 
     val viewModel = LoginViewModel()
+
+    viewModel.emailState.value = email
 
     Box(
         modifier = Modifier.fillMaxSize(),

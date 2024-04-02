@@ -1,5 +1,3 @@
-TODO: PetPreview Component
-TODO: Settings
 TODO: Search using filters
 TODO: Firebase DB structure
 TODO: Add Pet
@@ -13,12 +11,13 @@ TODO: Full Pet Page
 TODO: Dog Breeds
 TODO: Switch Languages
 TODO: Switch Themes
-TODO: Add more types of notifications
-TODO: Fix text expanded notification
-TODO: Add actions to notifications
 TODO: Take picture from inside the app
 TODO: Select picture from device
 TODO: Refactor strings to xml file
+TODO: Edit profile information
+TODO: Change password
+TODO: PetPreview Component
+TODO: Add more settings
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -32,3 +31,8 @@ DONE: Sign Up
 DONE: Log In
 DONE: SQLite DB Connection (Room API)
 DONE: SQLite DB structure
+DONE: Fix text expanded notification
+DONE: Add more types of notifications
+DONE: Add actions to notifications
+DONE: Change Theme
+DONE: Settings

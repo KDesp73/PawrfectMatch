@@ -1,5 +1,9 @@
 package io.github.kdesp73.petadoption.routes
 
+import android.app.Activity
+import android.content.res.Resources
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,43 +11,57 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat.recreate
 import io.github.kdesp73.petadoption.Theme
 import io.github.kdesp73.petadoption.ThemeName
 import io.github.kdesp73.petadoption.enums.CustomAlignment
+import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.Dropdown
 import io.github.kdesp73.petadoption.ui.components.DropdownItem
 import io.github.kdesp73.petadoption.ui.components.HalfButton
 import io.github.kdesp73.petadoption.ui.utils.VerticalScaffold
+import io.github.kdesp73.petadoption.viewmodels.ThemeViewModel
+import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
+
+private const val TAG = "Settings"
 
 @Composable
-fun Settings(){
-    var theme: Theme
-    var language: String
+fun Settings(room: AppDatabase?){
+    val context = LocalContext.current as Activity
+    val settingsDao = room?.settingsDao()
+
+    val theme = remember { mutableStateOf(settingsDao?.getTheme() ?: "Light") }
+    val language = remember { mutableStateOf(settingsDao?.getLanguage() ?: "English") }
 
     val themes = listOf<DropdownItem>(
         DropdownItem("Light") {
-            theme = Theme.getTheme(ThemeName.LIGHT)!!
+            theme.value = ThemeName.LIGHT.label
         },
         DropdownItem("Dark") {
-            theme = Theme.getTheme(ThemeName.DARK)!!
+            theme.value = ThemeName.DARK.label
         },
         DropdownItem("Auto") {
-            theme = Theme.getTheme(ThemeName.AUTO)!!
+            theme.value = ThemeName.AUTO.label
         },
     )
 
     val languages = listOf<DropdownItem>(
-        DropdownItem("Greek"){
-            language = "gr"
-        },
         DropdownItem("English"){
-            language = "en"
+            language.value = "English"
+        },
+        DropdownItem("Greek"){
+            language.value = "Greek"
         }
     )
 
+    val themeSettings = room?.settingsDao()?.getTheme()
+    val languageSettings = room?.settingsDao()?.getLanguage()
 
     VerticalScaffold(
         modifier = Modifier
@@ -54,8 +72,8 @@ fun Settings(){
                 modifier = Modifier
                     .fillMaxWidth()
             ){
-                Dropdown(title = "Theme", items = themes)
-                Dropdown(title = "Language", items = languages)
+                Dropdown(themeSettings ?: themes[0].name, title = "Theme", items = themes)
+                Dropdown(languageSettings ?: languages[0].name, title = "Language", items = languages)
             }
         },
         center = {},
@@ -64,7 +82,19 @@ fun Settings(){
                 text = "Apply",
                 icon = Icons.Filled.Check
             ){
-                // TODO: apply query
+
+                if(settingsDao?.getTheme() != theme.value){
+                    context.recreate()
+                }
+
+                settingsDao?.insert(
+                    io.github.kdesp73.petadoption.room.Settings(
+                        theme = theme.value,
+                        language = language.value,
+                    )
+                )
+
+                Log.d(TAG, "Settings applied")
             }
         },
         bottomAlignment = CustomAlignment.END
@@ -74,5 +104,5 @@ fun Settings(){
 @Preview
 @Composable
 fun SettingsPreview(){
-    Settings()
+    Settings(null)
 }
