@@ -1,6 +1,5 @@
 TODO: PetPreview Component
 TODO: Settings
-TODO: Log In
 TODO: Search using filters
 TODO: Firebase DB structure
 TODO: SQLite DB Connection (Room API)
@@ -32,3 +31,4 @@ DONE: Settings ui
 DONE: use uri routing correctly
 DONE: Firebase DB Connection
 DONE: Sign Up
+DONE: Log In

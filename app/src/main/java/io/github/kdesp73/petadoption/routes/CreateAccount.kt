@@ -21,16 +21,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
@@ -47,29 +43,15 @@ import io.github.kdesp73.petadoption.checkEmail
 import io.github.kdesp73.petadoption.checkName
 import io.github.kdesp73.petadoption.hash
 import io.github.kdesp73.petadoption.validatePassword
+import io.github.kdesp73.petadoption.viewmodels.CreateAccountViewModel
 
 
 private const val TAG = "CreateAccount"
 @Composable
 fun CreateAccount(navController: NavController?){
-    val dbRef = Firebase.firestore
     val notificationService = NotificationService(context = LocalContext.current)
 
-    var conditionsAccepted = false
-
-    val fnameState = remember { mutableStateOf("") }
-    val lnameState = remember { mutableStateOf("") }
-    val emailState = remember { mutableStateOf("") }
-    val passwordState = remember { mutableStateOf("") }
-    val repeatPasswordState = remember { mutableStateOf("") }
-
-    var fnameError = false
-    var lnameError = false
-    var emailError = false
-    var passwordError = false
-    var repeatPasswordError = false
-
-
+    val viewModel = CreateAccountViewModel()
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -89,11 +71,11 @@ fun CreateAccount(navController: NavController?){
                 Text(fontSize = 6.em, text = "Create an Account")
                 Spacer(modifier = Modifier.height(20.dp))
 
-                TextFieldComponent(isError = fnameError, value = fnameState, labelValue = "First Name", icon = Icons.Filled.AccountCircle, type = TextFieldType.OUTLINED)
-                TextFieldComponent(isError = lnameError, value = lnameState, labelValue = "Last Name", icon = Icons.Filled.AccountCircle, type = TextFieldType.OUTLINED)
-                EmailFieldComponent(isError = emailError, value = emailState, labelValue = "Email", icon = Icons.Filled.Email, type = TextFieldType.OUTLINED)
-                PasswordTextFieldComponent(isError = passwordError, value = passwordState, labelValue = "Password", icon = Icons.Filled.Lock, type = TextFieldType.OUTLINED)
-                PasswordTextFieldComponent(isError = repeatPasswordError, value = repeatPasswordState, labelValue = "Repeat Password", icon = Icons.Filled.Lock, type = TextFieldType.OUTLINED)
+                TextFieldComponent(state = viewModel.fnameState, labelValue = "First Name", icon = Icons.Filled.AccountCircle, type = TextFieldType.OUTLINED)
+                TextFieldComponent(state = viewModel.lnameState, labelValue = "Last Name", icon = Icons.Filled.AccountCircle, type = TextFieldType.OUTLINED)
+                EmailFieldComponent(state = viewModel.emailState, labelValue = "Email", icon = Icons.Filled.Email, type = TextFieldType.OUTLINED)
+                PasswordTextFieldComponent(state = viewModel.passwordState, labelValue = "Password", icon = Icons.Filled.Lock, type = TextFieldType.OUTLINED)
+                PasswordTextFieldComponent(state = viewModel.repeatPasswordState, labelValue = "Repeat Password", icon = Icons.Filled.Lock, type = TextFieldType.OUTLINED)
                 CheckboxComponent(
                     value = "",
                     onTextSelected = { clicked ->
@@ -102,7 +84,7 @@ fun CreateAccount(navController: NavController?){
                         )
                     },
                     onCheckedChange = {
-                        conditionsAccepted = true
+                        viewModel.termsAndConditionsAcceptedState.value = true
                     }
                 )
 
@@ -111,17 +93,11 @@ fun CreateAccount(navController: NavController?){
                 ElevatedButton(
                     onClick = {
                         Log.i(TAG, "Submit Pressed")
-                        val validFirstName = checkName(fnameState.value)
-                        val validLastName = checkName(lnameState.value)
-                        val validEmail = checkEmail(emailState.value)
-                        val validPassword = validatePassword(passwordState.value)
-                        val confirmedPassword = passwordState.value.compareTo(repeatPasswordState.value) == 0
-
-                        fnameError = !validFirstName
-                        lnameError = !validLastName
-                        emailError = !validEmail
-                        passwordError = validPassword.isFailure
-                        repeatPasswordError = !confirmedPassword
+                        val validFirstName = checkName(viewModel.fnameState.value)
+                        val validLastName = checkName(viewModel.lnameState.value)
+                        val validEmail = checkEmail(viewModel.emailState.value)
+                        val validPassword = validatePassword(viewModel.passwordState.value)
+                        val confirmedPassword = viewModel.passwordState.value.compareTo(viewModel.repeatPasswordState.value) == 0
 
                         val message = when{
                             !validFirstName -> "Invalid First Name"
@@ -129,7 +105,7 @@ fun CreateAccount(navController: NavController?){
                             !validEmail -> "Invalid Email"
                             validPassword.isFailure -> validPassword.exceptionOrNull()?.message
                             !confirmedPassword -> "Passwords don't match"
-                            !conditionsAccepted -> "Please accept our Terms and Conditions"
+                            !viewModel.termsAndConditionsAcceptedState.value-> "Please accept our Terms and Conditions"
                             else -> "Success"
                         }
 
@@ -137,10 +113,10 @@ fun CreateAccount(navController: NavController?){
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                         } else {
                             val newUser = User(
-                                firstName = fnameState.value,
-                                lastName = lnameState.value,
-                                email = emailState.value,
-                                password = hash(passwordState.value),
+                                firstName = viewModel.fnameState.value,
+                                lastName = viewModel.lnameState.value,
+                                email = viewModel.emailState.value,
+                                password = hash(viewModel.passwordState.value),
                                 gender = Gender.OTHER.label,
                                 phone = "",
                                 location = "",
@@ -155,8 +131,8 @@ fun CreateAccount(navController: NavController?){
                                     navController?.navigate(Route.Login.route+ "?email=${newUser.email}")
                                 }
                             }
-
                         }
+                        viewModel.reset()
                     }
                 ) {
                     Row (

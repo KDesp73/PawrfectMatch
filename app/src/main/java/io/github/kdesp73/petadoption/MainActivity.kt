@@ -109,11 +109,8 @@ class MainActivity : ComponentActivity() {
                     composable(Route.CreateAccount.route) { CreateAccount(navController)}
                     composable(
                         route = Route.Login.route + "?email={email}",
-                        arguments = listOf(navArgument(
-                            name = "email",
-                        ) { defaultValue = "" })
-                    ) { backStackEntry ->
-                        Login(navController, backStackEntry.arguments?.getString("email"), room)
+                    ) {
+                        Login(navController, room)
                     }
                 }
             }
