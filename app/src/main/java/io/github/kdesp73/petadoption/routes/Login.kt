@@ -45,7 +45,7 @@ import io.github.kdesp73.petadoption.viewmodels.LoginViewModel
 
 private const val TAG = "Login"
 
-@SuppressLint("UnrememberedMutableState")
+@SuppressLint("UnrememberedMutableState", "StateFlowValueCalledInComposition")
 @Composable
 fun Login(navController: NavController, email: String, roomDatabase: AppDatabase){
     val context = LocalContext.current

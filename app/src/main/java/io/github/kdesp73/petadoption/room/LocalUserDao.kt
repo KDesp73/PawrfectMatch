@@ -10,8 +10,11 @@ import com.google.firebase.firestore.auth.User
 
 @Dao
 interface LocalUserDao {
-    @Query("SELECT email FROM LocalUser")
-    fun getEmail(): List<String>
+    @Query("SELECT email FROM LocalUser WHERE id = 0")
+    fun getEmail(): String
+
+    @Query("SELECT gender FROM LocalUser WHERE id = 0")
+    fun getGender(): String
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg user: LocalUser)

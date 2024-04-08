@@ -1,9 +1,7 @@
 package io.github.kdesp73.petadoption.routes
 
 import android.app.Activity
-import android.content.res.Resources
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,8 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat.recreate
-import io.github.kdesp73.petadoption.Theme
 import io.github.kdesp73.petadoption.ThemeName
 import io.github.kdesp73.petadoption.enums.CustomAlignment
 import io.github.kdesp73.petadoption.room.AppDatabase
@@ -26,8 +22,6 @@ import io.github.kdesp73.petadoption.ui.components.Dropdown
 import io.github.kdesp73.petadoption.ui.components.DropdownItem
 import io.github.kdesp73.petadoption.ui.components.HalfButton
 import io.github.kdesp73.petadoption.ui.utils.VerticalScaffold
-import io.github.kdesp73.petadoption.viewmodels.ThemeViewModel
-import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
 
 private const val TAG = "Settings"
 

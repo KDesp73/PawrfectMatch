@@ -15,9 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.room.Room
-import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
-import com.google.firebase.firestore.firestore
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalUser
 import io.github.kdesp73.petadoption.routes.About
@@ -33,7 +31,6 @@ import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.Settings
 import io.github.kdesp73.petadoption.routes.SignIn
 import io.github.kdesp73.petadoption.ui.components.Layout
-import io.github.kdesp73.petadoption.viewmodels.ThemeViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "MainActivity"

@@ -18,6 +18,8 @@ TODO: Edit profile information
 TODO: Change password
 TODO: PetPreview Component
 TODO: Add more settings
+TODO: Better (cleaner) UI
+TODO: Split Users table into Users and UserInfo
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
