@@ -31,6 +31,7 @@ import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.User
+import io.github.kdesp73.petadoption.UserInfo
 import io.github.kdesp73.petadoption.UserManager
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.ProfileType
@@ -113,14 +114,16 @@ fun CreateAccount(navController: NavController?){
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                         } else {
                             val newUser = User(
-                                firstName = viewModel.fnameState.value,
-                                lastName = viewModel.lnameState.value,
                                 email = viewModel.emailState.value,
                                 password = hash(viewModel.passwordState.value),
-                                gender = Gender.OTHER.label,
-                                phone = "",
-                                location = "",
-                                profileType = ProfileType.INDIVIDUAL.id
+                                info = UserInfo(
+                                    firstName = viewModel.fnameState.value,
+                                    lastName = viewModel.lnameState.value,
+                                    gender = Gender.OTHER.label,
+                                    phone = "",
+                                    location = "",
+                                    profileType = ProfileType.INDIVIDUAL.id
+                                )
                             )
 
                             val userManager = UserManager()
@@ -133,7 +136,6 @@ fun CreateAccount(navController: NavController?){
                                 }
                             }
                         }
-                        viewModel.reset()
                     }
                 ) {
                     Row (

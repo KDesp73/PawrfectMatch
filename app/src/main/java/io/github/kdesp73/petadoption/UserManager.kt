@@ -30,16 +30,39 @@ class UserManager {
     fun addUser(user: User, onComplete: (Boolean, String) -> Unit) {
         checkUserExists(user.email) { exists ->
             if (!exists) {
+                val u = hashMapOf(
+                    "email" to user.email,
+                    "password" to user.password
+                )
                 db.collection("Users")
-                    .add(user)
-                    .addOnSuccessListener { documentReference ->
-                        Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                        onComplete(true, StatusMessage.SUCC_CREATED_USER.message)
+                    .add(u)
+                    .addOnSuccessListener { userDocumentReference ->
+                        Log.d(TAG, "DocumentSnapshot added with ID: ${userDocumentReference.id}")
+                        val i = hashMapOf(
+                            "email" to user.email,
+                            "firstName" to user.info.firstName,
+                            "lastName" to user.info.lastName,
+                            "gender" to user.info.gender,
+                            "location" to user.info.location,
+                            "profileType" to user.info.profileType
+                        )
+
+                        db.collection("UserInfo")
+                            .add(i)
+                            .addOnSuccessListener { infoDocumentReference ->
+                                Log.d(TAG, "DocumentSnapshot added with ID: ${infoDocumentReference.id}")
+                                onComplete(true, StatusMessage.SUCC_CREATED_USER.message)
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w(TAG, StatusMessage.ERRO_FAILED_DOC_CREATION.message, e)
+                                onComplete(false, StatusMessage.ERRO_FAILED_DOC_CREATION.message)
+                            }
                     }
                     .addOnFailureListener { e ->
                         Log.w(TAG, StatusMessage.ERRO_FAILED_DOC_CREATION.message, e)
                         onComplete(false, StatusMessage.ERRO_FAILED_DOC_CREATION.message)
                     }
+
             } else {
                 Log.d(TAG, StatusMessage.ERRO_USER_EXISTS.message)
                 onComplete(false, StatusMessage.ERRO_USER_EXISTS.message)
@@ -49,18 +72,32 @@ class UserManager {
 
     fun getUserByEmail(email: String, onComplete: (List<User>) -> Unit)
     {
-        db.collection("Users")
+        val userDocument: DocumentSnapshot
+
+        val userTask = db.collection("Users")
             .whereEqualTo("email", email)
             .get()
-            .addOnSuccessListener { documents ->
-                val users = mutableListOf<User>()
-                for (document in documents) {
-                    users.add(User.documentToObject(document))
-                }
-                onComplete(users)
+            .addOnSuccessListener { userDocs ->
+                val user = userDocs.documents[0]; // TODO: better check
+
+                db.collection("UserInfo")
+                    .whereEqualTo("email", email)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        val users = mutableListOf<User>()
+                        for (document in documents) {
+                            users.add(User.documentToObject(user, document))
+                        }
+                        onComplete(users)
+                    }
+                    .addOnFailureListener { exception ->
+                        onComplete(emptyList())
+                    }
+
             }
-            .addOnFailureListener { exception ->
-                onComplete(emptyList())
-            }
+
+
+
+
     }
 }

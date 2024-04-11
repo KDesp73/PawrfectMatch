@@ -7,6 +7,9 @@ plugins {
 }
 
 android {
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
     namespace = "io.github.kdesp73.petadoption"
     compileSdk = 34
 

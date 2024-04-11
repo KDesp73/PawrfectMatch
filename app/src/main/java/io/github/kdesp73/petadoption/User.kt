@@ -17,37 +17,36 @@ import io.github.kdesp73.petadoption.enums.ProfileType
 
 
 data class User(
-    val firstName: String,
-    val lastName: String,
     val email: String,
-    val phone: String = "",
-    val location: String = "",
-    val gender: String = Gender.OTHER.label,
     val password: String,
-    val profileType: Int,
+    val info: UserInfo
 ) {
     companion object{
         val example = User(
-            "John",
-            "Doe",
-            "example@gmail.com",
-            "1234567890",
-            "Tatooine",
-            "Male",
-            "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
-            ProfileType.INDIVIDUAL.id
+            email = "example@gmail.com",
+            password = "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+            info = UserInfo(
+                "John",
+                "Doe",
+                "1234567890",
+                "Tatooine",
+                "Male",
+                ProfileType.INDIVIDUAL.id
+            )
         )
 
-        fun documentToObject(document: DocumentSnapshot): User {
+        fun documentToObject(userDocument: DocumentSnapshot, infoDocument: DocumentSnapshot): User {
             return User(
-                firstName = document["firstName"].toString(),
-                lastName = document["lastName"].toString(),
-                email = document["email"].toString(),
-                phone = document["phone"].toString(),
-                location = document["location"].toString(),
-                gender = document["gender"].toString(),
-                password = document["password"].toString(),
-                profileType = document["profileType"].toString().toInt()
+                email = userDocument["email"].toString(),
+                password = userDocument["password"].toString(),
+                info = UserInfo(
+                    infoDocument["firstName"].toString(),
+                    infoDocument["lastName"].toString(),
+                    infoDocument["phone"].toString(),
+                    infoDocument["location"].toString(),
+                    infoDocument["gender"].toString(),
+                    infoDocument["profileType"].toString().toInt()
+                )
             )
         }
     }
@@ -64,12 +63,12 @@ data class User(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ){
-            Text(modifier = textModifier, text = firstName)
-            Text(modifier = textModifier, text = lastName)
+            Text(modifier = textModifier, text = info.firstName)
+            Text(modifier = textModifier, text = info.lastName)
             Text(modifier = textModifier, text = email)
-            Text(modifier = textModifier, text = phone)
-            Text(modifier = textModifier, text = location)
-            Text(modifier = textModifier, text = gender.toString().lowercase().replaceFirstChar { it.uppercase() })
+            Text(modifier = textModifier, text = info.phone)
+            Text(modifier = textModifier, text = info.location)
+            Text(modifier = textModifier, text = info.gender.lowercase().replaceFirstChar { it.uppercase() })
         }
     }
 }

@@ -43,13 +43,13 @@ data class LocalUser (
 
     constructor(id: Int = 0, user: User, loggedIn: Boolean) : this(
         id,
-        user.email,
-        user.firstName,
-        user.lastName,
-        user.location,
-        user.gender,
-        user.profileType,
-        user.phone,
+        if(user.email == "null") "" else user.email,
+        if(user.info.firstName == "null") "" else user.info.firstName,
+        if(user.info.lastName == "null") "" else user.info.lastName,
+        if(user.info.location == "null") "" else user.info.location,
+        if(user.info.gender == "null") "" else user.info.gender,
+        user.info.profileType,
+        if(user.info.phone == "null") "" else user.info.phone,
         loggedIn,
     )
 
@@ -68,7 +68,7 @@ data class LocalUser (
             Text(modifier = textModifier, text = firstName)
             Text(modifier = textModifier, text = lastName)
             Text(modifier = textModifier, text = email)
-            Text(modifier = textModifier, text = phone)
+            Text(modifier = textModifier, text = phone ?: "")
             Text(modifier = textModifier, text = location)
             Text(modifier = textModifier, text = gender.toString().lowercase().replaceFirstChar { it.uppercase() })
         }
