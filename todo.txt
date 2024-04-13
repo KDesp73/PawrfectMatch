@@ -19,7 +19,7 @@ TODO: Change password
 TODO: PetPreview Component
 TODO: Add more settings
 TODO: Better (cleaner) UI
-TODO: Split Users table into Users and UserInfo
+TODO: upload images to firebase
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -38,3 +38,4 @@ DONE: Add more types of notifications
 DONE: Add actions to notifications
 DONE: Change Theme
 DONE: Settings
+DONE: Split Users table into Users and UserInfo

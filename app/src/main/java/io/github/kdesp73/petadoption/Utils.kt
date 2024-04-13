@@ -1,5 +1,22 @@
 package io.github.kdesp73.petadoption
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.google.firebase.firestore.FirebaseFirestore
 import io.github.kdesp73.petadoption.room.AppDatabase
 import java.security.MessageDigest
@@ -36,6 +53,37 @@ fun hash(pass: String): String {
     return digest.fold("") { str, it -> str + "%02x".format(it) }
 }
 
-fun getUser(email: String, firestore: FirebaseFirestore, roomDatabase: AppDatabase){
+@Composable
+fun SelectImage(
+    trigger: @Composable (action: () -> Unit) -> Unit,
+    imageContainer: @Composable (image: Uri?) -> Unit
+){
+    var imageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+    val launcher = rememberLauncherForActivityResult(
+        contract =
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        imageUri = uri
+    }
+    imageContainer(imageUri)
+    trigger { launcher.launch("image/*") }
+}
 
+
+@Composable
+fun SelectImage(
+    containerButton: @Composable (action: () -> Unit, image: Uri?) -> Unit,
+){
+    var imageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+    val launcher = rememberLauncherForActivityResult(
+        contract =
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        imageUri = uri
+    }
+    containerButton({ launcher.launch("image/*") }, imageUri)
 }
