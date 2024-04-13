@@ -3,18 +3,13 @@ package io.github.kdesp73.petadoption
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
+import io.github.kdesp73.petadoption.enums.ThemeName
 import io.github.kdesp73.petadoption.ui.theme.Pink40
 import io.github.kdesp73.petadoption.ui.theme.Pink80
 import io.github.kdesp73.petadoption.ui.theme.Purple40
 import io.github.kdesp73.petadoption.ui.theme.Purple80
 import io.github.kdesp73.petadoption.ui.theme.PurpleGrey40
 import io.github.kdesp73.petadoption.ui.theme.PurpleGrey80
-
-enum class ThemeName(val label: String) {
-    DARK(label = "Dark"),
-    LIGHT(label = "Light"),
-    AUTO(label = "Auto");
-}
 
 sealed class Theme(
     var name: ThemeName,

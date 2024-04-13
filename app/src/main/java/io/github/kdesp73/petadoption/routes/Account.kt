@@ -61,14 +61,26 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
                             icon = Icons.Filled.Add,
                             text = "Add a Pet"
                         ) {
-                            navController?.navigate(Route.AddPet.route)
+                            navController?.navigate(Route.AddPet.route){
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
                         HalfButton(
                             height = buttonHeight,
                             icon = Icons.Filled.Add,
                             text = "Add a Toy"
                         ) {
-                            navController?.navigate(Route.AddToy.route)
+                            navController?.navigate(Route.AddToy.route){
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
                     }
                 }

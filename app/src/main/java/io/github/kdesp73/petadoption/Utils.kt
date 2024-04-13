@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.google.firebase.firestore.FirebaseFirestore
 import io.github.kdesp73.petadoption.room.AppDatabase
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.security.MessageDigest
 
 fun checkName(name: String): Boolean {
@@ -53,37 +54,3 @@ fun hash(pass: String): String {
     return digest.fold("") { str, it -> str + "%02x".format(it) }
 }
 
-@Composable
-fun SelectImage(
-    trigger: @Composable (action: () -> Unit) -> Unit,
-    imageContainer: @Composable (image: Uri?) -> Unit
-){
-    var imageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
-    val launcher = rememberLauncherForActivityResult(
-        contract =
-        ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        imageUri = uri
-    }
-    imageContainer(imageUri)
-    trigger { launcher.launch("image/*") }
-}
-
-
-@Composable
-fun SelectImage(
-    containerButton: @Composable (action: () -> Unit, image: Uri?) -> Unit,
-){
-    var imageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
-    val launcher = rememberLauncherForActivityResult(
-        contract =
-        ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        imageUri = uri
-    }
-    containerButton({ launcher.launch("image/*") }, imageUri)
-}

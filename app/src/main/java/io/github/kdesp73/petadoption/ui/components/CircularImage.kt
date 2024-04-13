@@ -20,6 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.github.kdesp73.petadoption.R
 
 @Composable
 fun CircularImage(modifier: Modifier = Modifier, pic: Int, size: Dp) {
@@ -48,9 +49,7 @@ fun CircularImage(
     painter: Painter?,
     contentDescription: String?,
     size: Dp,
-    placeholder: @Composable () -> Unit = {
-        CircularProgressIndicator(color = Color.White)
-    }
+    placeholderId: Int = R.drawable.profile_pic_placeholder
 ) {
     Surface(
         modifier = Modifier
@@ -75,7 +74,13 @@ fun CircularImage(
                     .background(Color.LightGray),
                 contentAlignment = Alignment.Center
             ) {
-                placeholder()
+                Image(
+                    painter = painterResource(id = placeholderId),
+                    contentDescription = "profile image",
+                    modifier = modifier
+                        .size(size),
+                    contentScale = ContentScale.Crop
+                )
             }
         }
     }

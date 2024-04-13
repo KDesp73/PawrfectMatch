@@ -9,13 +9,13 @@ import androidx.room.Update
 
 @Dao
 interface SettingsDao {
-    @Query("SELECT theme FROM Settings")
+    @Query("SELECT theme FROM Settings WHERE id = 0")
     fun getTheme(): String
 
-    @Query("SELECT language FROM Settings")
+    @Query("SELECT language FROM Settings WHERE id = 0")
     fun getLanguage(): String
 
-    @Query("SELECT first_run FROM Settings")
+    @Query("SELECT first_run FROM Settings WHERE id = 0")
     fun isFirstRun(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

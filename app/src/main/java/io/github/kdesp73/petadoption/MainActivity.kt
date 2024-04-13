@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.room.Room
 import com.google.firebase.FirebaseApp
+import io.github.kdesp73.petadoption.enums.ThemeName
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalUser
 import io.github.kdesp73.petadoption.routes.About

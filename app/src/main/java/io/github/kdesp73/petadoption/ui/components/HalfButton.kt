@@ -9,6 +9,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,13 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 
 @Composable
-fun HalfButton(modifier: Modifier = Modifier, icon: ImageVector? = Icons.Filled.Place, text: String = "Button", height: Dp = 60.dp, action: () -> Unit){
+fun HalfButton(modifier: Modifier = Modifier, colors: ButtonColors = ButtonDefaults.buttonColors(), icon: ImageVector? = Icons.Filled.Place, text: String = "Button", height: Dp = 60.dp, action: () -> Unit){
     val configuration = LocalConfiguration.current
 
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
 
     Button(
+        colors = colors,
         modifier = modifier
             .width(screenWidth / 2 - 2.dp)
             .height(height)

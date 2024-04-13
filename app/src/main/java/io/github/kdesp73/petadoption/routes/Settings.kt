@@ -1,5 +1,6 @@
 package io.github.kdesp73.petadoption.routes
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -9,50 +10,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kdesp73.petadoption.ThemeName
 import io.github.kdesp73.petadoption.enums.CustomAlignment
+import io.github.kdesp73.petadoption.enums.Language
+import io.github.kdesp73.petadoption.enums.ThemeName
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.Dropdown
-import io.github.kdesp73.petadoption.ui.components.DropdownItem
 import io.github.kdesp73.petadoption.ui.components.HalfButton
 import io.github.kdesp73.petadoption.ui.utils.VerticalScaffold
+import io.github.kdesp73.petadoption.viewmodels.SettingsViewModel
 
 private const val TAG = "Settings"
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun Settings(room: AppDatabase?){
     val context = LocalContext.current as Activity
     val settingsDao = room?.settingsDao()
 
-    val theme = remember { mutableStateOf(settingsDao?.getTheme() ?: "Light") }
-    val language = remember { mutableStateOf(settingsDao?.getLanguage() ?: "English") }
+    val viewModel = SettingsViewModel()
 
-    val themes = listOf<DropdownItem>(
-        DropdownItem("Light") {
-            theme.value = ThemeName.LIGHT.label
-        },
-        DropdownItem("Dark") {
-            theme.value = ThemeName.DARK.label
-        },
-        DropdownItem("Auto") {
-            theme.value = ThemeName.AUTO.label
-        },
-    )
-
-    val languages = listOf<DropdownItem>(
-        DropdownItem("English"){
-            language.value = "English"
-        },
-        DropdownItem("Greek"){
-            language.value = "Greek"
-        }
-    )
+    viewModel.theme.value = settingsDao?.getTheme() ?: "Light"
+    viewModel.language.value = settingsDao?.getLanguage() ?: "English"
 
     val themeSettings = room?.settingsDao()?.getTheme()
     val languageSettings = room?.settingsDao()?.getLanguage()
@@ -66,8 +48,8 @@ fun Settings(room: AppDatabase?){
                 modifier = Modifier
                     .fillMaxWidth()
             ){
-                Dropdown(themeSettings ?: themes[0].name, title = "Theme", items = themes)
-                Dropdown(languageSettings ?: languages[0].name, title = "Language", items = languages)
+                Dropdown(viewModel.theme, title = "Theme", items = listOf(ThemeName.LIGHT.label, ThemeName.DARK.label, ThemeName.AUTO.label))
+                Dropdown(viewModel.language, title = "Language", items = listOf(Language.ENGLISH.label, Language.GREEK.label))
             }
         },
         center = {},
@@ -77,14 +59,14 @@ fun Settings(room: AppDatabase?){
                 icon = Icons.Filled.Check
             ){
 
-                if(settingsDao?.getTheme() != theme.value){
+                if(settingsDao?.getTheme() != viewModel.theme.value){
                     context.recreate()
                 }
 
                 settingsDao?.insert(
                     io.github.kdesp73.petadoption.room.Settings(
-                        theme = theme.value,
-                        language = language.value,
+                        theme = viewModel.theme.value,
+                        language = viewModel.language.value,
                     )
                 )
 

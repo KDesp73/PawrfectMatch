@@ -10,6 +10,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class DropdownItem(
     val name: String,
@@ -26,11 +28,14 @@ class DropdownItem(
 )
 
 @Composable
-fun Dropdown(startingLabel: String, defaultExpanded: Boolean = false, title: String, items: List<DropdownItem>){
+fun Dropdown(
+    state: MutableStateFlow<String> = MutableStateFlow(""),
+    defaultExpanded: Boolean = false,
+    title: String,
+    items: List<String>
+){
+    val opt by state.collectAsState()
     var expanded by remember { mutableStateOf(defaultExpanded) }
-    var selected by remember {
-        mutableStateOf(DropdownItem(startingLabel){})
-    }
 
     Column(
         modifier = Modifier
@@ -39,7 +44,7 @@ fun Dropdown(startingLabel: String, defaultExpanded: Boolean = false, title: Str
     ){
         Text(text = title)
         HalfButton (
-            text = selected.name,
+            text = opt,
             icon = if(!expanded) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp
         ){
             expanded = !expanded
@@ -51,30 +56,14 @@ fun Dropdown(startingLabel: String, defaultExpanded: Boolean = false, title: Str
         ) {
             items.forEach { item ->
                 DropdownMenuItem(
-                    text = { Text(text = item.name) },
+                    text = { Text(text = item) },
                     onClick = {
                         expanded = false
-                        selected = item
-                        item.action()
+                        state.value = item
                     }
                 )
             }
 
         }
     }
-}
-
-@Preview
-@Composable
-fun DropdownPreview(){
-    val themes = listOf<DropdownItem>(
-        DropdownItem("Light") {
-        },
-        DropdownItem("Dark") {
-        },
-        DropdownItem("Example") {
-        },
-    )
-    Dropdown("Dark", defaultExpanded = true, title = "Theme", items = themes)
-
 }
