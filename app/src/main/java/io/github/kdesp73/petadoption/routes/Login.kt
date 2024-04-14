@@ -21,8 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,7 +31,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
-import io.github.kdesp73.petadoption.UserManager
+import io.github.kdesp73.petadoption.firestore.UserManager
 import io.github.kdesp73.petadoption.checkEmail
 import io.github.kdesp73.petadoption.enums.TextFieldType
 import io.github.kdesp73.petadoption.hash

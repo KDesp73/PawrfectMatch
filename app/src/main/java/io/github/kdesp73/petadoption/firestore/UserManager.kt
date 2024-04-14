@@ -1,9 +1,8 @@
-package io.github.kdesp73.petadoption
+package io.github.kdesp73.petadoption.firestore
 
 import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.tasks.await
 
 class UserManager {
     private val TAG = "UserManagement"

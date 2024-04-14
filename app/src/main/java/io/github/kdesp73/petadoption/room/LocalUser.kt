@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import io.github.kdesp73.petadoption.User
+import io.github.kdesp73.petadoption.firestore.User
 import io.github.kdesp73.petadoption.enums.ProfileType
 
 @Entity

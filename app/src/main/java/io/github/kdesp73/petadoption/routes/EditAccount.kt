@@ -10,6 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -65,6 +66,7 @@ fun EditAccount(navController: NavController, room: AppDatabase){
         }
         TextFieldComponent(state = viewModel.fnameState, labelValue = "First Name", icon = Icons.Filled.AccountCircle, type = TextFieldType.OUTLINED)
         TextFieldComponent(state = viewModel.lnameState, labelValue = "Last Name", icon = Icons.Filled.AccountCircle, type = TextFieldType.OUTLINED)
+        TextFieldComponent(state = viewModel.locationState, labelValue = "Location", icon = Icons.Filled.LocationOn, type = TextFieldType.OUTLINED)
         NumberFieldComponent(state = viewModel.phoneState, labelValue = "Phone", icon = Icons.Filled.Phone, type = TextFieldType.OUTLINED)
         OptionPicker(
             state = viewModel.genderState,

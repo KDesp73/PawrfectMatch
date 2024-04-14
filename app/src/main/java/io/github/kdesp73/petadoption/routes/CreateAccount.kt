@@ -30,9 +30,9 @@ import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
-import io.github.kdesp73.petadoption.User
-import io.github.kdesp73.petadoption.UserInfo
-import io.github.kdesp73.petadoption.UserManager
+import io.github.kdesp73.petadoption.firestore.User
+import io.github.kdesp73.petadoption.firestore.UserInfo
+import io.github.kdesp73.petadoption.firestore.UserManager
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.ProfileType
 import io.github.kdesp73.petadoption.enums.TextFieldType

@@ -1,4 +1,4 @@
-package io.github.kdesp73.petadoption
+package io.github.kdesp73.petadoption.firestore
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.firebase.firestore.DocumentSnapshot
-import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.ProfileType
 
 

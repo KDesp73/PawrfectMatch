@@ -3,6 +3,7 @@ package io.github.kdesp73.petadoption.routes
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,32 +13,28 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.rounded.Face
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import io.github.kdesp73.petadoption.Pet
-import io.github.kdesp73.petadoption.enums.Orientation
 import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
 import io.github.kdesp73.petadoption.enums.PetType
 import io.github.kdesp73.petadoption.enums.TextFieldType
+import io.github.kdesp73.petadoption.ui.components.CircularIconButton
 import io.github.kdesp73.petadoption.ui.components.CircularImage
 import io.github.kdesp73.petadoption.ui.components.Dropdown
-import io.github.kdesp73.petadoption.ui.components.DropdownItem
-import io.github.kdesp73.petadoption.ui.components.GradientButton
 import io.github.kdesp73.petadoption.ui.components.HalfButton
-import io.github.kdesp73.petadoption.ui.components.OptionPicker
 import io.github.kdesp73.petadoption.ui.components.SelectImage
 import io.github.kdesp73.petadoption.ui.components.TextFieldComponent
 import io.github.kdesp73.petadoption.viewmodels.AddPetViewModel
+
+private const val TAG = "AddPet"
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -50,17 +47,20 @@ fun AddPet(){
             .fillMaxSize()
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
     ){
         val imageModifier = Modifier.fillMaxSize()
-        SelectImage (viewModel.imageState){ action ->
-            val imagePainter = rememberAsyncImagePainter(viewModel.imageState.value)
+        SelectImage (null){ action, uri ->
+            val imagePainter = rememberAsyncImagePainter(uri)
             CircularImage(
                 modifier = imageModifier.clickable { action() },
                 painter = imagePainter,
                 contentDescription = "Pet image",
                 size = 200.dp
             )
+            viewModel.imageState.value = uri
         }
+        // TODO: change icon
         TextFieldComponent(viewModel.nameState, labelValue = "Name", icon = Icons.Rounded.Face, type = TextFieldType.OUTLINED)
         Row {
             Dropdown(
@@ -80,6 +80,7 @@ fun AddPet(){
                 title = "Age",
                 items = listOf(
                     PetAge.BABY.label,
+                    PetAge.YOUNG.label,
                     PetAge.ADULT.label,
                     PetAge.SENIOR.label
                 )
@@ -95,16 +96,9 @@ fun AddPet(){
             )
         )
         
-        HalfButton(
-            icon = Icons.Filled.Add,
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            text = "Add Your Pet!",
-        ) {
-            // TODO: Apply query
+        CircularIconButton(icon = Icons.Filled.Check, description = "Add Pet", bg = MaterialTheme.colorScheme.surface, size = 60.dp) {
+            viewModel.log(TAG)
         }
-
 
     }
 }

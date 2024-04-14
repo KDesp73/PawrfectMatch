@@ -1,4 +1,4 @@
-package io.github.kdesp73.petadoption
+package io.github.kdesp73.petadoption.firestore
 
 import io.github.kdesp73.petadoption.enums.Gender
 
