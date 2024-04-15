@@ -25,12 +25,13 @@ data class User(
             email = "example@gmail.com",
             password = "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
             info = UserInfo(
+                "example@gmail.com",
                 "John",
                 "Doe",
                 "1234567890",
                 "Tatooine",
                 "Male",
-                ProfileType.INDIVIDUAL.id
+                profileType = ProfileType.INDIVIDUAL.id
             )
         )
 
@@ -39,6 +40,7 @@ data class User(
                 email = userDocument["email"].toString(),
                 password = userDocument["password"].toString(),
                 info = UserInfo(
+                    userDocument["email"].toString(),
                     infoDocument["firstName"].toString(),
                     infoDocument["lastName"].toString(),
                     infoDocument["phone"].toString(),

@@ -43,6 +43,7 @@ class UserManager {
                             "lastName" to user.info.lastName,
                             "gender" to user.info.gender,
                             "location" to user.info.location,
+                            "phone" to user.info.phone,
                             "profileType" to user.info.profileType
                         )
 
@@ -69,8 +70,7 @@ class UserManager {
         }
     }
 
-    fun getUserByEmail(email: String, onComplete: (List<User>) -> Unit)
-    {
+    fun getUserByEmail(email: String, onComplete: (List<User>) -> Unit) {
         val userDocument: DocumentSnapshot
 
         val userTask = db.collection("Users")
@@ -94,9 +94,17 @@ class UserManager {
                     }
 
             }
+    }
 
-
-
-
+    fun updateInfo(info: UserInfo, onComplete: (Boolean) -> Unit){
+        db.collection("UserInfo")
+            .document()
+            .update(info.toMap())
+            .addOnSuccessListener {
+                onComplete(true)
+            }
+            .addOnFailureListener {
+                onComplete(false)
+            }
     }
 }

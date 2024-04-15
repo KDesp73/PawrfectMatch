@@ -117,6 +117,7 @@ fun CreateAccount(navController: NavController?){
                                 email = viewModel.emailState.value,
                                 password = hash(viewModel.passwordState.value),
                                 info = UserInfo(
+                                    email = viewModel.emailState.value,
                                     firstName = viewModel.fnameState.value,
                                     lastName = viewModel.lnameState.value,
                                     gender = Gender.OTHER.label,

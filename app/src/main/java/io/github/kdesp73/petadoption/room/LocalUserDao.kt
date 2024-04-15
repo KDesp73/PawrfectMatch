@@ -27,4 +27,10 @@ interface LocalUserDao {
 
     @Query("SELECT * FROM LocalUser")
     fun getUsers(): List<LocalUser>
+
+    @Query("SELECT * FROM LocalUser WHERE id = 0")
+    fun getUser(): LocalUser
+
+    @Update
+    fun update(user: LocalUser)
 }

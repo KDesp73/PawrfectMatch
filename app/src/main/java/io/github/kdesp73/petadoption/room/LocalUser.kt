@@ -16,6 +16,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import io.github.kdesp73.petadoption.firestore.User
 import io.github.kdesp73.petadoption.enums.ProfileType
+import io.github.kdesp73.petadoption.firestore.UserInfo
 
 @Entity
 data class LocalUser (
@@ -41,7 +42,7 @@ data class LocalUser (
         false
     )
 
-    constructor(id: Int = 0, user: User, loggedIn: Boolean) : this(
+    constructor(id: Int = 0, user: User, loggedIn: Boolean = true) : this(
         id,
         if(user.email == "null") "" else user.email,
         if(user.info.firstName == "null") "" else user.info.firstName,
@@ -50,6 +51,18 @@ data class LocalUser (
         if(user.info.gender == "null") "" else user.info.gender,
         user.info.profileType,
         if(user.info.phone == "null") "" else user.info.phone,
+        loggedIn,
+    )
+
+    constructor(id: Int = 0, info: UserInfo, loggedIn: Boolean = true) : this(
+        id,
+        if(info.email == "null") "" else info.email,
+        if(info.firstName == "null") "" else info.firstName,
+        if(info.lastName == "null") "" else info.lastName,
+        if(info.location == "null") "" else info.location,
+        if(info.gender == "null") "" else info.gender,
+        info.profileType,
+        if(info.phone == "null") "" else info.phone,
         loggedIn,
     )
 

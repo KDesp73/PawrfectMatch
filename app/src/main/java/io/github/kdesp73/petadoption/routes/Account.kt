@@ -37,7 +37,6 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
 
     if(userList?.isNotEmpty() == true){
         user = userList[0]
-        Log.d(TAG, user.toString())
     }
 
     VerticalScaffold(
