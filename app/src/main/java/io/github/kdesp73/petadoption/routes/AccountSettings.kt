@@ -52,6 +52,7 @@ import io.github.kdesp73.petadoption.ui.components.OptionPicker
 import io.github.kdesp73.petadoption.ui.components.SelectImage
 import io.github.kdesp73.petadoption.ui.components.TextFieldComponent
 import io.github.kdesp73.petadoption.viewmodels.EditAccountViewModel
+import javax.security.auth.Destroyable
 import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
 
 private const val TAG = "AccountSettings"
@@ -195,7 +196,7 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                 text = "Change Password",
                 icon = Icons.Filled.Refresh
             ){
-
+                navigateTo(Route.ChangePassword.route, navController)
             }
             CustomButton(
                 modifier = Modifier
@@ -205,14 +206,7 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                 icon = Icons.AutoMirrored.Filled.ExitToApp
             ) {
                 userDao.insert(LocalUser()) // Log out
-
-                navController.navigate(Route.Home.route) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
+                navigateTo(Route.Home.route, navController)
             }
         }
     }

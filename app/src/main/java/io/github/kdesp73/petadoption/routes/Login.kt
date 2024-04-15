@@ -82,11 +82,8 @@ fun Login(navController: NavController, email: String, roomDatabase: AppDatabase
 
                         if(checkEmail(viewModel.emailState.value)){
                             userManager.getUserByEmail(viewModel.emailState.value){ users ->
-                                Log.d(TAG, users.toString())
                                 if(users.isNotEmpty()) {
                                     val hash = users[0].password
-                                    Log.d(TAG, hash)
-                                    Log.d(TAG, hash(viewModel.passwordState.value))
                                     if(hash.let { hash(viewModel.passwordState.value).compareTo(it) } == 0){
                                         val userDao = roomDatabase.userDao()
 

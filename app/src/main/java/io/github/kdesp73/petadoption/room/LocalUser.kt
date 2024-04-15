@@ -63,8 +63,8 @@ data class LocalUser (
     constructor(id: Int = 0, user: User, loggedIn: Boolean = true) : this(
         id,
         if(user.email == "null") "" else user.email,
-        if(user.info.firstName == "null") "" else user.info.firstName,
-        if(user.info.lastName == "null") "" else user.info.lastName,
+        (if(user.info?.firstName == "null") "" else user.info?.firstName)!!,
+        if(user.info?.lastName == "null") "" else user.info?.lastName!!,
         if(user.info.location == "null") "" else user.info.location,
         if(user.info.gender == "null") "" else user.info.gender,
         user.info.profileType,

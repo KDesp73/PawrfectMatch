@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.room.Room
 import com.google.firebase.FirebaseApp
+import com.google.firebase.database.core.view.Change
 import io.github.kdesp73.petadoption.enums.ThemeName
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalUser
@@ -24,6 +25,7 @@ import io.github.kdesp73.petadoption.routes.Account
 import io.github.kdesp73.petadoption.routes.AccountSettings
 import io.github.kdesp73.petadoption.routes.AddPet
 import io.github.kdesp73.petadoption.routes.AddToy
+import io.github.kdesp73.petadoption.routes.ChangePassword
 import io.github.kdesp73.petadoption.routes.CreateAccount
 import io.github.kdesp73.petadoption.routes.Favourites
 import io.github.kdesp73.petadoption.routes.Home
@@ -103,6 +105,7 @@ class MainActivity : ComponentActivity() {
                     composable(Route.SignIn.route) { SignIn(navController) }
                     composable(Route.AddPet.route) { AddPet(room) }
                     composable(Route.AddToy.route) { AddToy() }
+                    composable(Route.ChangePassword.route) { ChangePassword(room, navController) }
                     composable(Route.CreateAccount.route) { CreateAccount(navController)}
                     composable(
                         route = Route.Login.route + "?email={email}",

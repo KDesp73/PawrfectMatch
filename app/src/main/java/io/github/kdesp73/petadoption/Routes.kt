@@ -15,4 +15,5 @@ sealed class Route (val label: String, val route: String, @StringRes val resId: 
     object SignIn : Route("Sign In", route = "sign_in", resId = R.string.SIGN_IN)
     object CreateAccount : Route("Create Account", route = "create_account", resId = R.string.CREATE_ACCOUNT)
     object Login : Route("Login", route = "login", resId = R.string.LOGIN)
+    object ChangePassword : Route("Change Password", route = "change_password", R.string.CHANGE_PASSWORD)
 }

@@ -39,7 +39,7 @@ class UserManager {
                         Log.d(TAG, "DocumentSnapshot added with ID: ${userDocumentReference.id}")
                         val i = hashMapOf(
                             "email" to user.email,
-                            "firstName" to user.info.firstName,
+                            "firstName" to user.info?.firstName!!,
                             "lastName" to user.info.lastName,
                             "gender" to user.info.gender,
                             "location" to user.info.location,
@@ -108,6 +108,22 @@ class UserManager {
                     .addOnFailureListener {
                         onComplete(false)
                     }
+        }
+    }
+
+    fun updateUser(user: User, onComplete: (Boolean) -> Unit) {
+        getUserDocumentId(user.email){ id ->
+            if (id != null) {
+                db.collection("Users")
+                    .document(id)
+                    .update(user.toMap())
+                    .addOnSuccessListener {
+                        onComplete(true)
+                    }
+                    .addOnFailureListener {
+                        onComplete(false)
+                    }
+            }
         }
     }
 

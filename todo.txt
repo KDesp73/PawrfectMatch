@@ -11,7 +11,6 @@ TODO: Switch Languages
 TODO: Take picture from inside the app
 TODO: Select picture from device
 TODO: Refactor strings to xml file
-TODO: Change password
 TODO: PetPreview Component
 TODO: Add more settings
 TODO: Better (cleaner) UI
@@ -40,3 +39,4 @@ DONE: Firebase DB structure
 DONE: Edit profile information
 DONE: upload images to firebase
 DONE: Add Pet
+DONE: Change password

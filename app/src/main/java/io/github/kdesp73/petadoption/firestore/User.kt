@@ -18,8 +18,24 @@ import io.github.kdesp73.petadoption.enums.ProfileType
 data class User(
     val email: String,
     val password: String,
-    val info: UserInfo
+    val info: UserInfo?
 ) {
+    constructor(
+        email: String,
+        password: String
+    ): this(
+        email,
+        password,
+        null
+    )
+
+    fun toMap(): HashMap<String, Any?> {
+        return hashMapOf(
+            "email" to this.email,
+            "password" to this.password
+        )
+    }
+
     companion object{
         val example = User(
             email = "example@gmail.com",
@@ -66,7 +82,7 @@ data class User(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ){
-            Text(modifier = textModifier, text = info.firstName)
+            Text(modifier = textModifier, text = info?.firstName!!)
             Text(modifier = textModifier, text = info.lastName)
             Text(modifier = textModifier, text = email)
             Text(modifier = textModifier, text = info.phone)

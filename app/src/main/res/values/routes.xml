@@ -10,6 +10,7 @@
     <string name="SEARCH">Search</string> 
     <string name="SETTINGS">Settings</string> 
     <string name="SIGN_IN">Sign_in</string> 
-    <string name="CREATE_ACCOUNT">Create_account</string> 
-    <string name="LOGIN">Login</string> 
+    <string name="CREATE_ACCOUNT">Create_account</string>
+    <string name="LOGIN">Login</string>
+    <string name="CHANGE_PASSWORD">Change_password</string>
 </resources>
