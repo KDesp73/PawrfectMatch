@@ -1,6 +1,4 @@
 TODO: Search using filters
-TODO: Firebase DB structure
-TODO: Add Pet
 TODO: Home Page
 TODO: Drawer Content
 TODO: Location Selector
@@ -10,16 +8,14 @@ TODO: Landscape orientation features
 TODO: Full Pet Page
 TODO: Dog Breeds
 TODO: Switch Languages
-TODO: Switch Themes
 TODO: Take picture from inside the app
 TODO: Select picture from device
 TODO: Refactor strings to xml file
-TODO: Edit profile information
 TODO: Change password
 TODO: PetPreview Component
 TODO: Add more settings
 TODO: Better (cleaner) UI
-TODO: upload images to firebase
+TODO: get image from firebase storage
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -39,3 +35,8 @@ DONE: Add actions to notifications
 DONE: Change Theme
 DONE: Settings
 DONE: Split Users table into Users and UserInfo
+DONE: Switch Themes
+DONE: Firebase DB structure
+DONE: Edit profile information
+DONE: upload images to firebase
+DONE: Add Pet

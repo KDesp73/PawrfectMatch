@@ -31,7 +31,8 @@ data class User(
                 "1234567890",
                 "Tatooine",
                 "Male",
-                profileType = ProfileType.INDIVIDUAL.id
+                profileType = ProfileType.INDIVIDUAL.id,
+                ""
             )
         )
 
@@ -46,7 +47,8 @@ data class User(
                     infoDocument["phone"].toString(),
                     infoDocument["location"].toString(),
                     infoDocument["gender"].toString(),
-                    infoDocument["profileType"].toString().toInt()
+                    infoDocument["profileType"].toString().toInt(),
+                    infoDocument["imageUrl"].toString()
                 )
             )
         }

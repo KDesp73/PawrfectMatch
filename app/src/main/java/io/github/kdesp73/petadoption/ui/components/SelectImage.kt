@@ -43,16 +43,3 @@ fun SelectImage(
     }
     containerButton({ launcher.launch("image/*") }, defaultUri ?: imageUri)
 }
-
-@Composable
-fun SelectImage(
-    uriState: MutableStateFlow<Uri?>,
-    containerButton: @Composable (action: () -> Unit) -> Unit,
-){
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        uriState.value = uri
-    }
-    containerButton({ launcher.launch("image/*") })
-}

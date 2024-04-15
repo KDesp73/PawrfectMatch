@@ -32,6 +32,7 @@ import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
 import io.github.kdesp73.petadoption.enums.PetType
 import io.github.kdesp73.petadoption.enums.TextFieldType
+import io.github.kdesp73.petadoption.firestore.ImageManager
 import io.github.kdesp73.petadoption.firestore.Pet
 import io.github.kdesp73.petadoption.firestore.PetManager
 import io.github.kdesp73.petadoption.room.AppDatabase
@@ -54,6 +55,7 @@ fun AddPet(room: AppDatabase?){
     val userDao = room?.userDao()
     val context = LocalContext.current
     val notificationService = NotificationService(context)
+    val imageManager = ImageManager()
 
     Column (
         modifier = Modifier
@@ -121,7 +123,7 @@ fun AddPet(room: AppDatabase?){
 
             val check = viewModel.validate()
             if(check.isSuccess){
-                petManager.addPet(Pet(
+                val newPet = Pet(
                     name = viewModel.nameState.value,
                     age = viewModel.ageState.value,
                     type = viewModel.typeState.value,
@@ -129,7 +131,17 @@ fun AddPet(room: AppDatabase?){
                     size = viewModel.sizeState.value,
                     location = userDao?.getUser()?.location ?: "",
                     ownerEmail = userDao?.getEmail() ?: ""
-                )) { added ->
+                )
+
+                viewModel.imageState.value?.let {
+                    imageManager.uploadPetImage(it, newPet.id) { url ->
+                        if (url != null) {
+                            newPet.imageUrl = url
+                        }
+                    }
+                }
+
+                petManager.addPet(newPet) { added ->
                     if(added){
                         Log.i(TAG, "Your pet is added to the database")
                         notificationService.showExpandableImageNotification(
@@ -139,7 +151,6 @@ fun AddPet(room: AppDatabase?){
                             imageUri = viewModel.imageState.value,
                             NotificationManager.IMPORTANCE_HIGH
                         )
-
                     } else {
                         Log.i(TAG, "Failed to add pet")
                         Toast.makeText(context, "Pet already exists", Toast.LENGTH_LONG).show()

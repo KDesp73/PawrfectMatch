@@ -16,6 +16,9 @@ interface LocalUserDao {
     @Query("SELECT gender FROM LocalUser WHERE id = 0")
     fun getGender(): String
 
+    @Query("SELECT image_url FROM LocalUser WHERE id = 0")
+    fun getImageUrl(): String
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg user: LocalUser)
 

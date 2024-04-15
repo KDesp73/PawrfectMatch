@@ -38,6 +38,7 @@ import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.Orientation
 import io.github.kdesp73.petadoption.enums.TextFieldType
+import io.github.kdesp73.petadoption.firestore.ImageManager
 import io.github.kdesp73.petadoption.firestore.UserInfo
 import io.github.kdesp73.petadoption.firestore.UserManager
 import io.github.kdesp73.petadoption.navigateTo
@@ -62,6 +63,7 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
     val user = userDao.getUsers()[0]
     val context = LocalContext.current
     val notificationService = NotificationService(context)
+    val imageManager = ImageManager()
 
     val scrollState = rememberScrollState()
 
@@ -93,6 +95,7 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                     contentDescription = "User image",
                     size = 200.dp
                 )
+                viewModel.imageState.value = uri
             }
             Spacer(modifier = Modifier.height(15.dp))
             TextFieldComponent(
@@ -147,10 +150,17 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                     phone = viewModel.phoneState.value,
                     location = viewModel.locationState.value,
                     gender = viewModel.genderState.value,
-                    profileType = 1
+                    profileType = 1,
                 )
 
                 if(viewModel.validate().isSuccess) {
+                    viewModel.imageState.value?.let {
+                        imageManager.uploadProfileImage(it, user.email) { url ->
+                            Log.d(TAG, "url: $url")
+                            updatedUserInfo.imageUrl = url
+                        }
+                    }
+
                     manager.updateInfo(updatedUserInfo){ completed ->
                         if(completed){
                             Log.i(TAG, "Updated user info")

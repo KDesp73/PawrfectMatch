@@ -1,14 +1,30 @@
 package io.github.kdesp73.petadoption.room
 
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.room.ColumnInfo
@@ -28,6 +44,7 @@ data class LocalUser (
     @ColumnInfo(name = "gender") var gender: String,
     @ColumnInfo(name = "profile_type") var profileType: Int = 1,
     @ColumnInfo(name = "phone") var phone: String = "",
+    @ColumnInfo(name = "image_url") var imageUrl: String?,
     @ColumnInfo(name = "logged_in") var loggedIn: Boolean = false
 ){
     constructor() : this(
@@ -39,6 +56,7 @@ data class LocalUser (
         "",
         1,
         "",
+        imageUrl = "",
         false
     )
 
@@ -51,6 +69,7 @@ data class LocalUser (
         if(user.info.gender == "null") "" else user.info.gender,
         user.info.profileType,
         if(user.info.phone == "null") "" else user.info.phone,
+        if(user.info.imageUrl == "null") "" else user.info.imageUrl,
         loggedIn,
     )
 
@@ -63,6 +82,7 @@ data class LocalUser (
         if(info.gender == "null") "" else info.gender,
         info.profileType,
         if(info.phone == "null") "" else info.phone,
+        if(info.imageUrl == "null") "" else info.imageUrl,
         loggedIn,
     )
 
@@ -71,6 +91,7 @@ data class LocalUser (
         val textModifier = Modifier
             .padding(2.dp)
 
+        val scrollState = rememberScrollState()
         Column (
             modifier = Modifier
                 .height(height)
@@ -78,12 +99,36 @@ data class LocalUser (
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ){
-            Text(modifier = textModifier, text = firstName)
-            Text(modifier = textModifier, text = lastName)
-            Text(modifier = textModifier, text = email)
-            Text(modifier = textModifier, text = phone ?: "")
-            Text(modifier = textModifier, text = location)
-            Text(modifier = textModifier, text = gender.toString().lowercase().replaceFirstChar { it.uppercase() })
+            @Composable
+            fun InfoRow(content: @Composable () -> Unit){
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    content()
+                }
+            }
+            val iconModifier = Modifier.size(20.dp)
+            InfoRow {
+                Icon(modifier = iconModifier, imageVector = Icons.Filled.Person, contentDescription = "")
+                Text(modifier = textModifier, text = "$firstName $lastName")
+            }
+            InfoRow {
+                Icon(modifier = iconModifier, imageVector = Icons.Filled.Email, contentDescription = "")
+                Text(modifier = textModifier, text = email)
+            }
+            InfoRow {
+                Icon(modifier = iconModifier, imageVector = Icons.Filled.Phone, contentDescription = "")
+                Text(modifier = textModifier, text = phone ?: "")
+            }
+            InfoRow {
+                Icon(modifier = iconModifier, imageVector = Icons.Filled.LocationOn, contentDescription = "")
+                Text(modifier = textModifier, text = location)
+            }
+            InfoRow {
+                Icon(modifier = iconModifier, imageVector = Icons.Filled.Face, contentDescription = "")
+                Text(modifier = textModifier, text = gender.toString().lowercase().replaceFirstChar { it.uppercase() })
+            }
         }
     }
 
@@ -98,6 +143,7 @@ data class LocalUser (
             "Male",
             ProfileType.INDIVIDUAL.id,
             "1234567890",
+            "",
             true
         )
     }

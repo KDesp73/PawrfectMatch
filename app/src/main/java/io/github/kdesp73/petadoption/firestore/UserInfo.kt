@@ -9,9 +9,28 @@ data class UserInfo(
     val phone: String = "",
     val location: String = "",
     val gender: String = Gender.OTHER.label,
-    val profileType: Int
+    val profileType: Int,
+    var imageUrl: String?
 ){
-    fun toMap(): HashMap<String, Any> {
+    constructor(
+        email: String,
+        firstName: String,
+        lastName: String,
+        phone: String = "",
+        location: String = "",
+        gender: String = Gender.OTHER.label,
+        profileType: Int,
+    ): this (
+        email,
+        firstName,
+        lastName,
+        phone,
+        location,
+        gender,
+        profileType,
+        null
+    )
+    fun toMap(): HashMap<String, Any?> {
         return hashMapOf(
             "email" to this.email,
             "firstName" to this.firstName,
@@ -19,7 +38,8 @@ data class UserInfo(
             "phone" to this.phone,
             "location" to this.location,
             "gender" to this.gender,
-            "profileType" to this.profileType
+            "profileType" to this.profileType,
+            "imageUrl" to this.imageUrl
         )
     }
 

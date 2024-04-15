@@ -46,7 +46,8 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
                 verticalArrangement = Arrangement.spacedBy(10.dp)
 
             ){
-                AccountPreview(pic = R.drawable.profile_pic_placeholder, user = user, navController = navController)
+                userDao?.let { Log.d(TAG, it.getImageUrl() ?: "") }
+                AccountPreview(user = user, navController = navController)
 
                 if(user?.loggedIn == true) {
                     Row(

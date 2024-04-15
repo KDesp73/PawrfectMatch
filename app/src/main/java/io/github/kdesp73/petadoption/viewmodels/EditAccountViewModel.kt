@@ -1,5 +1,6 @@
 package io.github.kdesp73.petadoption.viewmodels
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import io.github.kdesp73.petadoption.ERR_WHITESPACE
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class EditAccountViewModel : ViewModel(){
+    var imageState = MutableStateFlow<Uri?>(null)
     var fnameState = MutableStateFlow("")
     var lnameState = MutableStateFlow("")
     var phoneState = MutableStateFlow("")
@@ -20,6 +22,7 @@ class EditAccountViewModel : ViewModel(){
     var profileTypeState = MutableStateFlow(1)
 
     fun reset(){
+        imageState.value = null
         fnameState.value = ""
         lnameState.value = ""
         phoneState.value = ""
@@ -41,6 +44,7 @@ class EditAccountViewModel : ViewModel(){
     }
 
     fun log(TAG: String){
+        Log.d(TAG, "image: ${imageState.value}")
         Log.d(TAG, "fname: ${fnameState.value}")
         Log.d(TAG, "lname: ${lnameState.value}")
         Log.d(TAG, "phone: ${phoneState.value}")

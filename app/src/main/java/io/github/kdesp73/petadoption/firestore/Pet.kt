@@ -16,7 +16,8 @@ data class Pet (
     var location: String = "Tatooine",
     var type: String = PetType.DOG.label,
     var size: String = PetSize.LARGE.label,
-    var ownerEmail: String
+    var ownerEmail: String,
+    var imageUrl: String
 ){
     fun generateId(): String {
         return hash(
@@ -58,7 +59,7 @@ data class Pet (
         type = type,
         size = size,
         ownerEmail = ownerEmail,
-
+        imageUrl = ""
     )
 
     constructor(documentSnapshot: DocumentSnapshot) : this(
@@ -78,5 +79,6 @@ data class Pet (
         type = documentSnapshot["type"].toString(),
         size = documentSnapshot["size"].toString(),
         ownerEmail = documentSnapshot["ownerEmail"].toString(),
+        imageUrl = documentSnapshot["imageUrl"].toString()
     )
 }
