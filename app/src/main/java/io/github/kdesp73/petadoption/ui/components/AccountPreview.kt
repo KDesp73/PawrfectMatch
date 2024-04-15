@@ -40,7 +40,7 @@ fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){
             .fillMaxWidth()
             .height(containerHeight)
             .clickable(onClick = {
-                navController?.navigate(if (user == null || !user.loggedIn) Route.SignIn.route else Route.EditAccount.route) {
+                navController?.navigate(if (user == null || !user.loggedIn) Route.SignIn.route else Route.AccountSettings.route) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }

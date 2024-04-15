@@ -21,10 +21,10 @@ import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalUser
 import io.github.kdesp73.petadoption.routes.About
 import io.github.kdesp73.petadoption.routes.Account
+import io.github.kdesp73.petadoption.routes.AccountSettings
 import io.github.kdesp73.petadoption.routes.AddPet
 import io.github.kdesp73.petadoption.routes.AddToy
 import io.github.kdesp73.petadoption.routes.CreateAccount
-import io.github.kdesp73.petadoption.routes.EditAccount
 import io.github.kdesp73.petadoption.routes.Favourites
 import io.github.kdesp73.petadoption.routes.Home
 import io.github.kdesp73.petadoption.routes.Login
@@ -99,7 +99,7 @@ class MainActivity : ComponentActivity() {
                             roomDatabase = room
                         )
                     }
-                    composable(Route.EditAccount.route) { EditAccount(navController, room) }
+                    composable(Route.AccountSettings.route) { AccountSettings(navController, room) }
                     composable(Route.SignIn.route) { SignIn(navController) }
                     composable(Route.AddPet.route) { AddPet() }
                     composable(Route.AddToy.route) { AddToy() }

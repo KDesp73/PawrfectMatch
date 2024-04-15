@@ -8,7 +8,7 @@ sealed class Route (val label: String, val route: String, @StringRes val resId: 
     object Account : Route("Account", route = "account", resId = R.string.ACCOUNT)
     object AddPet : Route("Add Pet", route = "add_pet", resId = R.string.ADD_PET)
     object AddToy : Route("Add Toy", route = "add_toy", resId = R.string.ADD_TOY)
-    object EditAccount : Route("Edit Account", route = "edit_account", resId = R.string.EDIT_ACCOUNT)
+    object AccountSettings: Route("Account Settings", route = "account_settings", resId = R.string.ACCOUNT_SETTINGS)
     object Favourites : Route("Favourites", "favourites", resId = R.string.FAVOURITES)
     object Search : Route("Search", route = "search", resId = R.string.SEARCH)
     object Settings : Route("Settings", route = "settings", resId = R.string.SETTINGS)

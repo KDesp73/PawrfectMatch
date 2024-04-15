@@ -23,9 +23,9 @@ import io.github.kdesp73.petadoption.enums.CustomAlignment
 @Composable
 fun VerticalScaffold(
     modifier: Modifier = Modifier,
-    top: @Composable () -> Unit,
-    bottom: @Composable () -> Unit,
-    center: @Composable () -> Unit,
+    top: @Composable () -> Unit = {},
+    bottom: @Composable () -> Unit = {},
+    center: @Composable () -> Unit = {},
     topAlignment: CustomAlignment = CustomAlignment.CENTER,
     centerAlignment: CustomAlignment = CustomAlignment.CENTER,
     bottomAlignment: CustomAlignment = CustomAlignment.CENTER,

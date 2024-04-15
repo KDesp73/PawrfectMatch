@@ -5,7 +5,7 @@
     <string name="ACCOUNT">Account</string> 
     <string name="ADD_PET">Add_pet</string> 
     <string name="ADD_TOY">Add_toy</string> 
-    <string name="EDIT_ACCOUNT">Edit_account</string> 
+    <string name="ACCOUNT_SETTINGS">Account_settings</string>
     <string name="FAVOURITES">Favourites</string> 
     <string name="SEARCH">Search</string> 
     <string name="SETTINGS">Settings</string> 
