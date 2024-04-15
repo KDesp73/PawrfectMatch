@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import io.github.kdesp73.petadoption.enums.Orientation
 import io.github.kdesp73.petadoption.enums.TextFieldType
 import io.github.kdesp73.petadoption.firestore.UserInfo
 import io.github.kdesp73.petadoption.firestore.UserManager
+import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalUser
 import io.github.kdesp73.petadoption.ui.components.CircularIconButton
@@ -58,7 +60,8 @@ private const val TAG = "AccountSettings"
 fun AccountSettings(navController: NavController, room: AppDatabase) {
     val userDao = room.userDao()
     val user = userDao.getUsers()[0]
-    val notificationService = NotificationService(LocalContext.current)
+    val context = LocalContext.current
+    val notificationService = NotificationService(context)
 
     val scrollState = rememberScrollState()
 
@@ -126,7 +129,6 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                 orientation = Orientation.HORIZONTAL,
                 width = null
             )
-            Spacer(modifier = Modifier.height(10.dp))
 
             CircularIconButton(
                 icon = Icons.Filled.Check,
@@ -136,7 +138,6 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
             ) {
                 viewModel.log(TAG)
 
-                // TODO: validate fields
 
                 val manager = UserManager()
                 val updatedUserInfo = UserInfo(
@@ -149,29 +150,34 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                     profileType = 1
                 )
 
-                manager.updateInfo(updatedUserInfo){ completed ->
-                    if(completed){
-                        Log.i(TAG, "Updated user info")
-                    } else {
-                        Log.i(TAG, "Failed to update user info")
+                if(viewModel.validate().isSuccess) {
+                    manager.updateInfo(updatedUserInfo){ completed ->
+                        if(completed){
+                            Log.i(TAG, "Updated user info")
+                        } else {
+                            Log.i(TAG, "Failed to update user info")
+                        }
                     }
+                    userDao.update(LocalUser(info = updatedUserInfo))
+
+                    notificationService.showBasicNotification(
+                        R.string.MAIN.toString(),
+                        "Success",
+                        "Account Information Updated Successfully",
+                        NotificationManager.IMPORTANCE_HIGH
+                    )
+
+                    navigateTo(Route.Account.route, navController)
+                } else {
+                    Toast.makeText(context, viewModel.validate().exceptionOrNull()?.message, Toast.LENGTH_SHORT).show()
                 }
-                userDao.update(LocalUser(info = updatedUserInfo))
-
-                notificationService.showBasicNotification(
-                    R.string.MAIN.toString(),
-                    "Success",
-                    "Account Information Updated Successfully",
-                    NotificationManager.IMPORTANCE_HIGH
-                )
-
             }
         }
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ){
-            Spacer(modifier = Modifier.height(150.dp))
+            Spacer(modifier = Modifier.height(50.dp))
             CustomButton (
                 modifier = Modifier
                     .width(200.dp)

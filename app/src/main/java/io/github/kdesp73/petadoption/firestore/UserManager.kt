@@ -97,14 +97,37 @@ class UserManager {
     }
 
     fun updateInfo(info: UserInfo, onComplete: (Boolean) -> Unit){
-        db.collection("UserInfo")
-            .document()
-            .update(info.toMap())
-            .addOnSuccessListener {
-                onComplete(true)
+        getUserInfoDocumentId(info.email){ id ->
+            if(id != null)
+                db.collection("UserInfo")
+                    .document(id)
+                    .update(info.toMap())
+                    .addOnSuccessListener {
+                        onComplete(true)
+                    }
+                    .addOnFailureListener {
+                        onComplete(false)
+                    }
+        }
+    }
+
+    fun getUserDocumentId(email: String, onComplete: (String?) -> Unit){
+        db.collection("Users").whereEqualTo("email", email).get()
+            .addOnSuccessListener { snapshot ->
+                if(snapshot.documents.isEmpty()) onComplete(null)
+                else {
+                    onComplete(snapshot.documents[0].id)
+                }
             }
-            .addOnFailureListener {
-                onComplete(false)
+    }
+
+    fun getUserInfoDocumentId(email: String, onComplete: (String?) -> Unit){
+        db.collection("UserInfo").whereEqualTo("email", email).get()
+            .addOnSuccessListener { snapshot ->
+                if(snapshot.documents.isEmpty()) onComplete(null)
+                else {
+                    onComplete(snapshot.documents[0].id)
+                }
             }
     }
 }

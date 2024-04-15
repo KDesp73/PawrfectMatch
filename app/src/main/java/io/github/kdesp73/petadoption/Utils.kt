@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import coil.compose.AsyncImage
 import com.google.firebase.firestore.FirebaseFirestore
 import io.github.kdesp73.petadoption.room.AppDatabase
@@ -47,10 +49,20 @@ fun validatePassword(pwd: String) = runCatching {
     require(pwd.any { !it.isLetterOrDigit() }) { ERR_SPECIAL }
 }
 
-fun hash(pass: String): String {
-    val bytes = pass.toByteArray()
+fun hash(str: String): String {
+    val bytes = str.toByteArray()
     val md = MessageDigest.getInstance("SHA-256")
     val digest = md.digest(bytes)
-    return digest.fold("") { str, it -> str + "%02x".format(it) }
+    return digest.fold("") { s, it -> s + "%02x".format(it) }
+}
+
+fun navigateTo(route: String, navController: NavController){
+    navController.navigate(route) {
+        popUpTo(navController.graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }
 
