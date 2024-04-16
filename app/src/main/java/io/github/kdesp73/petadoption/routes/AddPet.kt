@@ -3,7 +3,6 @@ package io.github.kdesp73.petadoption.routes
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager
-import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -21,21 +20,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
+import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.Orientation
 import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
 import io.github.kdesp73.petadoption.enums.PetType
 import io.github.kdesp73.petadoption.enums.TextFieldType
+import io.github.kdesp73.petadoption.enums.genderFromLabel
+import io.github.kdesp73.petadoption.enums.petAgeFromLabel
+import io.github.kdesp73.petadoption.enums.petSizeFromLabel
+import io.github.kdesp73.petadoption.enums.petTypeFromLabel
 import io.github.kdesp73.petadoption.firestore.ImageManager
 import io.github.kdesp73.petadoption.firestore.Pet
 import io.github.kdesp73.petadoption.firestore.PetManager
+import io.github.kdesp73.petadoption.navigateTo
+import io.github.kdesp73.petadoption.resToString
 import io.github.kdesp73.petadoption.room.AppDatabase
+import io.github.kdesp73.petadoption.room.LocalPet
 import io.github.kdesp73.petadoption.ui.components.CircularIconButton
 import io.github.kdesp73.petadoption.ui.components.CircularImage
 import io.github.kdesp73.petadoption.ui.components.Dropdown
@@ -48,7 +57,7 @@ private const val TAG = "AddPet"
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun AddPet(room: AppDatabase?){
+fun AddPet(navController: NavController?, room: AppDatabase?){
     val scrollState = rememberScrollState()
     val viewModel = AddPetViewModel()
     val petManager = PetManager()
@@ -80,7 +89,7 @@ fun AddPet(room: AppDatabase?){
         Row {
             Dropdown(
                 state = viewModel.typeState,
-                title = "Type",
+                title = stringResource(R.string.type),
                 items = listOf(
                     PetType.DOG.label,
                     PetType.CAT.label,
@@ -92,7 +101,7 @@ fun AddPet(room: AppDatabase?){
             )
             Dropdown(
                 state = viewModel.ageState,
-                title = "Age",
+                title = stringResource(R.string.age),
                 items = listOf(
                     PetAge.BABY.label,
                     PetAge.YOUNG.label,
@@ -103,11 +112,12 @@ fun AddPet(room: AppDatabase?){
         }
         Dropdown(
             state = viewModel.sizeState,
-            title = "Size",
+            title = stringResource(R.string.size),
             items = listOf(
                 PetSize.SMALL.label,
                 PetSize.MEDIUM.label,
-                PetSize.LARGE.label
+                PetSize.LARGE.label,
+                PetSize.XLARGE.label
             )
         )
 
@@ -123,12 +133,15 @@ fun AddPet(room: AppDatabase?){
 
             val check = viewModel.validate()
             if(check.isSuccess){
+                if (navController != null) {
+                    navigateTo(Route.Home.route, navController)
+                }
                 val newPet = Pet(
                     name = viewModel.nameState.value,
-                    age = viewModel.ageState.value,
-                    type = viewModel.typeState.value,
-                    gender = viewModel.genderState.value,
-                    size = viewModel.sizeState.value,
+                    age = petAgeFromLabel[viewModel.ageState.value]?.value ?: PetAge.BABY.value,
+                    type = petTypeFromLabel[viewModel.typeState.value]?.value ?: PetType.DOG.value,
+                    gender = genderFromLabel[viewModel.genderState.value]?.value ?: Gender.OTHER.value,
+                    size = petSizeFromLabel[viewModel.sizeState.value]?.value ?: PetSize.SMALL.value,
                     location = userDao?.getUser()?.location ?: "",
                     ownerEmail = userDao?.getEmail() ?: ""
                 )
@@ -145,29 +158,30 @@ fun AddPet(room: AppDatabase?){
                     if(added){
                         Log.i(TAG, "Your pet is added to the database")
                         notificationService.showExpandableImageNotification(
-                            R.string.MAIN.toString(),
-                            "Success",
-                            "${viewModel.nameState.value} added!",
+                            resToString( R.string.notif_channel_main),
+                            resToString(R.string.success),
+                            context.getString(R.string.added, viewModel.nameState.value),
                             imageUri = viewModel.imageState.value,
                             NotificationManager.IMPORTANCE_HIGH
                         )
                     } else {
                         Log.i(TAG, "Failed to add pet")
-                        Toast.makeText(context, "Pet already exists", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context,
+                            context.getString(R.string.pet_already_exists), Toast.LENGTH_LONG).show()
                     }
                 }
+
+                room?.petDao()?.insert(LocalPet(newPet))
+
             } else {
                 Toast.makeText(context, check.exceptionOrNull()?.message, Toast.LENGTH_LONG).show()
             }
-
-
         }
-
     }
 }
 
 @Preview
 @Composable
 fun AddPetPreview(){
-    AddPet(null)
+    AddPet(null, null)
 }

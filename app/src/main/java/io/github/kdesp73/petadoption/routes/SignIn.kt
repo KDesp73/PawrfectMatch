@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -101,14 +102,14 @@ fun SignIn(navController: NavController?){
             {
                 Text(
                     modifier = textModifier,
-                    text = "Create an Account using",
+                    text = stringResource(R.string.create_an_account_using),
                     fontSize = 5.em
                 )
                 AuthActionButton(
                     textModifier = textModifier,
                     iconButtonModifier = iconButtonModifier,
-                    contentDesciption = "Sign Up with Google",
-                    label = "Google",
+                    contentDesciption = stringResource(R.string.sign_up_with_google),
+                    label = stringResource(R.string.google),
                     painterRes = R.drawable.google
                 ) {
                     // TODO: Sign Up with google action
@@ -116,8 +117,8 @@ fun SignIn(navController: NavController?){
                 AuthActionButton(
                     textModifier = textModifier,
                     iconButtonModifier = iconButtonModifier,
-                    contentDesciption = "Sign Up with Email",
-                    label = "Email",
+                    contentDesciption = stringResource(R.string.sign_up_with_email),
+                    label = stringResource(id = R.string.email),
                     icon = Icons.Filled.Email
                 ) {
                     navController?.navigate(Route.CreateAccount.route) {
@@ -135,14 +136,14 @@ fun SignIn(navController: NavController?){
             {
                 Text(
                     modifier = textModifier,
-                    text = "Log In using",
+                    text = stringResource(R.string.log_in_using),
                     fontSize = 5.em
                 )
                 AuthActionButton(
                     textModifier = textModifier,
                     iconButtonModifier = iconButtonModifier,
-                    contentDesciption = "Log In with Google",
-                    label = "Google",
+                    contentDesciption = stringResource(R.string.log_in_with_google),
+                    label = stringResource(id = R.string.google),
                     painterRes = R.drawable.google
                 ) {
                     // TODO: Log in with google action
@@ -150,8 +151,8 @@ fun SignIn(navController: NavController?){
                 AuthActionButton(
                     textModifier = textModifier,
                     iconButtonModifier = iconButtonModifier,
-                    contentDesciption = "Log In with Email",
-                    label = "Email",
+                    contentDesciption = stringResource(R.string.log_in_with_email),
+                    label = stringResource(id = R.string.email),
                     icon = Icons.Filled.Email
                 ) {
                     navController?.navigate(Route.Login.route) {

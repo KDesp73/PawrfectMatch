@@ -1,28 +1,19 @@
 package io.github.kdesp73.petadoption
 
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.dp
+import android.app.LocaleManager
+import android.content.res.Configuration
+import android.content.res.Resources
+import android.os.Build
+import android.os.LocaleList
+import android.preference.PreferenceManager
+import android.view.ContextThemeWrapper
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import coil.compose.AsyncImage
-import com.google.firebase.firestore.FirebaseFirestore
-import io.github.kdesp73.petadoption.room.AppDatabase
-import kotlinx.coroutines.flow.MutableStateFlow
+import io.github.kdesp73.petadoption.enums.locales
 import java.security.MessageDigest
+import java.util.Locale
 
 fun checkName(name: String): Boolean {
     return name.all { it.isLetter() } && name.isNotBlank() && name.isNotEmpty()
@@ -33,12 +24,12 @@ fun checkEmail(email: String): Boolean {
     return email.matches(emailRegex.toRegex())
 }
 
-const val ERR_LEN = "Password must have at least eight characters!"
-const val ERR_WHITESPACE = "Password must not contain whitespace!"
-const val ERR_DIGIT = "Password must contain at least one digit!"
-const val ERR_LOWER = "Password must have at least one lowercase letter!"
-const val ERR_UPPER = "Password must have at least one uppercase letter!"
-const val ERR_SPECIAL = "Password must have at least one special character, such as: _%-=+#@"
+val ERR_LEN = resToString(R.string.password_must_have_at_least_eight_characters)
+val ERR_WHITESPACE = resToString(R.string.password_must_not_contain_whitespace)
+val ERR_DIGIT = resToString(R.string.password_must_contain_at_least_one_digit)
+val ERR_LOWER = resToString(R.string.password_must_have_at_least_one_lowercase_letter)
+val ERR_UPPER = resToString(R.string.password_must_have_at_least_one_uppercase_letter)
+val ERR_SPECIAL = resToString(R.string.password_must_have_at_least_one_special_character_such_as)
 
 fun validatePassword(pwd: String) = runCatching {
     require(pwd.length >= 8) { ERR_LEN }
@@ -66,3 +57,23 @@ fun navigateTo(route: String, navController: NavController){
     }
 }
 
+fun resToString(res: Int) : String {
+    return MainActivity.appContext.getString(res)
+}
+
+fun getLocales() : LocaleList? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        MainActivity.appContext.getSystemService(LocaleManager::class.java).applicationLocales
+    } else {
+        null
+    }
+}
+
+fun changeLocale(locale: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        MainActivity.appContext.getSystemService(LocaleManager::class.java)
+            .applicationLocales = LocaleList.forLanguageTags(locale)
+    } else {
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(locale))
+    }
+}

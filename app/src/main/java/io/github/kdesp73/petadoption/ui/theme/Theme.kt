@@ -29,9 +29,9 @@ fun PetAdoptionTheme(
             if (darkColorScheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        theme == ThemeName.DARK.label -> Theme.Dark.colors
-        theme == ThemeName.LIGHT.label -> Theme.Light.colors
-        theme == ThemeName.AUTO.label -> {
+        theme == ThemeName.DARK.value -> Theme.Dark.colors
+        theme == ThemeName.LIGHT.value -> Theme.Light.colors
+        theme == ThemeName.AUTO.value -> {
             if (darkColorScheme){
                 Theme.Dark.colors
             } else {

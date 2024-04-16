@@ -12,17 +12,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import io.github.kdesp73.petadoption.R
 
 @Composable
 fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit) {
-    val initialText = "By continuing you accept our "
-    val privacyPolicyText = "Privacy Policy"
-    val andText = " and "
-    val termsAndConditionsText = "Terms of Use"
+    val initialText = stringResource(R.string.by_continuing_you_accept_our)
+    val privacyPolicyText = stringResource(R.string.privacy_policy)
+    val andText = stringResource(R.string.and)
+    val termsAndConditionsText = stringResource(R.string.terms_of_use)
 
     val annotatedString = buildAnnotatedString {
         append(initialText)

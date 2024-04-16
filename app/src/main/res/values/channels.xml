@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="DEBUG">debug</string>
-    <string name="MAIN">main</string>
+    <string name="notif_channel_debug" translatable="false">debug</string>
+    <string name="notif_channel_main" translatable="false">main</string>
 </resources>

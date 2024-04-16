@@ -13,6 +13,12 @@ android {
     namespace = "io.github.kdesp73.petadoption"
     compileSdk = 34
 
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
     defaultConfig {
         applicationId = "io.github.kdesp73.petadoption"
         minSdk = 24
@@ -65,6 +71,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.6.1")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     implementation("com.google.mlkit:common:18.10.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
 
 
     /**  ROOM API  */

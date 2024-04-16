@@ -1,20 +1,17 @@
 TODO: Search using filters
 TODO: Home Page
 TODO: Drawer Content
-TODO: Location Selector
-TODO: Distance Calculator
 TODO: Toy Exchange
 TODO: Landscape orientation features
 TODO: Full Pet Page
 TODO: Dog Breeds
 TODO: Switch Languages
-TODO: Take picture from inside the app
-TODO: Select picture from device
-TODO: Refactor strings to xml file
 TODO: PetPreview Component
 TODO: Add more settings
 TODO: Better (cleaner) UI
 TODO: get image from firebase storage
+TODO: Have only a token as LocalUser
+TODO: better navigation method
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -40,3 +37,6 @@ DONE: Edit profile information
 DONE: upload images to firebase
 DONE: Add Pet
 DONE: Change password
+DONE: Refactor strings to xml file
+DONE: Select picture from device
+DONE: Change Language automatically

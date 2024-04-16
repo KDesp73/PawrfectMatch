@@ -80,7 +80,7 @@ fun CreateAccount(navController: NavController?){
                 CheckboxComponent(
                     value = "",
                     onTextSelected = { clicked ->
-                        notificationService.showBasicNotification(channel = R.string.MAIN.toString(), title = "Clicked", content = "$clicked got clicked",
+                        notificationService.showBasicNotification(channel = R.string.notif_channel_main.toString(), title = "Clicked", content = "$clicked got clicked",
                             importance = NotificationManager.IMPORTANCE_HIGH
                         )
                     },
@@ -129,7 +129,7 @@ fun CreateAccount(navController: NavController?){
 
                             val userManager = UserManager()
                             userManager.addUser(newUser){ success, message ->
-                                notificationService.showBasicNotification(R.string.MAIN.toString(), if(success) "Success" else "Failure", message, NotificationManager.IMPORTANCE_HIGH)
+                                notificationService.showBasicNotification(R.string.notif_channel_main.toString(), if(success) "Success" else "Failure", message, NotificationManager.IMPORTANCE_HIGH)
 
                                 if(success){
                                     navController?.navigate(Route.Login.route+ "?email=${newUser.email}")

@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
@@ -67,11 +68,11 @@ fun Login(navController: NavController, email: String, roomDatabase: AppDatabase
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(fontSize = 6.em, text = "Log In")
+                Text(fontSize = 6.em, text = stringResource(R.string.log_in))
                 Spacer(modifier = Modifier.height(20.dp))
 
-                EmailFieldComponent(viewModel.emailState, labelValue = "Email", icon = Icons.Filled.Email, type = TextFieldType.OUTLINED)
-                PasswordTextFieldComponent(viewModel.passwordState, labelValue = "Password", icon = Icons.Filled.Lock, type = TextFieldType.OUTLINED)
+                EmailFieldComponent(viewModel.emailState, labelValue = stringResource(R.string.email), icon = Icons.Filled.Email, type = TextFieldType.OUTLINED)
+                PasswordTextFieldComponent(viewModel.passwordState, labelValue = stringResource(R.string.password), icon = Icons.Filled.Lock, type = TextFieldType.OUTLINED)
 
                 Spacer(modifier = Modifier.height(30.dp))
                 ElevatedButton(
@@ -89,7 +90,12 @@ fun Login(navController: NavController, email: String, roomDatabase: AppDatabase
 
                                         userDao.insert(LocalUser(user = users[0], loggedIn = true))
 
-                                        notificationService.showBasicNotification(R.string.MAIN.toString(), "Success", "You are logged in", NotificationManager.IMPORTANCE_HIGH)
+                                        notificationService.showBasicNotification(
+                                            context.getString(R.string.notif_channel_main),
+                                            context.getString(R.string.success),
+                                            context.getString(R.string.you_are_logged_in),
+                                            NotificationManager.IMPORTANCE_HIGH
+                                        )
 
                                         navController.navigate(Route.Account.route) {
                                             popUpTo(navController.graph.findStartDestination().id) {
@@ -100,18 +106,29 @@ fun Login(navController: NavController, email: String, roomDatabase: AppDatabase
                                         }
                                         viewModel.reset()
                                     } else {
-                                        Toast.makeText(context, "Incorrect Password", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.incorrect_password),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                         viewModel.reset()
                                     }
                                 } else {
                                     Log.e(TAG, "There is no one with this email in the cloud db")
-                                    Toast.makeText(context, "There is no account using this email", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.there_is_no_account_using_this_email),
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                     viewModel.reset()
                                 }
                             }
 
                         } else {
-                            Toast.makeText(context, "Invalid Email", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.invalid_email), Toast.LENGTH_SHORT
+                            ).show()
                             viewModel.reset()
                         }
                     }
@@ -121,12 +138,10 @@ fun Login(navController: NavController, email: String, roomDatabase: AppDatabase
                         verticalAlignment = Alignment.CenterVertically
                     ){
                         Icon(imageVector = Icons.Filled.Check, contentDescription = "Submit")
-                        Text(text = "Submit")
+                        Text(text = stringResource(id = R.string.submit))
                     }
                 }
             }
-
         }
     }
-
 }

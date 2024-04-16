@@ -10,6 +10,8 @@ import io.github.kdesp73.petadoption.ERR_LOWER
 import io.github.kdesp73.petadoption.ERR_SPECIAL
 import io.github.kdesp73.petadoption.ERR_UPPER
 import io.github.kdesp73.petadoption.ERR_WHITESPACE
+import io.github.kdesp73.petadoption.R
+import io.github.kdesp73.petadoption.resToString
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class EditAccountViewModel : ViewModel(){
@@ -32,15 +34,15 @@ class EditAccountViewModel : ViewModel(){
     }
 
     private fun validateName(name: String) = runCatching {
-        require(name.isNotBlank() && name.isNotEmpty()) { "cannot be empty" }
-        require(name.all { it.isLetter() }) { "cannot contain special characters or numbers" }
+        require(name.isNotBlank() && name.isNotEmpty()) { resToString(R.string.cannot_be_empty) }
+        require(name.all { it.isLetter() }) { resToString(R.string.cannot_contain_special_characters_or_numbers) }
     }
 
     fun validate() = runCatching {
         val checkFirstName = validateName(fnameState.value)
         val checkLastName = validateName(lnameState.value)
-        require(checkFirstName.isSuccess) { "First Name " + checkFirstName.exceptionOrNull()?.message }
-        require(checkLastName.isSuccess) { "Last Name " + checkLastName.exceptionOrNull()?.message }
+        require(checkFirstName.isSuccess) { "${resToString(R.string.first_name)} ${checkFirstName.exceptionOrNull()?.message}" }
+        require(checkLastName.isSuccess) { "${resToString(R.string.last_name)} ${checkLastName.exceptionOrNull()?.message}" }
     }
 
     fun log(TAG: String){

@@ -1,8 +1,6 @@
 package io.github.kdesp73.petadoption.routes
 
 import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
@@ -25,7 +23,7 @@ fun Home() {
         Text(text = "Welcome Home")
         Button(onClick = {
             notificationService.showExpandableTextNotification(
-                channel = R.string.MAIN.toString(),
+                channel = R.string.notif_channel_main.toString(),
                 title = "Expandable Text Notification Test",
                 content = "Hello",
                 expandedText = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",

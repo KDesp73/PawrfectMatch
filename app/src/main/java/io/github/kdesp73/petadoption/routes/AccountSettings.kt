@@ -2,7 +2,6 @@ package io.github.kdesp73.petadoption.routes
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager
-import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -28,9 +27,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
@@ -38,6 +37,8 @@ import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.Orientation
 import io.github.kdesp73.petadoption.enums.TextFieldType
+import io.github.kdesp73.petadoption.enums.genderFromLabel
+import io.github.kdesp73.petadoption.enums.genderFromValue
 import io.github.kdesp73.petadoption.firestore.ImageManager
 import io.github.kdesp73.petadoption.firestore.UserInfo
 import io.github.kdesp73.petadoption.firestore.UserManager
@@ -52,8 +53,6 @@ import io.github.kdesp73.petadoption.ui.components.OptionPicker
 import io.github.kdesp73.petadoption.ui.components.SelectImage
 import io.github.kdesp73.petadoption.ui.components.TextFieldComponent
 import io.github.kdesp73.petadoption.viewmodels.EditAccountViewModel
-import javax.security.auth.Destroyable
-import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
 
 private const val TAG = "AccountSettings"
 
@@ -72,7 +71,7 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
     viewModel.fnameState.value = user.firstName
     viewModel.lnameState.value = user.lastName
     viewModel.phoneState.value = user.phone
-    viewModel.genderState.value = user.gender
+    viewModel.genderState.value = genderFromValue[user.gender]?.label ?: Gender.OTHER.label
     viewModel.locationState.value = user.location
 
     Column(
@@ -101,28 +100,28 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
             Spacer(modifier = Modifier.height(15.dp))
             TextFieldComponent(
                 state = viewModel.fnameState,
-                labelValue = "First Name",
+                labelValue = stringResource(R.string.first_name),
                 icon = Icons.Filled.AccountCircle,
                 type = TextFieldType.OUTLINED
             )
             Spacer(modifier = Modifier.height(15.dp))
             TextFieldComponent(
                 state = viewModel.lnameState,
-                labelValue = "Last Name",
+                labelValue = stringResource(R.string.last_name),
                 icon = Icons.Filled.AccountCircle,
                 type = TextFieldType.OUTLINED
             )
             Spacer(modifier = Modifier.height(15.dp))
             TextFieldComponent(
                 state = viewModel.locationState,
-                labelValue = "Location",
+                labelValue = stringResource(R.string.location),
                 icon = Icons.Filled.LocationOn,
                 type = TextFieldType.OUTLINED
             )
             Spacer(modifier = Modifier.height(15.dp))
             NumberFieldComponent(
                 state = viewModel.phoneState,
-                labelValue = "Phone",
+                labelValue = stringResource(R.string.phone),
                 icon = Icons.Filled.Phone,
                 type = TextFieldType.OUTLINED
             )
@@ -136,12 +135,11 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
 
             CircularIconButton(
                 icon = Icons.Filled.Check,
-                description = "Add Pet",
+                description = "Apply",
                 bg = MaterialTheme.colorScheme.surface,
                 size = 60.dp
             ) {
                 viewModel.log(TAG)
-
 
                 val manager = UserManager()
                 val updatedUserInfo = UserInfo(
@@ -150,7 +148,7 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                     lastName = viewModel.lnameState.value,
                     phone = viewModel.phoneState.value,
                     location = viewModel.locationState.value,
-                    gender = viewModel.genderState.value,
+                    gender = genderFromLabel[viewModel.genderState.value]?.value ?: Gender.OTHER.value,
                     profileType = 1,
                 )
 
@@ -172,9 +170,9 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                     userDao.update(LocalUser(info = updatedUserInfo))
 
                     notificationService.showBasicNotification(
-                        R.string.MAIN.toString(),
-                        "Success",
-                        "Account Information Updated Successfully",
+                        context.getString(R.string.notif_channel_main),
+                        context.getString(R.string.success),
+                        context.getString(R.string.account_information_updated_successfully),
                         NotificationManager.IMPORTANCE_HIGH
                     )
 
@@ -193,7 +191,7 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                 modifier = Modifier
                     .width(200.dp)
                     .padding(4.dp),
-                text = "Change Password",
+                text = stringResource(R.string.change_password),
                 icon = Icons.Filled.Refresh
             ){
                 navigateTo(Route.ChangePassword.route, navController)
@@ -202,7 +200,7 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                 modifier = Modifier
                     .width(200.dp)
                     .padding(4.dp),
-                text = "Log Out",
+                text = stringResource(R.string.log_out),
                 icon = Icons.AutoMirrored.Filled.ExitToApp
             ) {
                 userDao.insert(LocalUser()) // Log out

@@ -3,15 +3,17 @@ package io.github.kdesp73.petadoption.firestore
 import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import io.github.kdesp73.petadoption.R
+import io.github.kdesp73.petadoption.resToString
 
 class UserManager {
     private val TAG = "UserManagement"
     private val db = FirebaseFirestore.getInstance()
 
     public enum class StatusMessage(val message: String) {
-        ERRO_USER_EXISTS("User already exists"),
-        ERRO_FAILED_DOC_CREATION("Error adding document"),
-        SUCC_CREATED_USER("User created successfully")
+        ERRO_USER_EXISTS(resToString(R.string.err_user_already_exists)),
+        ERRO_FAILED_DOC_CREATION(resToString(R.string.err_error_adding_document)),
+        SUCC_CREATED_USER(resToString(R.string.err_user_created_successfully))
     }
 
     fun checkUserExists(email: String, onComplete: (Boolean) -> Unit) {

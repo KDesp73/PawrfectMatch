@@ -2,8 +2,10 @@ package io.github.kdesp73.petadoption.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.firestore.UserManager
 import io.github.kdesp73.petadoption.hash
+import io.github.kdesp73.petadoption.resToString
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.validatePassword
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,9 +23,9 @@ class ChangePasswordViewModel : ViewModel() {
         val checkNewPassword = validatePassword(newPasswordState.value)
 
         require(checkOldPassword.isSuccess) { checkOldPassword.exceptionOrNull()?.message ?: "" }
-        require(oldPasswordState.value == confirmOldPasswordState.value) { "Old Password was not confirmed" }
+        require(oldPasswordState.value == confirmOldPasswordState.value) { resToString(R.string.old_password_was_not_confirmed) }
         require(checkNewPassword.isSuccess) { checkNewPassword.exceptionOrNull()?.message ?: "" }
-        require(newPasswordState.value == confirmNewPasswordState.value) { "New Password was not confirmed" }
+        require(newPasswordState.value == confirmNewPasswordState.value) { resToString(R.string.new_password_was_not_confirmed) }
     }
 
     fun log(TAG: String){
