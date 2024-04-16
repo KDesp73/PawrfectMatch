@@ -4,13 +4,10 @@ TODO: Drawer Content
 TODO: Toy Exchange
 TODO: Landscape orientation features
 TODO: Full Pet Page
-TODO: Dog Breeds
 TODO: Switch Languages
 TODO: PetPreview Component
-TODO: Add more settings
 TODO: Better (cleaner) UI
 TODO: get image from firebase storage
-TODO: Have only a token as LocalUser
 TODO: better navigation method
 DONE: Notifications
 DONE: AccountPreview Component

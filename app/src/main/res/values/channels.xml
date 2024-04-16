@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="notif_channel_debug" translatable="false">debug</string>
-    <string name="notif_channel_main" translatable="false">main</string>
-</resources>

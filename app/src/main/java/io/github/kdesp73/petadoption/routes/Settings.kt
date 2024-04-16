@@ -81,7 +81,7 @@ fun Settings(room: AppDatabase?){
                 icon = Icons.Filled.Check
             ){
                 viewModel.log(TAG)
-                Log.d(TAG, locales[viewModel.language.value] ?: "null")
+                Log.d(TAG, "Selected locale: ${locales[viewModel.language.value] ?: "null"}")
                 Log.d(TAG, "Current locale: ${LocaleManager.getLocale()}")
 
                 if(settingsDao?.getLanguage() != viewModel.language.value){

@@ -98,4 +98,6 @@
     <string name="route_create_account">Create Account</string>
     <string name="route_login">Login</string>
     <string name="route_change_password">Change Password</string>
+    <string name="notif_channel_debug" translatable="false">debug</string>
+    <string name="notif_channel_main" translatable="false">main</string>
 </resources>
