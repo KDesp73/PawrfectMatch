@@ -35,6 +35,7 @@ import io.github.kdesp73.petadoption.routes.CreateAccount
 import io.github.kdesp73.petadoption.routes.Favourites
 import io.github.kdesp73.petadoption.routes.Home
 import io.github.kdesp73.petadoption.routes.Login
+import io.github.kdesp73.petadoption.routes.MyPets
 import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.Settings
 import io.github.kdesp73.petadoption.routes.SignIn
@@ -106,7 +107,7 @@ class MainActivity : ComponentActivity() {
             Layout(topAppBarText = stringResource(id = R.string.app_name), navController = navController, room) {
                 NavHost(navController, startDestination = Route.Home.route) {
                     composable(Route.Home.route) { Home() }
-                    composable(Route.Search.route) { Search() }
+                    composable(Route.Search.route) { Search(room) }
                     composable(Route.Favourites.route) { Favourites() }
                     composable(Route.About.route) { About() }
                     composable(Route.Settings.route) { Settings(room) }
@@ -122,6 +123,7 @@ class MainActivity : ComponentActivity() {
                     composable(Route.AddToy.route) { AddToy() }
                     composable(Route.ChangePassword.route) { ChangePassword(room, navController) }
                     composable(Route.CreateAccount.route) { CreateAccount(navController)}
+                    composable(Route.MyPets.route) { MyPets(room = room) }
                     composable(
                         route = Route.Login.route + "?email={email}",
                         arguments = listOf(navArgument(

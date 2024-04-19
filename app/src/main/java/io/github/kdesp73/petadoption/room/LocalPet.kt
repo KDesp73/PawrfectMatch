@@ -14,7 +14,8 @@ data class LocalPet(
     @ColumnInfo(name = "location") var location: String,
     @ColumnInfo(name = "owner_email") var ownerEmail: String,
     @ColumnInfo(name = "size") var size: String,
-    @ColumnInfo(name = "type") var type: String
+    @ColumnInfo(name = "type") var type: String,
+    @ColumnInfo(name = "image_uri") var imageUri: String
 ){
     constructor(pet: Pet) : this (
         name = pet.name,
@@ -24,6 +25,6 @@ data class LocalPet(
         ownerEmail = pet.ownerEmail,
         size = pet.size,
         type = pet.type,
+        imageUri = ""
     )
-
 }

@@ -1,8 +1,11 @@
 package io.github.kdesp73.petadoption.firestore
 
 import android.util.Log
+import androidx.compose.runtime.Composable
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import io.github.kdesp73.petadoption.hash
+import kotlinx.coroutines.tasks.await
 
 class PetManager {
     private val TAG = "PetManager"
@@ -44,5 +47,23 @@ class PetManager {
                     }
             }
         }
+    }
+
+    suspend fun getPetsByEmail(email: String) : List<Pet> {
+        val list = mutableListOf<Pet>()
+
+        try {
+            val querySnapshot = db.collection("Pets")
+                .whereEqualTo("ownerEmail", email)
+                .get()
+                .await()
+
+                for(doc in querySnapshot.documents) {
+                    list.add(Pet(doc))
+                }
+        } catch (_: Exception) {
+        }
+
+        return list
     }
 }

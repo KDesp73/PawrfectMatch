@@ -147,11 +147,7 @@ fun AddPet(navController: NavController?, room: AppDatabase?){
                 )
 
                 viewModel.imageState.value?.let {
-                    imageManager.uploadPetImage(it, newPet.id) { url ->
-                        if (url != null) {
-                            newPet.imageUrl = url
-                        }
-                    }
+                    imageManager.uploadPetImage(it, newPet.id){}
                 }
 
                 petManager.addPet(newPet) { added ->
@@ -171,7 +167,9 @@ fun AddPet(navController: NavController?, room: AppDatabase?){
                     }
                 }
 
-                room?.petDao()?.insert(LocalPet(newPet))
+                val newLocalPet = LocalPet(newPet)
+                newLocalPet.imageUri = viewModel.imageState.value.toString()
+                room?.petDao()?.insert(newLocalPet)
 
             } else {
                 Toast.makeText(context, check.exceptionOrNull()?.message, Toast.LENGTH_LONG).show()

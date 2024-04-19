@@ -9,6 +9,7 @@ TODO: PetPreview Component
 TODO: Better (cleaner) UI
 TODO: get image from firebase storage
 TODO: better navigation method
+TODO: restructure project
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing

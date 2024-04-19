@@ -1,5 +1,6 @@
 package io.github.kdesp73.petadoption.ui.components
 
+import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImagePainter.State.Empty.painter
+import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.R
 
 @Composable
@@ -62,6 +65,50 @@ fun CircularImage(
         if (painter != null) {
             Image(
                 painter = painter,
+                contentDescription = contentDescription,
+                modifier = modifier,
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            // Placeholder or loading indicator when painter is null
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.LightGray),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = placeholderId),
+                    contentDescription = "profile image",
+                    modifier = modifier
+                        .size(size),
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CircularImage(
+    modifier: Modifier = Modifier,
+    uri: Uri?,
+    contentDescription: String?,
+    size: Dp,
+    placeholderId: Int = R.drawable.profile_pic_placeholder
+) {
+    Surface(
+        modifier = Modifier
+            .size(size)
+            .padding(5.dp),
+        shape = CircleShape,
+        border = BorderStroke(0.5.dp, Color.LightGray),
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+    ) {
+        val p = rememberAsyncImagePainter(model = uri)
+        if (uri != null) {
+            Image(
+                painter = p,
                 contentDescription = contentDescription,
                 modifier = modifier,
                 contentScale = ContentScale.Crop

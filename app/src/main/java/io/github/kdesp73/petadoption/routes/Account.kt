@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -18,6 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalUser
 import io.github.kdesp73.petadoption.ui.components.AccountPreview
@@ -87,7 +90,13 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
         bottom = {
         },
         center = {
-
+            Button(onClick = {
+                if (navController != null) {
+                    navigateTo(Route.MyPets.route, navController = navController)
+                }
+            }) {
+                Text(text = "My Pets")
+            }
         }
     )
 

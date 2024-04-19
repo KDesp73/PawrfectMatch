@@ -95,8 +95,10 @@ fun Settings(room: AppDatabase?){
 
                 settingsDao?.insert(
                     io.github.kdesp73.petadoption.room.Settings(
-                        theme = themeNameFromLabel[viewModel.theme.value]?.value ?: ThemeName.LIGHT.value,
-                        language = languageFromLabel[viewModel.language.value]?.value ?: Language.ENGLISH.value,
+                        theme = themeNameFromLabel[viewModel.theme.value]?.value
+                            ?: ThemeName.LIGHT.value,
+                        language = languageFromLabel[viewModel.language.value]?.value
+                            ?: Language.ENGLISH.value,
                     )
                 )
 

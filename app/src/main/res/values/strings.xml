@@ -100,4 +100,5 @@
     <string name="route_change_password">Change Password</string>
     <string name="notif_channel_debug" translatable="false">debug</string>
     <string name="notif_channel_main" translatable="false">main</string>
+    <string name="route_my_pets">My Pets</string>
 </resources>

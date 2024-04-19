@@ -96,4 +96,5 @@
     <string name="route_create_account">Εγγραφή</string>
     <string name="route_login">Σύνδεση</string>
     <string name="route_change_password">Αλλαγή Κωδικού</string>
+    <string name="route_my_pets">Τα κατοικίδιά μου</string>
 </resources>

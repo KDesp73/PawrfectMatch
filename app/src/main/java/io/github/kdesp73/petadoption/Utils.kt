@@ -1,13 +1,19 @@
 package io.github.kdesp73.petadoption
 
 import android.app.LocaleManager
+import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.LocaleList
 import android.preference.PreferenceManager
 import android.view.ContextThemeWrapper
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -76,4 +82,14 @@ fun changeLocale(locale: String) {
     } else {
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(locale))
     }
+}
+
+fun imageBitmapFromBitmap(bitmap: Bitmap, context: Context) : ImageBitmap {
+    val option = BitmapFactory.Options()
+    option.inPreferredConfig = Bitmap.Config.ARGB_8888
+    return BitmapFactory.decodeResource(
+        context.resources,
+        bitmap.generationId,
+        option
+    ).asImageBitmap()
 }
