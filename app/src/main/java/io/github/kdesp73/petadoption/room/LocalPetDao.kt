@@ -12,7 +12,7 @@ interface LocalPetDao {
     fun selectPets(ownerEmail: String) : List<LocalPet>
 
     @Query("SELECT * FROM LocalPet WHERE id = :id")
-    fun selectPetFromId(id: Int) : LocalPet
+    fun selectPetFromId(id: Int) : LocalPet?
 
     @Insert
     fun insert(vararg pet: LocalPet)

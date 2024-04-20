@@ -13,6 +13,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,6 +26,7 @@ import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.firestore.ImageManager
+import io.github.kdesp73.petadoption.firestore.PetManager
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
 import io.github.kdesp73.petadoption.ui.components.PetCard
@@ -40,6 +46,10 @@ fun MyPets(room: AppDatabase, navController: NavController){
     val pets: List<LocalPet> = room.petDao().selectPets(room.userDao().getEmail())
     val scrollState = rememberScrollState()
     val imageManager = ImageManager()
+    val petManager = PetManager()
+
+//    petManager.syncPets(room)
+
 
     Log.d(TAG, pets.toString())
 
@@ -63,12 +73,11 @@ fun MyPets(room: AppDatabase, navController: NavController){
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ){
             for(pet in pets){
-                val deferredResult: Deferred<Uri?> = GlobalScope.async {
-                    imageManager.getImageUrl(ImageManager.pets + pet.generateId() + ".jpg")
-                }
-
-                val uri: Uri?
-                runBlocking {
+                var uri by remember { mutableStateOf(Uri.EMPTY) }
+                LaunchedEffect(pet) {
+                    val deferredResult: Deferred<Uri?> = GlobalScope.async {
+                        imageManager.getImageUrl(ImageManager.pets + pet.generateId() + ".jpg")
+                    }
                     uri = deferredResult.await()
                 }
 

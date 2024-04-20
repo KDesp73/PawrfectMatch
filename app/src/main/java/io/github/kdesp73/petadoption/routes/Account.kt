@@ -1,14 +1,11 @@
 package io.github.kdesp73.petadoption.routes
 
 import android.annotation.SuppressLint
-import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
@@ -20,22 +17,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.enums.CustomAlignment
-import io.github.kdesp73.petadoption.firestore.ImageManager
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
-import io.github.kdesp73.petadoption.room.LocalUser
 import io.github.kdesp73.petadoption.ui.components.AccountPreview
 import io.github.kdesp73.petadoption.ui.components.HalfButton
 import io.github.kdesp73.petadoption.ui.components.VerticalScaffold
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
 
 
 private const val TAG = "Account"
@@ -45,13 +35,7 @@ private const val TAG = "Account"
 @Composable
 fun Account(navController: NavController?, roomDatabase: AppDatabase?){
     val userDao = roomDatabase?.userDao()
-    val userList = userDao?.getUsers()
-    var user: LocalUser? = null
-
-    if(userList?.isNotEmpty() == true){
-        user = userList[0]
-    }
-
+    val user = userDao?.getUser()
 
     VerticalScaffold(
         modifier = Modifier.padding(6.dp),
@@ -59,7 +43,6 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
             Column (
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ){
-                userDao?.let { Log.d(TAG, it.getImageUrl() ?: "") }
                 AccountPreview(user = user, navController = navController)
 
                 if(user?.loggedIn == true) {
@@ -78,8 +61,6 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
                                 navigateTo(
                                     Route.AddPet.route,
                                     navController,
-                                    popUpToStartDestination = false,
-                                    launchAsSingleTop = false
                                 )
                             }
                         }
@@ -92,8 +73,6 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
                                 navigateTo(
                                     Route.AddToy.route,
                                     navController,
-                                    popUpToStartDestination = false,
-                                    launchAsSingleTop = false
                                 )
                             }
                         }

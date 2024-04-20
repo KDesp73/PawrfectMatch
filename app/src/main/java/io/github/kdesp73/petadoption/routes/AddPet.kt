@@ -47,7 +47,7 @@ fun AddPet(navController: NavController?, room: AppDatabase?){
         val check = viewModel.validate()
         if(check.isSuccess){
             if (navController != null) {
-                navigateTo(Route.MyPets.route, navController)
+                navigateTo(Route.Home.route, navController)
             }
             val newPet = FirestorePet(
                 name = viewModel.nameState.value,

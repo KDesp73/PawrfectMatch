@@ -18,6 +18,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -92,24 +97,27 @@ fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){
     }
 }
 
+
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun AccountPreview(user: LocalUser?, navController: NavController?){
-    val imageUri : Uri?
+    var imageUri by remember { mutableStateOf(Uri.EMPTY) }
     val imageManager = ImageManager()
 
-    val imageDeferredResult: Deferred<Uri?> = GlobalScope.async {
-        imageManager.getImageUrl(ImageManager.users + user?.email + ".jpg")
-    }
+    if(user != null && user.loggedIn){
+        LaunchedEffect(user) {
+            val imageDeferredResult: Deferred<Uri?> = GlobalScope.async {
+                imageManager.getImageUrl(ImageManager.users + user.email + ".jpg")
+            }
 
-    runBlocking {
-        imageUri = imageDeferredResult.await()
+            imageUri = imageDeferredResult.await()
+        }
     }
 
     val imageSize = 135.dp
     val containerHeight = imageSize + 100.dp
-    if (imageUri == null && (user?.imageUrl == null || user.imageUrl == "null" || user.imageUrl!!.isEmpty())) {
+    if (imageUri == Uri.EMPTY && (user?.imageUrl == null || user.imageUrl == "null" || user.imageUrl!!.isEmpty())) {
         AccountPreview(
             pic = R.drawable.profile_pic_placeholder,
             user = user,

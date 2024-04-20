@@ -7,6 +7,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.em
+import io.github.kdesp73.petadoption.enums.genderFromValue
+import io.github.kdesp73.petadoption.enums.petAgeFromValue
+import io.github.kdesp73.petadoption.enums.petSizeFromValue
+import io.github.kdesp73.petadoption.enums.petTypeFromValue
 
 open class Pet (
     open val name: String,
@@ -20,15 +24,15 @@ open class Pet (
     @Composable
     fun ToComposable() {
         Column(
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.Start
         ) {
             Text(text = name, fontSize = 5.em, color = MaterialTheme.colorScheme.primary)
-            Text(text = age)
-            Text(text = gender)
+            Text(text = petTypeFromValue[type]?.label.toString())
             Text(text = location)
-            Text(text = type)
-            Text(text = size)
+            Text(text = genderFromValue[gender]?.label.toString())
+            Text(text = petAgeFromValue[age]?.label.toString())
+            Text(text = petSizeFromValue[size]?.label.toString())
         }
     }
 }

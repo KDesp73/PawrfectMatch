@@ -46,7 +46,6 @@ import java.util.Locale
 
 private const val TAG = "MainActivity"
 
-@Suppress("DEPRECATION")
 class MainActivity : ComponentActivity() {
     companion object {
         lateinit var appContext: Context

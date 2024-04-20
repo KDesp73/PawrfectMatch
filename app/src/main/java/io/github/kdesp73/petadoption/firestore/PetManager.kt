@@ -2,6 +2,8 @@ package io.github.kdesp73.petadoption.firestore
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import io.github.kdesp73.petadoption.room.AppDatabase
+import io.github.kdesp73.petadoption.room.LocalPet
 import kotlinx.coroutines.tasks.await
 
 class PetManager {
@@ -46,6 +48,26 @@ class PetManager {
         }
     }
 
+    fun getPetsByEmail(email: String, onComplete: (List<FirestorePet>) -> Unit) {
+        val list = mutableListOf<FirestorePet>()
+
+        try {
+            val querySnapshot = db.collection("Pets")
+                .whereEqualTo("ownerEmail", email)
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    for(doc in querySnapshot.documents) {
+                        list.add(FirestorePet(doc))
+                    }
+                    onComplete(list)
+                }
+                .addOnFailureListener{
+                    onComplete(list)
+                }
+
+        } catch (_: Exception) {
+        }
+    }
     suspend fun getPetsByEmail(email: String) : List<FirestorePet> {
         val list = mutableListOf<FirestorePet>()
 
@@ -100,5 +122,21 @@ class PetManager {
                     .addOnFailureListener { onComplete(false) }
             }
         }
+    }
+
+    fun syncPets(room: AppDatabase){
+        val email = room.userDao().getEmail()
+        getPetsByEmail(email) { list ->
+            val localPets = room.petDao().selectPets(email)
+            if (localPets.size < list.size){
+                for (pet in list){
+                    if (!localPets.any { it.generateId() == pet.generateId() }) {
+                        val newPet = LocalPet(pet)
+                        room.petDao().insert(newPet)
+                    }
+                }
+            }
+        }
+
     }
  }

@@ -25,6 +25,11 @@ import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -73,13 +78,13 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
     val imageManager = ImageManager()
 
     val scrollState = rememberScrollState()
+    var imageUri by remember { mutableStateOf(Uri.EMPTY) }
 
-    val imageDeferredResult: Deferred<Uri?> = GlobalScope.async {
-        imageManager.getImageUrl(ImageManager.users + user.email + ".jpg")
-    }
+    LaunchedEffect(imageUri) {
+        val imageDeferredResult: Deferred<Uri?> = GlobalScope.async {
+            imageManager.getImageUrl(ImageManager.users + user.email + ".jpg")
+        }
 
-    val imageUri : Uri?
-    runBlocking {
         imageUri = imageDeferredResult.await()
     }
 

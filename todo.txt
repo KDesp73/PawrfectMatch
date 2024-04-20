@@ -7,6 +7,7 @@ TODO: Switch Languages
 TODO: Better (cleaner) UI
 TODO: restructure project
 TODO: delete pet
+TODO: split processes to threads
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
