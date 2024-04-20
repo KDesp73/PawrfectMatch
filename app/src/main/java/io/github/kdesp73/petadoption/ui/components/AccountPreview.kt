@@ -31,6 +31,7 @@ import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.firestore.ImageManager
 import io.github.kdesp73.petadoption.firestore.User
+import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.LocalUser
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -123,12 +124,13 @@ fun AccountPreview(user: LocalUser?, navController: NavController?){
                 .height(containerHeight)
                 .clickable(onClick = {
                     if (user != null) {
-                        navController?.navigate(if (!user.loggedIn) Route.SignIn.route else Route.AccountSettings.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+                        if (navController != null) {
+                            navigateTo(
+                                if (!user.loggedIn) Route.SignIn.route else Route.AccountSettings.route,
+                                navController,
+                                popUpToStartDestination = false,
+                                launchAsSingleTop = false
+                            )
                         }
                     }
                 })

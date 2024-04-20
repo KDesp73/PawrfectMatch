@@ -74,12 +74,13 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
                             icon = Icons.Filled.Add,
                             text = stringResource(R.string.add_a_pet)
                         ) {
-                            navController?.navigate(Route.AddPet.route){
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
+                            if (navController != null) {
+                                navigateTo(
+                                    Route.AddPet.route,
+                                    navController,
+                                    popUpToStartDestination = false,
+                                    launchAsSingleTop = false
+                                )
                             }
                         }
                         HalfButton(
@@ -87,12 +88,13 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
                             icon = Icons.Filled.Add,
                             text = stringResource(R.string.add_a_toy)
                         ) {
-                            navController?.navigate(Route.AddToy.route){
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
+                            if (navController != null) {
+                                navigateTo(
+                                    Route.AddToy.route,
+                                    navController,
+                                    popUpToStartDestination = false,
+                                    launchAsSingleTop = false
+                                )
                             }
                         }
                     }
@@ -104,7 +106,12 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
             if(user?.loggedIn == true) {
                 Button(onClick = {
                     if (navController != null) {
-                        navigateTo(Route.MyPets.route, navController = navController)
+                        navigateTo(
+                            Route.MyPets.route,
+                            navController = navController,
+                            popUpToStartDestination = false,
+                            launchAsSingleTop = false
+                        )
                     }
                 }) {
                     Text(text = stringResource(R.string.my_pets))

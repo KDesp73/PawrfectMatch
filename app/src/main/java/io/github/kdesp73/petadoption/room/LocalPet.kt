@@ -2,9 +2,12 @@ package io.github.kdesp73.petadoption.room
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.em
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,7 +15,12 @@ import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
 import io.github.kdesp73.petadoption.enums.PetType
+import io.github.kdesp73.petadoption.enums.genderFromValue
+import io.github.kdesp73.petadoption.enums.petAgeFromValue
+import io.github.kdesp73.petadoption.enums.petSizeFromValue
+import io.github.kdesp73.petadoption.enums.petTypeFromValue
 import io.github.kdesp73.petadoption.firestore.Pet
+import io.github.kdesp73.petadoption.hash
 
 @Entity
 data class LocalPet(
@@ -42,15 +50,17 @@ data class LocalPet(
     @Composable
     fun ToComposable(){
         Column (
-//            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.Start
         ){
-            Text(text = name)
-            Text(text = age)
-            Text(text = gender)
+            Text(text = name, fontSize = 5.em)
+            Text(text = petAgeFromValue[age]?.label.toString())
+            Text(text = genderFromValue[gender]?.label.toString())
             Text(text = location)
-            Text(text = type)
-            Text(text = size)
+            Text(text = petTypeFromValue[type]?.label.toString())
+            Text(text = petSizeFromValue[size]?.label.toString())
         }
     }
 
@@ -64,4 +74,16 @@ data class LocalPet(
         type = pet.type,
         imageUri = ""
     )
+
+    fun generateId(): String {
+        return hash(
+            name +
+                    age +
+                    gender +
+                    location +
+                    type +
+                    size +
+                    ownerEmail
+        )
+    }
 }

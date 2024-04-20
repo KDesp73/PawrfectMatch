@@ -4,10 +4,7 @@ TODO: Drawer Content
 TODO: Toy Exchange
 TODO: Landscape orientation features
 TODO: Switch Languages
-TODO: PetPreview Component
 TODO: Better (cleaner) UI
-TODO: get image from firebase storage
-TODO: better navigation method
 TODO: restructure project
 TODO: delete pet
 DONE: Notifications
@@ -39,3 +36,6 @@ DONE: Refactor strings to xml file
 DONE: Select picture from device
 DONE: Change Language automatically
 DONE: Full Pet Page
+DONE: better navigation method
+DONE: get image from firebase storage
+DONE: PetPreview Component

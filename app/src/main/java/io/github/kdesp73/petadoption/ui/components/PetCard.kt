@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -39,35 +40,31 @@ import java.io.File
 private const val TAG = "PetCard"
 
 @Composable
-private fun Contents(modifier: Modifier, pet: LocalPet, uri: String?, navController: NavController?){
-    val size by remember { mutableStateOf(IntSize.Zero) }
+private fun Contents(modifier: Modifier, pet: LocalPet, uri: String?, id: String, navController: NavController?){
     Card(
         modifier = modifier
             .clickable {
                 if (navController != null) {
                     navigateTo(
-                        Route.PetPage.route + "?id=${pet.id}",
+                        Route.PetPage.route + "?id=$id",
                         navController = navController,
                         popUpToStartDestination = false,
                         launchAsSingleTop = false,
                         restore = false
                     )
-                    Log.d(TAG, "Navigating to: ${pet.name} page")
                 }
             }
             .height(200.dp)
             .fillMaxWidth(),
         content = {
-            Row (
-                modifier = Modifier.fillMaxSize()
-            ){
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Log.d(TAG, "Uri (${pet.name}): $uri")
                 val painter = rememberAsyncImagePainter(model = uri)
-                Image(
-                    modifier = Modifier.size(width = size.width.dp / 2, size.height.dp),
-                    painter = painter,
-                    contentDescription = "Pet Image",
-                    contentScale = ContentScale.Fit
-                )
+                CircularImage(painter = painter, contentDescription = "", size = 150.dp)
                 pet.ToComposable()
             }
         }
@@ -82,21 +79,33 @@ fun PetCard(
     uri: Uri?,
     navController: NavController?
 ){
-    Contents(modifier = modifier, pet = LocalPet(pet), uri = uri.toString(), navController)
+    Contents(
+        modifier = modifier,
+        pet = LocalPet(pet),
+        uri = uri.toString(),
+        id = pet.id,
+        navController
+    )
 }
 @Composable
 fun PetCard(
     modifier: Modifier = Modifier,
     pet: LocalPet,
+    uri: Uri?,
     navController: NavController?
 ){
-    Contents(modifier = modifier, pet = pet, uri = pet.imageUri, navController)
+    Contents(
+        modifier = modifier,
+        pet = pet,
+        uri = uri.toString() ?: pet.imageUri,
+        id = pet.id.toString(),
+        navController
+    )
 }
 
 
 @Preview
 @Composable
 fun PetCardPreview(){
-
-    PetCard(pet = LocalPet.example, navController = null)
+    PetCard(pet = LocalPet.example, uri = null, navController = null)
 }

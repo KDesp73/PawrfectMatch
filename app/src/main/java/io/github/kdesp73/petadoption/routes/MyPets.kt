@@ -1,6 +1,8 @@
 package io.github.kdesp73.petadoption.routes
 
 import android.annotation.SuppressLint
+import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,28 +20,41 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.firestore.ImageManager
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
 import io.github.kdesp73.petadoption.ui.components.PetCard
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 
 private const val TAG = "MyPets"
 
+@OptIn(DelicateCoroutinesApi::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun MyPets(room: AppDatabase, navController: NavController){
     val pets: List<LocalPet> = room.petDao().selectPets(room.userDao().getEmail())
     val scrollState = rememberScrollState()
+    val imageManager = ImageManager()
+
+    Log.d(TAG, pets.toString())
 
     Column (
-        modifier = Modifier.padding(8.dp).verticalScroll(scrollState),
-        verticalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .padding(8.dp)
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
 
     ){
-        Text(text = stringResource(id = Route.MyPets.resId), fontSize = 6.em)
-        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            modifier = Modifier.padding(vertical = 20.dp),
+            text = stringResource(id = Route.MyPets.resId),
+            fontSize = 6.em
+        )
         Column (
             modifier = Modifier
                 .padding(8.dp)
@@ -48,8 +63,18 @@ fun MyPets(room: AppDatabase, navController: NavController){
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ){
             for(pet in pets){
+                val deferredResult: Deferred<Uri?> = GlobalScope.async {
+                    imageManager.getImageUrl(ImageManager.pets + pet.generateId() + ".jpg")
+                }
+
+                val uri: Uri?
+                runBlocking {
+                    uri = deferredResult.await()
+                }
+
                 PetCard(
                     pet = pet,
+                    uri = uri,
                     navController = navController
                 )
             }

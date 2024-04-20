@@ -72,7 +72,7 @@ fun AddPet(navController: NavController?, room: AppDatabase?){
         val check = viewModel.validate()
         if(check.isSuccess){
             if (navController != null) {
-                navigateTo(Route.Home.route, navController)
+                navigateTo(Route.MyPets.route, navController)
             }
             val newPet = Pet(
                 name = viewModel.nameState.value,
