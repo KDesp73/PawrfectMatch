@@ -4,10 +4,8 @@ TODO: Drawer Content
 TODO: Toy Exchange
 TODO: Landscape orientation features
 TODO: Switch Languages
-TODO: Better (cleaner) UI
-TODO: restructure project
-TODO: delete pet
-TODO: split processes to threads
+TODO: Like Pet
+TODO: beta download website
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -40,3 +38,6 @@ DONE: Full Pet Page
 DONE: better navigation method
 DONE: get image from firebase storage
 DONE: PetPreview Component
+DONE: split processes to threads
+DONE: delete pet
+DONE: Better (cleaner) UI

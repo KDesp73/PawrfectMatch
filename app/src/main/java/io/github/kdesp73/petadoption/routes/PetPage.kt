@@ -191,17 +191,16 @@ fun ShowPet(id: String = "", room: AppDatabase, navController: NavController){
                     onClick = {
                         var deleted: Boolean = true
                         petManager.deletePetById(pet!!.generateId()) { completed ->
-                            deleted = deleted and  completed
+                            deleted = deleted and completed
                         }
 
                         imageManager.deleteImage(ImageManager.pets + pet!!.generateId() + ".jpg") { completed ->
-                            deleted = deleted and  completed
+                            deleted = deleted and completed
                         }
-
-                        room.petDao().delete(pet!!)
 
                         val notificationService = NotificationService(context)
                         if (deleted){
+                            room.petDao().delete(pet!!)
                             navigateTo(Route.Home.route, navController)
                             notificationService.showBasicNotification(
                                 context.getString(R.string.notif_channel_main),

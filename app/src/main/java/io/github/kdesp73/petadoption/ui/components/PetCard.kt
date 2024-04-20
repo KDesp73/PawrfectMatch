@@ -15,11 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
 import coil.compose.rememberAsyncImagePainter
-import com.google.android.play.integrity.internal.i
 import io.github.kdesp73.petadoption.Pet
 import io.github.kdesp73.petadoption.Route
-import io.github.kdesp73.petadoption.firestore.FirestorePet
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.LocalPet
 
@@ -34,9 +34,6 @@ private fun Contents(modifier: Modifier, pet: Pet, uri: String?, id: String, nav
                     navigateTo(
                         Route.PetPage.route + "?id=$id",
                         navController = navController,
-                        popUpToStartDestination = false,
-                        launchAsSingleTop = false,
-                        restore = false
                     )
                 }
             }
@@ -48,7 +45,6 @@ private fun Contents(modifier: Modifier, pet: Pet, uri: String?, id: String, nav
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Log.d(TAG, "Uri (${pet.name}): $uri")
                 val painter = rememberAsyncImagePainter(model = uri)
                 CircularImage(painter = painter, contentDescription = "", size = 150.dp)
                 pet.ToComposable()

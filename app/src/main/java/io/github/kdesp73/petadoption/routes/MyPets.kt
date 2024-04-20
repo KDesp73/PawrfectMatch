@@ -2,12 +2,9 @@ package io.github.kdesp73.petadoption.routes
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -34,7 +31,6 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
 
 
 private const val TAG = "MyPets"
@@ -49,9 +45,6 @@ fun MyPets(room: AppDatabase, navController: NavController){
     val petManager = PetManager()
 
 //    petManager.syncPets(room)
-
-
-    Log.d(TAG, pets.toString())
 
     Column (
         modifier = Modifier
