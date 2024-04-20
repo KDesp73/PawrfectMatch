@@ -49,6 +49,7 @@ private const val TAG = "Settings"
 fun Settings(room: AppDatabase?){
     val context = LocalContext.current as Activity
     val settingsDao = room?.settingsDao()
+    Log.d(TAG, settingsDao?.getSettings().toString())
 
     val viewModel = SettingsViewModel()
 

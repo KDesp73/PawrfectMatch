@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.em
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import io.github.kdesp73.petadoption.Pet
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
@@ -19,21 +20,21 @@ import io.github.kdesp73.petadoption.enums.genderFromValue
 import io.github.kdesp73.petadoption.enums.petAgeFromValue
 import io.github.kdesp73.petadoption.enums.petSizeFromValue
 import io.github.kdesp73.petadoption.enums.petTypeFromValue
-import io.github.kdesp73.petadoption.firestore.Pet
+import io.github.kdesp73.petadoption.firestore.FirestorePet
 import io.github.kdesp73.petadoption.hash
 
 @Entity
 data class LocalPet(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
-    @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "age") var age: String,
-    @ColumnInfo(name = "gender") var gender: String,
-    @ColumnInfo(name = "location") var location: String,
+    @ColumnInfo(name = "name") override var name: String,
+    @ColumnInfo(name = "age") override var age: String,
+    @ColumnInfo(name = "gender") override var gender: String,
+    @ColumnInfo(name = "location") override var location: String,
     @ColumnInfo(name = "owner_email") var ownerEmail: String,
-    @ColumnInfo(name = "size") var size: String,
-    @ColumnInfo(name = "type") var type: String,
+    @ColumnInfo(name = "size") override var size: String,
+    @ColumnInfo(name = "type") override var type: String,
     @ColumnInfo(name = "image_uri") var imageUri: String
-){
+) : Pet(name, age, gender, location, type, size){
     companion object {
         val example = LocalPet(
             name = "Kitty",
@@ -47,24 +48,7 @@ data class LocalPet(
         )
     }
 
-    @Composable
-    fun ToComposable(){
-        Column (
-            modifier = Modifier
-                .fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.Start
-        ){
-            Text(text = name, fontSize = 5.em)
-            Text(text = petAgeFromValue[age]?.label.toString())
-            Text(text = genderFromValue[gender]?.label.toString())
-            Text(text = location)
-            Text(text = petTypeFromValue[type]?.label.toString())
-            Text(text = petSizeFromValue[size]?.label.toString())
-        }
-    }
-
-    constructor(pet: Pet) : this (
+    constructor(pet: FirestorePet) : this (
         name = pet.name,
         age = pet.age,
         gender = pet.gender,

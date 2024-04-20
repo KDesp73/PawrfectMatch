@@ -9,6 +9,9 @@ import androidx.room.Update
 
 @Dao
 interface SettingsDao {
+    @Query("SELECT * FROM Settings WHERE id = 0")
+    fun getSettings(): Settings
+
     @Query("SELECT theme FROM Settings WHERE id = 0")
     fun getTheme(): String
 

@@ -26,7 +26,7 @@ import io.github.kdesp73.petadoption.enums.petAgeFromValue
 import io.github.kdesp73.petadoption.enums.petSizeFromValue
 import io.github.kdesp73.petadoption.enums.petTypeFromValue
 import io.github.kdesp73.petadoption.firestore.ImageManager
-import io.github.kdesp73.petadoption.firestore.Pet
+import io.github.kdesp73.petadoption.firestore.FirestorePet
 import io.github.kdesp73.petadoption.firestore.PetManager
 import io.github.kdesp73.petadoption.firestore.User
 import io.github.kdesp73.petadoption.firestore.UserManager
@@ -116,11 +116,11 @@ fun ShowPet(id: String = "", room: AppDatabase, navController: NavController){
         // Firebase Pet
         val petManager = PetManager()
         val imageManager = ImageManager()
-        val deferredResult: Deferred<Pet?> = GlobalScope.async {
+        val deferredResult: Deferred<FirestorePet?> = GlobalScope.async {
             petManager.getPetByEmailAndId(room.userDao().getEmail(), id)
         }
 
-        val pet: Pet?
+        val pet: FirestorePet?
         runBlocking {
             pet = deferredResult.await()
         }
@@ -138,4 +138,6 @@ fun ShowPet(id: String = "", room: AppDatabase, navController: NavController){
             Showcase(pet = LocalPet(pet), uri.toString())
         }
     }
+
+
 }

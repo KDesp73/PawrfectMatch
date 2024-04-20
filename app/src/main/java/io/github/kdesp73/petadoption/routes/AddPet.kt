@@ -1,57 +1,32 @@
 
 package io.github.kdesp73.petadoption.routes
 
-import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.rounded.Face
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.enums.Gender
-import io.github.kdesp73.petadoption.enums.Orientation
 import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
 import io.github.kdesp73.petadoption.enums.PetType
-import io.github.kdesp73.petadoption.enums.TextFieldType
 import io.github.kdesp73.petadoption.enums.genderFromLabel
 import io.github.kdesp73.petadoption.enums.petAgeFromLabel
 import io.github.kdesp73.petadoption.enums.petSizeFromLabel
 import io.github.kdesp73.petadoption.enums.petTypeFromLabel
 import io.github.kdesp73.petadoption.firestore.ImageManager
-import io.github.kdesp73.petadoption.firestore.Pet
+import io.github.kdesp73.petadoption.firestore.FirestorePet
 import io.github.kdesp73.petadoption.firestore.PetManager
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
-import io.github.kdesp73.petadoption.ui.components.CircularIconButton
-import io.github.kdesp73.petadoption.ui.components.CircularImage
-import io.github.kdesp73.petadoption.ui.components.Dropdown
-import io.github.kdesp73.petadoption.ui.components.OptionPicker
 import io.github.kdesp73.petadoption.ui.components.PetInfoForm
-import io.github.kdesp73.petadoption.ui.components.SelectImage
-import io.github.kdesp73.petadoption.ui.components.TextFieldComponent
 import io.github.kdesp73.petadoption.viewmodels.PetFormViewModel
 
 private const val TAG = "AddPet"
@@ -74,7 +49,7 @@ fun AddPet(navController: NavController?, room: AppDatabase?){
             if (navController != null) {
                 navigateTo(Route.MyPets.route, navController)
             }
-            val newPet = Pet(
+            val newPet = FirestorePet(
                 name = viewModel.nameState.value,
                 age = petAgeFromLabel[viewModel.ageState.value]?.value ?: PetAge.BABY.value,
                 type = petTypeFromLabel[viewModel.typeState.value]?.value ?: PetType.DOG.value,

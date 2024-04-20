@@ -6,37 +6,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import com.google.firebase.firestore.DocumentSnapshot
+import io.github.kdesp73.petadoption.Pet
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
 import io.github.kdesp73.petadoption.enums.PetType
 import io.github.kdesp73.petadoption.hash
 
-data class Pet (
+data class FirestorePet (
     var id: String,
-    var name: String = "Rex",
-    var age: String = PetAge.YOUNG.label,
-    var gender: String = Gender.MALE.label,
-    var location: String = "Tatooine",
-    var type: String = PetType.DOG.label,
-    var size: String = PetSize.LARGE.label,
+    override var name: String = "Rex",
+    override var age: String = PetAge.YOUNG.label,
+    override var gender: String = Gender.MALE.label,
+    override var location: String = "Tatooine",
+    override var type: String = PetType.DOG.label,
+    override var size: String = PetSize.LARGE.label,
     var ownerEmail: String,
-){
+) : Pet(name, age, gender, location, type, size){
 
-    @Composable
-    fun ToComposable(){
-        Column (
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Start
-        ){
-            Text(text = name)
-            Text(text = age)
-            Text(text = gender)
-            Text(text = location)
-            Text(text = type)
-            Text(text = size)
-        }
-    }
 
     fun generateId(): String {
         return hash(

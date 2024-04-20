@@ -1,10 +1,7 @@
 package io.github.kdesp73.petadoption.firestore
 
 import android.util.Log
-import androidx.compose.runtime.Composable
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import io.github.kdesp73.petadoption.hash
 import kotlinx.coroutines.tasks.await
 
 class PetManager {
@@ -12,14 +9,14 @@ class PetManager {
     private val db = FirebaseFirestore.getInstance()
 
 
-    private fun checkPetExists(pet: Pet, onComplete: (Boolean) -> Unit){
+    private fun checkPetExists(pet: FirestorePet, onComplete: (Boolean) -> Unit){
         db.collection("Pets")
             .whereEqualTo("ownerEmail", pet.ownerEmail)
             .get()
             .addOnSuccessListener { snapshot ->
                 var found = false
                 for(p in snapshot.documents){
-                    if(Pet(p).id == pet.id)
+                    if(FirestorePet(p).id == pet.id)
                         found = true
                 }
 
@@ -31,7 +28,7 @@ class PetManager {
             }
     }
 
-    fun addPet(pet: Pet, onComplete: (Boolean) -> Unit){
+    fun addPet(pet: FirestorePet, onComplete: (Boolean) -> Unit){
         checkPetExists(pet){ exists ->
             if(exists){
                 Log.d(TAG, "${pet.toString()} already exists")
@@ -49,8 +46,8 @@ class PetManager {
         }
     }
 
-    suspend fun getPetsByEmail(email: String) : List<Pet> {
-        val list = mutableListOf<Pet>()
+    suspend fun getPetsByEmail(email: String) : List<FirestorePet> {
+        val list = mutableListOf<FirestorePet>()
 
         try {
             val querySnapshot = db.collection("Pets")
@@ -59,7 +56,7 @@ class PetManager {
                 .await()
 
                 for(doc in querySnapshot.documents) {
-                    list.add(Pet(doc))
+                    list.add(FirestorePet(doc))
                 }
         } catch (_: Exception) {
         }
@@ -67,7 +64,7 @@ class PetManager {
         return list
     }
 
-    suspend fun getPetByEmailAndId(email: String, id: String) : Pet? {
+    suspend fun getPetByEmailAndId(email: String, id: String) : FirestorePet? {
         return try {
             val querySnapshot = db.collection("Pets")
                 .whereEqualTo("ownerEmail", email)
@@ -76,10 +73,32 @@ class PetManager {
                 .await()
 
             if(querySnapshot.documents.isNotEmpty()) {
-                Pet(querySnapshot.documents[0])
+                FirestorePet(querySnapshot.documents[0])
             } else null
         } catch (_: Exception) {
             null
+        }
+    }
+
+    private fun getPetDocumentId(id: String, onComplete: (String?) -> Unit){
+        db.collection("Pets").whereEqualTo("id", id).get()
+            .addOnSuccessListener { snapshot ->
+                if(snapshot.documents.isEmpty()) onComplete(null)
+                else {
+                    onComplete(snapshot.documents[0].id)
+                }
+            }
+    }
+
+    fun deletePetById(id: String, onComplete: (Boolean) -> Unit) {
+        getPetDocumentId(id) { documentId ->
+            if (documentId != null) {
+                db.collection("Pets")
+                    .document(documentId)
+                    .delete()
+                    .addOnSuccessListener { onComplete(true) }
+                    .addOnFailureListener { onComplete(false) }
+            }
         }
     }
  }

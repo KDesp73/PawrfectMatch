@@ -75,6 +75,7 @@ fun MyPets(room: AppDatabase, navController: NavController){
                 PetCard(
                     pet = pet,
                     uri = uri,
+                    id = pet.id.toString(),
                     navController = navController
                 )
             }

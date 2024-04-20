@@ -48,7 +48,7 @@ private fun DrawerContent(
     drawerState: DrawerState
 ){
     val scope = rememberCoroutineScope()
-    val iconColor = MaterialTheme.colorScheme.primary
+    val iconColor = MaterialTheme.colorScheme.secondaryContainer
     val iconSize = 45.dp
 
     ModalDrawerSheet (
