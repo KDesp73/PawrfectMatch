@@ -22,6 +22,7 @@ data class Pet (
     var size: String = PetSize.LARGE.label,
     var ownerEmail: String,
 ){
+
     @Composable
     fun ToComposable(){
         Column (

@@ -8,6 +8,10 @@ import androidx.compose.ui.Alignment
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import io.github.kdesp73.petadoption.enums.Gender
+import io.github.kdesp73.petadoption.enums.PetAge
+import io.github.kdesp73.petadoption.enums.PetSize
+import io.github.kdesp73.petadoption.enums.PetType
 import io.github.kdesp73.petadoption.firestore.Pet
 
 @Entity
@@ -22,11 +26,23 @@ data class LocalPet(
     @ColumnInfo(name = "type") var type: String,
     @ColumnInfo(name = "image_uri") var imageUri: String
 ){
+    companion object {
+        val example = LocalPet(
+            name = "Kitty",
+            age = PetAge.YOUNG.value,
+            gender = Gender.FEMALE.value,
+            location = "Tattoine",
+            ownerEmail = "",
+            size = PetSize.MEDIUM.value,
+            type = PetType.DOG.value,
+            imageUri = "https://firebasestorage.googleapis.com/v0/b/petadoption-f6e9a.appspot.com/o/pets%2Fabde9407e881d6bb7a971ee4895ac4830dae4cdbf13e2c990f5f831c34fedc86.jpg?alt=media&token=273b7744-419e-4b99-8433-5a5fd834629d"
+        )
+    }
 
     @Composable
     fun ToComposable(){
         Column (
-            verticalArrangement = Arrangement.Center,
+//            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ){
             Text(text = name)

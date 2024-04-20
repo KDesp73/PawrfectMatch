@@ -1,13 +1,13 @@
 package io.github.kdesp73.petadoption.enums
 
+import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.resToString
 
 enum class PetSize(val label: String, val value: String) {
-    SMALL(resToString(R.string.petsize_small), "small"),
-    MEDIUM(resToString(R.string.petsize_medium), "medium"),
-    LARGE(resToString(R.string.petsize_large), "large"),
-    XLARGE(resToString(R.string.petsize_extra_large), "xlarge")
+    SMALL(MainActivity.appContext.getString(R.string.petsize_small), "small"),
+    MEDIUM(MainActivity.appContext.getString(R.string.petsize_medium), "medium"),
+    LARGE(MainActivity.appContext.getString(R.string.petsize_large), "large"),
+    XLARGE(MainActivity.appContext.getString(R.string.petsize_extra_large), "xlarge")
 }
 
 val petSizeFromLabel = PetSize.entries.associateBy { it.label }

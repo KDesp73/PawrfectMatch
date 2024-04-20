@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -44,14 +45,20 @@ private fun Contents(modifier: Modifier, pet: LocalPet, uri: String?, navControl
         modifier = modifier
             .clickable {
                 if (navController != null) {
-                    navigateTo(Route.PetPage.route + "?id=${pet.id}", navController = navController)
+                    navigateTo(
+                        Route.PetPage.route + "?id=${pet.id}",
+                        navController = navController,
+                        popUpToStartDestination = false,
+                        launchAsSingleTop = false,
+                        restore = false
+                    )
+                    Log.d(TAG, "Navigating to: ${pet.name} page")
                 }
             }
             .height(200.dp)
             .fillMaxWidth(),
         content = {
             Row (
-                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxSize()
             ){
                 val painter = rememberAsyncImagePainter(model = uri)
@@ -59,7 +66,7 @@ private fun Contents(modifier: Modifier, pet: LocalPet, uri: String?, navControl
                     modifier = Modifier.size(width = size.width.dp / 2, size.height.dp),
                     painter = painter,
                     contentDescription = "Pet Image",
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Fit
                 )
                 pet.ToComposable()
             }
@@ -84,4 +91,12 @@ fun PetCard(
     navController: NavController?
 ){
     Contents(modifier = modifier, pet = pet, uri = pet.imageUri, navController)
+}
+
+
+@Preview
+@Composable
+fun PetCardPreview(){
+
+    PetCard(pet = LocalPet.example, navController = null)
 }

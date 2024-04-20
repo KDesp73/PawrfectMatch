@@ -2,20 +2,16 @@ package io.github.kdesp73.petadoption.viewmodels
 
 import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
-import io.github.kdesp73.petadoption.LocaleManager
+import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
 import io.github.kdesp73.petadoption.enums.PetType
-import io.github.kdesp73.petadoption.firestore.Pet
-import io.github.kdesp73.petadoption.resToString
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class AddPetViewModel : ViewModel(){
+class PetFormViewModel : ViewModel(){
     var imageState = MutableStateFlow<Uri?>(null)
     var nameState = MutableStateFlow("")
     var ageState = MutableStateFlow(PetAge.BABY.label)
@@ -33,8 +29,8 @@ class AddPetViewModel : ViewModel(){
     }
 
     fun validate() = runCatching {
-        require(nameState.value.isNotEmpty()) { resToString(R.string.name_cannot_be_empty) }
-        require(imageState.value != null) { resToString(R.string.you_need_to_select_an_image) }
+        require(nameState.value.isNotEmpty()) { MainActivity.appContext.getString(R.string.name_cannot_be_empty) }
+        require(imageState.value != null) { MainActivity.appContext.getString(R.string.you_need_to_select_an_image) }
     }
 
     fun log(TAG: String){

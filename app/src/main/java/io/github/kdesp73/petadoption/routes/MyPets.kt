@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,11 +30,13 @@ private const val TAG = "MyPets"
 @Composable
 fun MyPets(room: AppDatabase, navController: NavController){
     val pets: List<LocalPet> = room.petDao().selectPets(room.userDao().getEmail())
+    val scrollState = rememberScrollState()
 
     Column (
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(8.dp).verticalScroll(scrollState),
         verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+
     ){
         Text(text = stringResource(id = Route.MyPets.resId), fontSize = 6.em)
         Spacer(modifier = Modifier.height(10.dp))

@@ -36,7 +36,6 @@ import io.github.kdesp73.petadoption.enums.languageFromValue
 import io.github.kdesp73.petadoption.enums.locales
 import io.github.kdesp73.petadoption.enums.themeNameFromLabel
 import io.github.kdesp73.petadoption.enums.themeNameFromValue
-import io.github.kdesp73.petadoption.getLocales
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.Dropdown
 import io.github.kdesp73.petadoption.ui.components.HalfButton

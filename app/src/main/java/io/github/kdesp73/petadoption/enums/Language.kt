@@ -1,11 +1,11 @@
 package io.github.kdesp73.petadoption.enums
 
+import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.resToString
 
 enum class Language (val label: String, val value: String){
-    ENGLISH(resToString(R.string.lang_english), "english"),
-    GREEK(resToString(R.string.lang_greek), "greek")
+    ENGLISH(MainActivity.appContext.getString(R.string.lang_english), "english"),
+    GREEK(MainActivity.appContext.getString(R.string.lang_greek), "greek")
 }
 
 val locales = hashMapOf(

@@ -9,6 +9,7 @@ import android.os.LocaleList
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.res.stringResource
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -23,12 +24,12 @@ fun checkEmail(email: String): Boolean {
     return email.matches(emailRegex.toRegex())
 }
 
-val ERR_LEN = resToString(R.string.password_must_have_at_least_eight_characters)
-val ERR_WHITESPACE = resToString(R.string.password_must_not_contain_whitespace)
-val ERR_DIGIT = resToString(R.string.password_must_contain_at_least_one_digit)
-val ERR_LOWER = resToString(R.string.password_must_have_at_least_one_lowercase_letter)
-val ERR_UPPER = resToString(R.string.password_must_have_at_least_one_uppercase_letter)
-val ERR_SPECIAL = resToString(R.string.password_must_have_at_least_one_special_character_such_as)
+val ERR_LEN = MainActivity.appContext.getString(R.string.password_must_have_at_least_eight_characters)
+val ERR_WHITESPACE = MainActivity.appContext.getString(R.string.password_must_not_contain_whitespace)
+val ERR_DIGIT = MainActivity.appContext.getString(R.string.password_must_contain_at_least_one_digit)
+val ERR_LOWER = MainActivity.appContext.getString(R.string.password_must_have_at_least_one_lowercase_letter)
+val ERR_UPPER = MainActivity.appContext.getString(R.string.password_must_have_at_least_one_uppercase_letter)
+val ERR_SPECIAL = MainActivity.appContext.getString(R.string.password_must_have_at_least_one_special_character_such_as)
 
 fun validatePassword(pwd: String) = runCatching {
     require(pwd.length >= 8) { ERR_LEN }
@@ -46,25 +47,21 @@ fun hash(str: String): String {
     return digest.fold("") { s, it -> s + "%02x".format(it) }
 }
 
-fun navigateTo(route: String, navController: NavController){
+fun navigateTo(
+    route: String,
+    navController: NavController,
+    popUpToStartDestination: Boolean = true,
+    launchAsSingleTop: Boolean = true,
+    restore: Boolean = true
+) {
     navController.navigate(route) {
-        popUpTo(navController.graph.findStartDestination().id) {
-            saveState = true
+        if (popUpToStartDestination) {
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
         }
-        launchSingleTop = true
-        restoreState = true
-    }
-}
-
-fun resToString(res: Int) : String {
-    return MainActivity.appContext.getString(res)
-}
-
-fun getLocales() : LocaleList? {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        MainActivity.appContext.getSystemService(LocaleManager::class.java).applicationLocales
-    } else {
-        null
+        launchSingleTop = launchAsSingleTop
+        restoreState = restore
     }
 }
 
