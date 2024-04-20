@@ -1,5 +1,7 @@
 package io.github.kdesp73.petadoption.ui.components
 
+import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -27,7 +29,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.firestore.ImageManager
+import io.github.kdesp73.petadoption.firestore.User
 import io.github.kdesp73.petadoption.room.LocalUser
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){
@@ -35,7 +44,7 @@ fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){
     val containerHeight = imageSize + 100.dp
 
     Surface(
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.secondaryContainer,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -82,62 +91,82 @@ fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){
     }
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun AccountPreview(user: LocalUser?, navController: NavController?){
-    if(user?.imageUrl == null || user.imageUrl == "null" || user.imageUrl!!.isEmpty()){
-        AccountPreview(pic = R.drawable.profile_pic_placeholder, user = user, navController = navController)
-    } else {
-        val imageSize = 135.dp
-        val containerHeight = imageSize + 100.dp
+    val imageUri : Uri?
+    val imageManager = ImageManager()
 
+    val imageDeferredResult: Deferred<Uri?> = GlobalScope.async {
+        imageManager.getImageUrl(ImageManager.users + user?.email + ".jpg")
+    }
+
+    runBlocking {
+        imageUri = imageDeferredResult.await()
+    }
+
+    val imageSize = 135.dp
+    val containerHeight = imageSize + 100.dp
+    if (imageUri == null && (user?.imageUrl == null || user.imageUrl == "null" || user.imageUrl!!.isEmpty())) {
+        AccountPreview(
+            pic = R.drawable.profile_pic_placeholder,
+            user = user,
+            navController = navController
+        )
+    } else {
         Surface(
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.secondaryContainer,
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(containerHeight)
                 .clickable(onClick = {
-                    navController?.navigate(if (!user.loggedIn) Route.SignIn.route else Route.AccountSettings.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                    if (user != null) {
+                        navController?.navigate(if (!user.loggedIn) Route.SignIn.route else Route.AccountSettings.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
                 })
                 .padding(8.dp)
         ) {
-            if (user == null || !user.loggedIn) {
-                Center(modifier = Modifier) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(20.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Person,
-                            contentDescription = "Person Icon",
-                            modifier = Modifier.size(40.dp)
-                        )
-                        Text(
-                            fontSize = 6.em,
-                            text = stringResource(R.string.sign_up_log_in)
-                        )
+            if (user != null) {
+                if (!user.loggedIn) {
+                    Center(modifier = Modifier) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(20.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Person,
+                                contentDescription = "Person Icon",
+                                modifier = Modifier.size(40.dp)
+                            )
+                            Text(
+                                fontSize = 6.em,
+                                text = stringResource(R.string.sign_up_log_in)
+                            )
+                        }
                     }
-                }
-            } else {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(20.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    val imagePainter = rememberAsyncImagePainter(user.imageUrl)
-                    CircularImage(
-                        painter = imagePainter,
-                        contentDescription = "Profile image",
-                        size = imageSize,
-                    )
-                    user.ToComposable(containerHeight)
+                } else {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(20.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        val imagePainter = rememberAsyncImagePainter(imageUri)
+                        CircularImage(
+                            painter = imagePainter,
+                            contentDescription = "Profile image",
+                            size = imageSize,
+                        )
+                        user.ToComposable(containerHeight)
+                    }
                 }
             }
         }

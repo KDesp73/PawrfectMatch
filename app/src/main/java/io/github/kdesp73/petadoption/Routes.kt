@@ -3,6 +3,7 @@ package io.github.kdesp73.petadoption
 import androidx.annotation.StringRes
 
 sealed class Route (val label: String, val route: String, @StringRes val resId: Int){
+    object PetPage : Route("Pet", route = "pet_page", R.string.route_pet_showcase)
     object MyPets : Route("My Pets", route = "my_pets", resId = R.string.route_my_pets)
     object Home : Route("Home", route = "home", resId = R.string.route_home)
     object About : Route("About", route = "about", resId = R.string.route_about)

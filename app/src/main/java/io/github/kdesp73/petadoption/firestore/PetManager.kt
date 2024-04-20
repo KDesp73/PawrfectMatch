@@ -66,4 +66,20 @@ class PetManager {
 
         return list
     }
-}
+
+    suspend fun getPetByEmailAndId(email: String, id: String) : Pet? {
+        return try {
+            val querySnapshot = db.collection("Pets")
+                .whereEqualTo("ownerEmail", email)
+                .whereEqualTo("id", id)
+                .get()
+                .await()
+
+            if(querySnapshot.documents.isNotEmpty()) {
+                Pet(querySnapshot.documents[0])
+            } else null
+        } catch (_: Exception) {
+            null
+        }
+    }
+ }

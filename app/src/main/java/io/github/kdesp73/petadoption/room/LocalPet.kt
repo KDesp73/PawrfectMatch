@@ -1,5 +1,10 @@
 package io.github.kdesp73.petadoption.room
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -17,6 +22,22 @@ data class LocalPet(
     @ColumnInfo(name = "type") var type: String,
     @ColumnInfo(name = "image_uri") var imageUri: String
 ){
+
+    @Composable
+    fun ToComposable(){
+        Column (
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
+        ){
+            Text(text = name)
+            Text(text = age)
+            Text(text = gender)
+            Text(text = location)
+            Text(text = type)
+            Text(text = size)
+        }
+    }
+
     constructor(pet: Pet) : this (
         name = pet.name,
         age = pet.age,

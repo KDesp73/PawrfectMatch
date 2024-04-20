@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.resToString
+import kotlinx.coroutines.tasks.await
 
 class UserManager {
     private val TAG = "UserManagement"
@@ -71,6 +72,25 @@ class UserManager {
             }
         }
     }
+
+    suspend fun getUserByEmail(email: String) : User? {
+        val userDocument: DocumentSnapshot
+
+        val querySnapshot = db.collection("Users")
+            .whereEqualTo("email", email)
+            .get()
+            .await()
+
+        val infoQuerySnapshot = db.collection("UserInfo")
+                .whereEqualTo("email", email)
+                .get()
+                .await()
+
+        if(querySnapshot.documents.isEmpty()) return null
+
+        return User.documentToObject(querySnapshot.documents[0], infoQuerySnapshot.documents[0])
+    }
+
 
     fun getUserByEmail(email: String, onComplete: (List<User>) -> Unit) {
         val userDocument: DocumentSnapshot

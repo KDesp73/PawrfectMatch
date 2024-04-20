@@ -38,6 +38,7 @@ import io.github.kdesp73.petadoption.routes.Login
 import io.github.kdesp73.petadoption.routes.MyPets
 import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.Settings
+import io.github.kdesp73.petadoption.routes.ShowPet
 import io.github.kdesp73.petadoption.routes.SignIn
 import io.github.kdesp73.petadoption.ui.components.Layout
 import kotlinx.coroutines.launch
@@ -123,7 +124,7 @@ class MainActivity : ComponentActivity() {
                     composable(Route.AddToy.route) { AddToy() }
                     composable(Route.ChangePassword.route) { ChangePassword(room, navController) }
                     composable(Route.CreateAccount.route) { CreateAccount(navController)}
-                    composable(Route.MyPets.route) { MyPets(room = room) }
+                    composable(Route.MyPets.route) { MyPets(room = room, navController) }
                     composable(
                         route = Route.Login.route + "?email={email}",
                         arguments = listOf(navArgument(
@@ -132,6 +133,15 @@ class MainActivity : ComponentActivity() {
                     ) { backStackEntry ->
                         backStackEntry.arguments?.getString("email")
                             ?.let { Login(navController, it, room) }
+                    }
+                    composable(
+                        route = Route.PetPage.route + "?id={id}",
+                        arguments = listOf(navArgument(
+                            name = "id",
+                        ) { defaultValue = "" })
+                    ) { backStackEntry ->
+                        backStackEntry.arguments?.getString("id")
+                            ?.let { ShowPet(it, room, navController) }
                     }
                 }
             }

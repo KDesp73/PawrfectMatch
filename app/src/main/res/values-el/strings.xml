@@ -97,4 +97,8 @@
     <string name="route_login">Σύνδεση</string>
     <string name="route_change_password">Αλλαγή Κωδικού</string>
     <string name="route_my_pets">Τα κατοικίδιά μου</string>
+    <string name="my_pets">Τα κατοικίδιά μου</string>
+    <string name="route_pet_showcase">Προβολή Κατοικιδίου</string>
+    <string name="gender">Φύλο</string>
+    <string name="owner">Ιδιοκτήτης</string>
 </resources>

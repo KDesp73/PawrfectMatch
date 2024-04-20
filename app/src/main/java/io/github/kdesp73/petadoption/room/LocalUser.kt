@@ -69,7 +69,7 @@ data class LocalUser (
         if(user.info.gender == "null") "" else user.info.gender,
         user.info.profileType,
         if(user.info.phone == "null") "" else user.info.phone,
-        if(user.info.imageUrl == "null") "" else user.info.imageUrl,
+        imageUrl = "",
         loggedIn,
     )
 
@@ -82,7 +82,7 @@ data class LocalUser (
         if(info.gender == "null") "" else info.gender,
         info.profileType,
         if(info.phone == "null") "" else info.phone,
-        if(info.imageUrl == "null") "" else info.imageUrl,
+        "",
         loggedIn,
     )
 

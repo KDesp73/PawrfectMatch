@@ -2,6 +2,7 @@ package io.github.kdesp73.petadoption.routes
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -53,10 +54,16 @@ import io.github.kdesp73.petadoption.ui.components.OptionPicker
 import io.github.kdesp73.petadoption.ui.components.SelectImage
 import io.github.kdesp73.petadoption.ui.components.TextFieldComponent
 import io.github.kdesp73.petadoption.viewmodels.EditAccountViewModel
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 private const val TAG = "AccountSettings"
 
-@SuppressLint("StateFlowValueCalledInComposition")
+@OptIn(DelicateCoroutinesApi::class)
+@SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
 fun AccountSettings(navController: NavController, room: AppDatabase) {
     val userDao = room.userDao()
@@ -67,12 +74,22 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
 
     val scrollState = rememberScrollState()
 
+    val imageDeferredResult: Deferred<Uri?> = GlobalScope.async {
+        imageManager.getImageUrl(ImageManager.users + user.email + ".jpg")
+    }
+
+    val imageUri : Uri?
+    runBlocking {
+        imageUri = imageDeferredResult.await()
+    }
+
     val viewModel = EditAccountViewModel()
     viewModel.fnameState.value = user.firstName
     viewModel.lnameState.value = user.lastName
     viewModel.phoneState.value = user.phone
     viewModel.genderState.value = genderFromValue[user.gender]?.label ?: Gender.OTHER.label
     viewModel.locationState.value = user.location
+    viewModel.imageState.value = imageUri
 
     Column(
         modifier = Modifier
@@ -88,7 +105,7 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
         ){
             val imageModifier = Modifier.fillMaxSize()
             SelectImage(null) { action, uri ->
-                val imagePainter = rememberAsyncImagePainter(uri)
+                val imagePainter = rememberAsyncImagePainter(viewModel.imageState.value ?: uri)
                 CircularImage(
                     modifier = imageModifier.clickable { action() },
                     painter = imagePainter,
@@ -156,7 +173,6 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                     viewModel.imageState.value?.let {
                         imageManager.uploadProfileImage(it, user.email) { url ->
                             Log.d(TAG, "url: $url")
-                            updatedUserInfo.imageUrl = url
                         }
                     }
 
