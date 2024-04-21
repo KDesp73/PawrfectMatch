@@ -105,4 +105,5 @@
     <string name="please_specify_your_location_first">Όρισε την τοποθεσία σου πρώτα</string>
     <string name="hey_there">Γειά σου,</string>
     <string name="create_an_account">Δημιουργησε Λογαρισμό</string>
+    <string name="dynamic">Δυναμικό</string>
 </resources>

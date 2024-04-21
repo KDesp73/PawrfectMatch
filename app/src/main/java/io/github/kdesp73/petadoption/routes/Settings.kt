@@ -2,6 +2,7 @@ package io.github.kdesp73.petadoption.routes
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -67,8 +68,26 @@ fun Settings(room: AppDatabase?){
                     .padding(4.dp)
                     .fillMaxWidth()
             ){
-                Dropdown(viewModel.theme, title = stringResource(R.string.theme), items = listOf(ThemeName.LIGHT.label, ThemeName.DARK.label, ThemeName.AUTO.label))
-                Dropdown(viewModel.language, title = stringResource(R.string.language), items = listOf(Language.ENGLISH.label, Language.GREEK.label))
+                val themes = mutableListOf(
+                    ThemeName.LIGHT.label,
+                    ThemeName.DARK.label,
+                    ThemeName.AUTO.label,
+                )
+
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    themes.add(ThemeName.DYNAMIC.label)
+                }
+
+                Dropdown(
+                    viewModel.theme,
+                    title = stringResource(R.string.theme),
+                    items = themes
+                )
+                Dropdown(
+                    viewModel.language,
+                    title = stringResource(R.string.language),
+                    items = listOf(Language.ENGLISH.label, Language.GREEK.label)
+                )
             }
         },
         top = {

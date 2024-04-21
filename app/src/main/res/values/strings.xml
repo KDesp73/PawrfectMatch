@@ -109,4 +109,5 @@
     <string name="please_specify_your_location_first">Please specify your location first</string>
     <string name="hey_there">Hey there,</string>
     <string name="create_an_account">Create an Account</string>
+    <string name="dynamic">Dynamic</string>
 </resources>

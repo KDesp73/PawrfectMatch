@@ -4,6 +4,7 @@ TODO: Drawer Content
 TODO: Toy Exchange
 TODO: Switch Languages
 TODO: Like Pet
+TODO: About Composable
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
