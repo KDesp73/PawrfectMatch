@@ -2,10 +2,8 @@ TODO: Search using filters
 TODO: Home Page
 TODO: Drawer Content
 TODO: Toy Exchange
-TODO: Landscape orientation features
 TODO: Switch Languages
 TODO: Like Pet
-TODO: fix drawer width
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -43,3 +41,5 @@ DONE: delete pet
 DONE: Better (cleaner) UI
 DONE: beta download website
 DONE: password requirements
+DONE: fix drawer width
+DONE: Landscape orientation features

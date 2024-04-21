@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Card
@@ -87,9 +89,10 @@ fun SignIn(navController: NavController?){
     val iconButtonModifier: Modifier = Modifier.fillMaxWidth()
     val cardModifier: Modifier = Modifier.padding(12.dp)
     val notificationService = NotificationService(context = LocalContext.current)
+    val scrollState = rememberScrollState()
 
     Column (
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     )

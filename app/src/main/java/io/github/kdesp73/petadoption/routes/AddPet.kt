@@ -4,6 +4,8 @@ package io.github.kdesp73.petadoption.routes
 import android.app.NotificationManager
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource

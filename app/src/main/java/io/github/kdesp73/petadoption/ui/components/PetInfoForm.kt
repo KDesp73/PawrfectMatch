@@ -29,10 +29,10 @@ import io.github.kdesp73.petadoption.viewmodels.PetFormViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun PetInfoForm(viewModel: PetFormViewModel, submitAction: () -> Unit){
+fun PetInfoForm(modifier: Modifier = Modifier, viewModel: PetFormViewModel, submitAction: () -> Unit){
     val scrollState = rememberScrollState()
     Column (
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,

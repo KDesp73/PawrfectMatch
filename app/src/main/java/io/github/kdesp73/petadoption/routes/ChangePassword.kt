@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Lock
@@ -42,10 +44,12 @@ fun ChangePassword(room: AppDatabase, navController: NavController){
     val userManager = UserManager()
     val context = LocalContext.current
     val notificationService = NotificationService(context)
+    val scrollState = rememberScrollState()
 
     Column (
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
             .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(15.dp)
