@@ -43,8 +43,8 @@ import io.github.kdesp73.petadoption.enums.genderFromValue
 import io.github.kdesp73.petadoption.enums.petAgeFromValue
 import io.github.kdesp73.petadoption.enums.petSizeFromValue
 import io.github.kdesp73.petadoption.enums.petTypeFromValue
-import io.github.kdesp73.petadoption.firestore.ImageManager
 import io.github.kdesp73.petadoption.firestore.FirestorePet
+import io.github.kdesp73.petadoption.firestore.ImageManager
 import io.github.kdesp73.petadoption.firestore.PetManager
 import io.github.kdesp73.petadoption.firestore.User
 import io.github.kdesp73.petadoption.firestore.UserManager
@@ -54,29 +54,31 @@ import io.github.kdesp73.petadoption.room.LocalPet
 import io.github.kdesp73.petadoption.ui.components.CircularImage
 import io.github.kdesp73.petadoption.ui.components.InfoBox
 import io.github.kdesp73.petadoption.ui.components.InfoBoxClickable
+import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
 
 private const val TAG = "PetPage"
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
-private fun Showcase(pet: LocalPet, uri: String?) {
+private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, room: AppDatabase) {
+    val context = LocalContext.current
+    val petManager = PetManager()
     val userManager = UserManager()
+    val imageManager = ImageManager()
+    var owner by remember { mutableStateOf<User?>(null) }
 
-    val userDeferredResult: Deferred<User?> = GlobalScope.async {
-        userManager.getUserByEmail(pet.ownerEmail)
-    }
+    LaunchedEffect(key1 = owner) {
+        val userDeferredResult: Deferred<User?> = GlobalScope.async {
+            userManager.getUserByEmail(pet.ownerEmail)
+        }
 
-    val owner: User?
-    runBlocking {
         owner = userDeferredResult.await()
     }
-
 
     Column(
         modifier = Modifier
@@ -108,14 +110,59 @@ private fun Showcase(pet: LocalPet, uri: String?) {
             InfoBox(label = stringResource(id = R.string.size), info = petSizeFromValue[pet.size]?.label)
         }
         Spacer(modifier = Modifier.height(5.dp))
-        InfoBoxClickable(
-            label = stringResource(R.string.owner),
-            width = 200.dp,
-            height = 100.dp,
-            infoFontSize = 4.em.value,
-            info = (owner?.info?.firstName)
-        ) {
-            // TODO: Navigate to users profile page
+        if(pet.ownerEmail == room.userDao().getEmail()) {
+            Button(
+                colors = ButtonColors(
+                    containerColor = Color.Red,
+                    contentColor = Color.White,
+                    disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
+                    disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
+
+                ),
+                onClick = {
+                    var deleted: Boolean = true
+                    petManager.deletePetById(pet.generateId()) { completed ->
+                        deleted = deleted and completed
+                    }
+
+                    imageManager.deleteImage(ImageManager.pets + pet.generateId() + ".jpg") { completed ->
+                        deleted = deleted and completed
+                    }
+
+                    val notificationService = NotificationService(context)
+                    if (deleted){
+                        room.petDao().delete(pet)
+                        navigateTo(Route.Home.route, navController)
+                        notificationService.showBasicNotification(
+                            context.getString(R.string.notif_channel_main),
+                            context.getString(R.string.success),
+                            content = context.getString(R.string.deleted_successfully, pet.name),
+                            NotificationManager.IMPORTANCE_DEFAULT
+                        )
+
+                    }
+                }
+            ) {
+                Row (
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
+                    Text(text = "Delete")
+                }
+            }
+        } else {
+            if(owner?.info?.firstName != null){
+                InfoBoxClickable(
+                    label = stringResource(R.string.owner),
+                    width = 200.dp,
+                    height = 100.dp,
+                    infoFontSize = 4.em.value,
+                    info = (owner?.info?.firstName)
+                ) {
+                    navigateTo(Route.UserPage.route + "?email=${owner?.email}", navController = navController)
+                }
+            } else LoadingAnimation()
         }
     }
 
@@ -127,7 +174,6 @@ private fun Showcase(pet: LocalPet, uri: String?) {
 fun ShowPet(id: String = "", room: AppDatabase, navController: NavController){
     val petManager = PetManager()
     val imageManager = ImageManager()
-    val context = LocalContext.current
 
     var pet by remember { mutableStateOf<LocalPet?>(null) }
     var uri by remember { mutableStateOf<Uri?>(null) }
@@ -177,50 +223,8 @@ fun ShowPet(id: String = "", room: AppDatabase, navController: NavController){
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            Showcase(pet = pet!!, uri.toString())
+            Showcase(pet = pet!!, uri.toString(), navController, room)
 
-            if(pet!!.ownerEmail == room.userDao().getEmail()) {
-                Button(
-                    colors = ButtonColors(
-                        containerColor = Color.Red,
-                        contentColor = Color.White,
-                        disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
-                        disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
-
-                    ),
-                    onClick = {
-                        var deleted: Boolean = true
-                        petManager.deletePetById(pet!!.generateId()) { completed ->
-                            deleted = deleted and completed
-                        }
-
-                        imageManager.deleteImage(ImageManager.pets + pet!!.generateId() + ".jpg") { completed ->
-                            deleted = deleted and completed
-                        }
-
-                        val notificationService = NotificationService(context)
-                        if (deleted){
-                            room.petDao().delete(pet!!)
-                            navigateTo(Route.Home.route, navController)
-                            notificationService.showBasicNotification(
-                                context.getString(R.string.notif_channel_main),
-                                context.getString(R.string.success),
-                                content = context.getString(R.string.deleted_successfully, pet!!.name),
-                                NotificationManager.IMPORTANCE_DEFAULT
-                            )
-
-                        }
-                    }
-                ) {
-                    Row (
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
-                        Text(text = "Delete")
-                    }
-                }
-            }
         }
     }
 

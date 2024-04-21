@@ -40,6 +40,7 @@ import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.Settings
 import io.github.kdesp73.petadoption.routes.ShowPet
 import io.github.kdesp73.petadoption.routes.SignIn
+import io.github.kdesp73.petadoption.routes.UserPage
 import io.github.kdesp73.petadoption.ui.components.Layout
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -141,6 +142,15 @@ class MainActivity : ComponentActivity() {
                     ) { backStackEntry ->
                         backStackEntry.arguments?.getString("id")
                             ?.let { ShowPet(it, room, navController) }
+                    }
+                    composable(
+                        route = Route.UserPage.route + "?email={email}",
+                        arguments = listOf(navArgument(
+                            name = "email",
+                        ) { defaultValue = "" })
+                    ) { backStackEntry ->
+                        backStackEntry.arguments?.getString("email")
+                            ?.let { UserPage(it, navController) }
                     }
                 }
             }

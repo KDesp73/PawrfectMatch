@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -35,6 +36,7 @@ import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.enums.CustomAlignment
 import io.github.kdesp73.petadoption.isLandscape
 import io.github.kdesp73.petadoption.navigateTo
+import io.github.kdesp73.petadoption.routes.About
 import kotlinx.coroutines.launch
 
 class DrawerIcons{
@@ -86,7 +88,7 @@ private fun DrawerContent(
                                       }
                                   }
                               ) {
-                                  Text(text = route.label)
+                                  Text(text = stringResource(id = route.resId))
                               }
 
                           }
@@ -94,30 +96,30 @@ private fun DrawerContent(
                           NavButton(route = Route.Search)
                           NavButton(route = Route.Favourites)
                       }
+                  } else {
+                      About()
                   }
-            },
-            center = {
-                    if(!isLandscape(LocalConfiguration.current)) {
-                        Text(text = "TODO")
-                    }
             },
             bottom = {
                 Row (
                     horizontalArrangement = Arrangement.spacedBy(15.dp),
                     modifier = Modifier.padding(10.dp)
                 ){
-                    CircularIconButton(icon = DrawerIcons.About.icon, description = DrawerIcons.About.description, bg = iconColor, size = iconSize) {
-                        navController?.navigate(Route.About.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                    if(isLandscape(LocalConfiguration.current)){
+                        CircularIconButton(icon = DrawerIcons.About.icon, description = DrawerIcons.About.description, bg = iconColor, size = iconSize) {
+                            navController?.navigate(Route.About.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                        scope.launch {
-                            drawerState.close()
+                            scope.launch {
+                                drawerState.close()
+                            }
                         }
                     }
+
                     CircularIconButton(icon = DrawerIcons.Settings.icon, description = DrawerIcons.Settings.description, bg = iconColor, size = iconSize) {
                         navController?.navigate(Route.Settings.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
