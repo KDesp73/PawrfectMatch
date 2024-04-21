@@ -10,9 +10,12 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.isLandscape
+import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.theme.PetAdoptionTheme
 import kotlinx.coroutines.CoroutineScope
@@ -39,16 +42,7 @@ fun Layout(topAppBarText: String, navController: NavHostController, room: AppDat
                     AppBar(
                         topAppBarText = topAppBarText,
                         menuAction = { menuAction(scope, drawerState) },
-                        accountAction = {
-                            navController.navigate(Route.Account.route){
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-
-                            }
-                        }
+                        accountAction = { navigateTo(Route.Account.route, navController) }
                     )
                 },
                 content =  { innerPadding ->
@@ -57,7 +51,9 @@ fun Layout(topAppBarText: String, navController: NavHostController, room: AppDat
                     }
                 },
                 bottomBar = {
-                    BottomBar(navController)
+                    if(!isLandscape(LocalConfiguration.current)) {
+                        BottomBar(navController)
+                    }
                 }
             )
         }

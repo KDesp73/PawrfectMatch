@@ -2,6 +2,7 @@ package io.github.kdesp73.petadoption
 
 import android.app.LocaleManager
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -9,7 +10,9 @@ import android.os.LocaleList
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -83,4 +86,11 @@ fun imageBitmapFromBitmap(bitmap: Bitmap, context: Context) : ImageBitmap {
         bitmap.generationId,
         option
     ).asImageBitmap()
+}
+
+fun isLandscape(configuration: Configuration) : Boolean {
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
+
+    return screenWidth > screenHeight
 }

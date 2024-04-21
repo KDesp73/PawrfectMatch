@@ -2,20 +2,27 @@ package io.github.kdesp73.petadoption.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
@@ -26,6 +33,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.enums.CustomAlignment
+import io.github.kdesp73.petadoption.isLandscape
+import io.github.kdesp73.petadoption.navigateTo
 import kotlinx.coroutines.launch
 
 class DrawerIcons{
@@ -57,8 +66,41 @@ private fun DrawerContent(
     ){
         VerticalScaffold(
             bottomAlignment = CustomAlignment.END,
-            top = { Text(text = "TODO")},
-            center = { Text(text = "TODO")},
+            top = {
+                  if(isLandscape(LocalConfiguration.current)) {
+                      Column (
+                          modifier = Modifier.padding(2.dp),
+                          verticalArrangement = Arrangement.spacedBy(5.dp),
+                          horizontalAlignment = Alignment.CenterHorizontally
+                      ){
+                          @Composable
+                          fun NavButton(route: Route){
+                              ElevatedButton(
+                                  modifier = Modifier
+                                      .fillMaxWidth()
+                                      .padding(vertical = 2.dp, horizontal = 6.dp),
+                                  onClick = {
+                                      navController?.let { navigateTo(route.route, it) }
+                                      scope.launch {
+                                          drawerState.close()
+                                      }
+                                  }
+                              ) {
+                                  Text(text = route.label)
+                              }
+
+                          }
+                          NavButton(route = Route.Home)
+                          NavButton(route = Route.Search)
+                          NavButton(route = Route.Favourites)
+                      }
+                  }
+            },
+            center = {
+                    if(!isLandscape(LocalConfiguration.current)) {
+                        Text(text = "TODO")
+                    }
+            },
             bottom = {
                 Row (
                     horizontalArrangement = Arrangement.spacedBy(15.dp),
@@ -103,17 +145,28 @@ fun Drawer(
     content: @Composable () -> Unit
 ) {
     val configuration = LocalConfiguration.current
-
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
+
+    val landscape = isLandscape(configuration)
 
     ModalNavigationDrawer(
         modifier = modifier,
         drawerState = drawerState,
-        drawerContent = { DrawerContent(width = screenWidth - 40.dp, navController = navController, drawerState = drawerState) }
+        drawerContent = {
+            DrawerContent(
+                width = if(landscape) screenWidth * 0.4 else screenWidth * 0.8,
+                navController = navController,
+                drawerState = drawerState
+            )
+        }
     ) {
         content()
     }
+}
+
+private operator fun Dp.times(d: Double): Dp {
+    return (this.value * d).dp
 }
 
 @Preview

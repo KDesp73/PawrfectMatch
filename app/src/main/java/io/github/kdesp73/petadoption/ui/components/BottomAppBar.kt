@@ -3,6 +3,7 @@ package io.github.kdesp73.petadoption.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -25,7 +26,7 @@ fun BottomBar(navController: NavController) {
     BottomAppBar(
         actions = {
             Row (
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(40.dp),
                 horizontalArrangement = Arrangement.SpaceAround
             ){
                 IconButton(onClick = {
