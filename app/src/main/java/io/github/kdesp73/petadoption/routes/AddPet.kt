@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.MainActivity
@@ -40,6 +41,19 @@ fun AddPet(navController: NavController?, room: AppDatabase?){
     val context = LocalContext.current
     val notificationService = NotificationService(context)
     val imageManager = ImageManager()
+
+    if(userDao?.getUser()?.location?.isEmpty()!!) {
+        if (navController != null) {
+            navigateTo(Route.AccountSettings.route, navController)
+        }
+
+        Toast.makeText(
+            context,
+            stringResource(R.string.please_specify_your_location_first),
+            Toast.LENGTH_LONG
+        ).show()
+        return
+    }
 
     PetInfoForm(viewModel = viewModel) {
         viewModel.log(TAG)

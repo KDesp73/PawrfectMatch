@@ -20,16 +20,21 @@ fun EmailFieldComponent(
     icon: ImageVector,
     iconDescriptor: String = "Text field icon",
     type: TextFieldType = TextFieldType.NORMAL,
-    isError: Boolean = false,
+    isError: MutableStateFlow<Boolean> = MutableStateFlow(false),
+    onValueChange: () -> Unit = {}
 ) {
     val text by state.collectAsState()
+    val error by isError.collectAsState()
 
     when (type) {
         TextFieldType.NORMAL -> {
             TextField(
-                isError = isError,
+                isError = error,
                 value = text,
-                onValueChange = { state.value = it },
+                onValueChange = {
+                    state.value = it
+                    onValueChange()
+                                },
                 label = { Text(labelValue) },
                 leadingIcon = { Icon(imageVector = icon, contentDescription = iconDescriptor) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
@@ -37,9 +42,12 @@ fun EmailFieldComponent(
         }
         TextFieldType.OUTLINED -> {
             OutlinedTextField(
-                isError = isError,
+                isError = error,
                 value = text,
-                onValueChange = { state.value = it },
+                onValueChange = {
+                    state.value = it
+                    onValueChange()
+                                },
                 label = { Text(labelValue) },
                 leadingIcon = { Icon(imageVector = icon, contentDescription = iconDescriptor) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)

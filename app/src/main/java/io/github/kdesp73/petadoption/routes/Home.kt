@@ -9,12 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 
 @Composable
 fun Home() {
-    val notificationService = NotificationService(context = LocalContext.current)
+    val context = LocalContext.current
+    val notificationService = NotificationService(context = context)
 
     Column (
         modifier = Modifier
@@ -23,7 +25,7 @@ fun Home() {
         Text(text = "Welcome Home")
         Button(onClick = {
             notificationService.showExpandableTextNotification(
-                channel = R.string.notif_channel_main.toString(),
+                channel = context.getString(R.string.notif_channel_main),
                 title = "Expandable Text Notification Test",
                 content = "Hello",
                 expandedText = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",

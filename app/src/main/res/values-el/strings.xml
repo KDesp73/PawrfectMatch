@@ -102,4 +102,7 @@
     <string name="gender">Φύλο</string>
     <string name="owner">Ιδιοκτήτης</string>
     <string name="deleted_successfully">%1$s διαγράφηκε με επιτυχία</string>
+    <string name="please_specify_your_location_first">Όρισε την τοποθεσία σου πρώτα</string>
+    <string name="hey_there">Γειά σου,</string>
+    <string name="create_an_account">Δημιουργησε Λογαρισμό</string>
 </resources>

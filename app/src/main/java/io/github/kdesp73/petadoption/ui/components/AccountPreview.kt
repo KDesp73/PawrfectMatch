@@ -106,7 +106,7 @@ fun AccountPreview(user: LocalUser?, navController: NavController?){
     val imageManager = ImageManager()
 
     if(user != null && user.loggedIn){
-        LaunchedEffect(user) {
+        LaunchedEffect(imageUri) {
             val imageDeferredResult: Deferred<Uri?> = GlobalScope.async {
                 imageManager.getImageUrl(ImageManager.users + user.email + ".jpg")
             }
@@ -117,7 +117,7 @@ fun AccountPreview(user: LocalUser?, navController: NavController?){
 
     val imageSize = 135.dp
     val containerHeight = imageSize + 100.dp
-    if (imageUri == Uri.EMPTY && (user?.imageUrl == null || user.imageUrl == "null" || user.imageUrl!!.isEmpty())) {
+    if ((imageUri == Uri.EMPTY || imageUri == null) && (user?.imageUrl == null || user.imageUrl == "null" || user.imageUrl!!.isEmpty())) {
         AccountPreview(
             pic = R.drawable.profile_pic_placeholder,
             user = user,

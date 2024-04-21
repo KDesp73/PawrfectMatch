@@ -86,8 +86,10 @@ class ImageManager {
     }
 
     suspend fun getImageUrl(path: String): Uri? {
-        return storage.child(path)
-            .downloadUrl
-            .await()
+        return try {
+            storage.child(path).downloadUrl.await()
+        } catch (_: Exception){
+            null
+        }
     }
 }

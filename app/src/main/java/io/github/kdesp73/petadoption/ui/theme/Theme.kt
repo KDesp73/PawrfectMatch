@@ -24,10 +24,10 @@ fun PetAdoptionTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->{
-            val context = LocalContext.current
-            if (darkColorScheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+//        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->{
+//            val context = LocalContext.current
+//            if (darkColorScheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+//        }
 
         theme == ThemeName.DARK.value -> Theme.Dark.colors
         theme == ThemeName.LIGHT.value -> Theme.Light.colors

@@ -25,25 +25,33 @@ fun TextFieldComponent(
     icon: ImageVector,
     iconDescriptor: String = "Text field icon",
     type: TextFieldType = TextFieldType.NORMAL,
-    isError: Boolean = false,
+    isError: MutableStateFlow<Boolean> = MutableStateFlow(false),
+    onValueChanged: () -> Unit = {}
 ) {
     val text by state.collectAsState()
+    val error by isError.collectAsState()
 
     when (type) {
         TextFieldType.NORMAL -> {
             TextField(
-                isError = isError,
+                isError = error,
                 value = text,
-                onValueChange = { state.value = it },
+                onValueChange = {
+                    state.value = it
+                    onValueChanged()
+                },
                 label = { Text(labelValue) },
                 leadingIcon = { Icon(imageVector = icon, contentDescription = iconDescriptor) }
             )
         }
         TextFieldType.OUTLINED -> {
             OutlinedTextField(
-                isError = isError,
+                isError = error,
                 value = text,
-                onValueChange = { state.value = it },
+                onValueChange = {
+                    state.value = it
+                    onValueChanged()
+                },
                 label = { Text(labelValue) },
                 leadingIcon = { Icon(imageVector = icon, contentDescription = iconDescriptor) }
             )

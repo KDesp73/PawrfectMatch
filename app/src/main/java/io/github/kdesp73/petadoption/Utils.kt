@@ -15,8 +15,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import java.security.MessageDigest
 
-fun checkName(name: String): Boolean {
-    return name.all { it.isLetter() } && name.isNotBlank() && name.isNotEmpty()
+fun checkName(name: String) = runCatching {
+    require(name.all { !it.isWhitespace() })
+    require(name.all { it.isLetter() })
 }
 
 fun checkEmail(email: String): Boolean {

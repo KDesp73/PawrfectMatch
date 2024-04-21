@@ -5,7 +5,7 @@ TODO: Toy Exchange
 TODO: Landscape orientation features
 TODO: Switch Languages
 TODO: Like Pet
-TODO: beta download website
+TODO: fix drawer width
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -41,3 +41,5 @@ DONE: PetPreview Component
 DONE: split processes to threads
 DONE: delete pet
 DONE: Better (cleaner) UI
+DONE: beta download website
+DONE: password requirements
