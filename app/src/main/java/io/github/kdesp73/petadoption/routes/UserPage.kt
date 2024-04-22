@@ -76,8 +76,7 @@ fun UserPage(email: String, navController: NavController){
             }
         }
 
-        if(uri != null)
-            CircularImage(uri = uri, contentDescription = "Profile Image", size = 200.dp)
+        CircularImage(uri = uri, contentDescription = "Profile Image", size = 200.dp)
 
         if(user != null){
             InfoBoxRow {

@@ -1,4 +1,3 @@
-TODO: Search using filters
 TODO: Home Page
 TODO: Drawer Content
 TODO: Toy Exchange
@@ -46,3 +45,4 @@ DONE: password requirements
 DONE: fix drawer width
 DONE: Landscape orientation features
 DONE: owner page
+DONE: Search using filters

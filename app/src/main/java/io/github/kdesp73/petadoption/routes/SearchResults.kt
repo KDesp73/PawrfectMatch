@@ -25,6 +25,7 @@ import io.github.kdesp73.petadoption.enums.petSizeLabelList
 import io.github.kdesp73.petadoption.enums.petTypeLabelList
 import io.github.kdesp73.petadoption.firestore.FirestorePet
 import io.github.kdesp73.petadoption.firestore.PetManager
+import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
 import io.github.kdesp73.petadoption.ui.components.PetCard
 import io.github.kdesp73.petadoption.viewmodels.SearchFiltersViewModel
@@ -51,10 +52,14 @@ fun SearchResults(json: String, navController: NavController){
     }
 
     if(list.isEmpty()){
-        LoadingAnimation()
+        Center(modifier = Modifier.fillMaxSize()) {
+            LoadingAnimation(64.dp)
+        }
     } else {
         LazyColumn (
-            modifier = Modifier.padding(8.dp).fillMaxSize(),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(15.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ){

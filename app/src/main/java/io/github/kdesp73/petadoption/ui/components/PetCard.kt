@@ -43,6 +43,9 @@ private fun Contents(modifier: Modifier, pet: Pet, uri: String?, id: String, nav
                     navigateTo(
                         Route.PetPage.route + "?id=$id",
                         navController = navController,
+                        popUpToStartDestination = false,
+                        launchAsSingleTop = false,
+                        restore = false
                     )
                 }
             }

@@ -3,6 +3,7 @@ package io.github.kdesp73.petadoption.routes
 import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -51,6 +52,7 @@ import io.github.kdesp73.petadoption.firestore.UserManager
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
+import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.CircularImage
 import io.github.kdesp73.petadoption.ui.components.InfoBox
 import io.github.kdesp73.petadoption.ui.components.InfoBoxClickable
@@ -87,10 +89,6 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
-        val painter = rememberAsyncImagePainter(model = uri)
-        CircularImage(painter = painter, contentDescription = "Pet image", size = 200.dp)
-        Text(text = pet.name, fontSize = 6.em, color = MaterialTheme.colorScheme.primary)
-        Spacer(modifier = Modifier.height(5.dp))
         @Composable
         fun InfoBoxRow(content: @Composable () -> Unit){
             Row (
@@ -101,68 +99,88 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
             }
         }
 
-        InfoBoxRow {
-            InfoBox(label = stringResource(id = R.string.type), info = petTypeFromValue[pet.type]?.label)
-            InfoBox(label = stringResource(R.string.gender), info = genderFromValue[pet.gender]?.label)
-        }
-        InfoBoxRow {
-            InfoBox(label = stringResource(id = R.string.age), info = petAgeFromValue[pet.age]?.label)
-            InfoBox(label = stringResource(id = R.string.size), info = petSizeFromValue[pet.size]?.label)
-        }
-        Spacer(modifier = Modifier.height(5.dp))
-        if(pet.ownerEmail == room.userDao().getEmail()) {
-            Button(
-                colors = ButtonColors(
-                    containerColor = Color.Red,
-                    contentColor = Color.White,
-                    disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
-                    disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
-
-                ),
-                onClick = {
-                    var deleted: Boolean = true
-                    petManager.deletePetById(pet.generateId()) { completed ->
-                        deleted = deleted and completed
-                    }
-
-                    imageManager.deleteImage(ImageManager.pets + pet.generateId() + ".jpg") { completed ->
-                        deleted = deleted and completed
-                    }
-
-                    val notificationService = NotificationService(context)
-                    if (deleted){
-                        room.petDao().delete(pet)
-                        navigateTo(Route.Home.route, navController)
-                        notificationService.showBasicNotification(
-                            context.getString(R.string.notif_channel_main),
-                            context.getString(R.string.success),
-                            content = context.getString(R.string.deleted_successfully, pet.name),
-                            NotificationManager.IMPORTANCE_DEFAULT
-                        )
-
-                    }
-                }
-            ) {
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
-                    Text(text = "Delete")
-                }
+        if(owner == null){
+            Center(modifier = Modifier.fillMaxSize()) {
+                LoadingAnimation(64.dp)
             }
         } else {
-            if(owner?.info?.firstName != null){
-                InfoBoxClickable(
-                    label = stringResource(R.string.owner),
-                    width = 200.dp,
-                    height = 100.dp,
-                    infoFontSize = 4.em.value,
-                    info = (owner?.info?.firstName)
+            val painter = rememberAsyncImagePainter(model = uri)
+            CircularImage(painter = painter, contentDescription = "Pet image", size = 200.dp)
+            Text(text = pet.name, fontSize = 6.em, color = MaterialTheme.colorScheme.primary)
+            Spacer(modifier = Modifier.height(5.dp))
+
+            InfoBoxRow {
+                InfoBox(label = stringResource(id = R.string.type), info = petTypeFromValue[pet.type]?.label)
+                InfoBox(label = stringResource(R.string.gender), info = genderFromValue[pet.gender]?.label)
+            }
+            InfoBoxRow {
+                InfoBox(label = stringResource(id = R.string.age), info = petAgeFromValue[pet.age]?.label)
+                InfoBox(label = stringResource(id = R.string.size), info = petSizeFromValue[pet.size]?.label)
+            }
+            Spacer(modifier = Modifier.height(5.dp))
+            if(pet.ownerEmail == room.userDao().getEmail()) {
+                Button(
+                    colors = ButtonColors(
+                        containerColor = Color.Red,
+                        contentColor = Color.White,
+                        disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
+                        disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
+
+                    ),
+                    onClick = {
+                        var deleted: Boolean = true
+                        petManager.deletePetById(pet.generateId()) { completed ->
+                            deleted = deleted and completed
+                        }
+
+                        imageManager.deleteImage(ImageManager.pets + pet.generateId() + ".jpg") { completed ->
+                            deleted = deleted and completed
+                        }
+
+                        val notificationService = NotificationService(context)
+                        if (deleted){
+                            room.petDao().delete(pet)
+                            navigateTo(Route.Home.route, navController)
+                            notificationService.showBasicNotification(
+                                context.getString(R.string.notif_channel_main),
+                                context.getString(R.string.success),
+                                content = context.getString(R.string.deleted_successfully, pet.name),
+                                NotificationManager.IMPORTANCE_DEFAULT
+                            )
+
+                        }
+                    }
                 ) {
-                    navigateTo(Route.UserPage.route + "?email=${owner?.email}", navController = navController)
+                    Row (
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
+                        Text(text = "Delete")
+                    }
                 }
-            } else LoadingAnimation()
+            } else {
+                if(owner?.info?.firstName != null){
+                    InfoBoxClickable(
+                        label = stringResource(R.string.owner),
+                        width = 200.dp,
+                        height = 100.dp,
+                        infoFontSize = 4.em.value,
+                        info = (owner?.info?.firstName)
+                    ) {
+                        navigateTo(
+                            Route.UserPage.route + "?email=${owner?.email}",
+                            navController = navController,
+                            launchAsSingleTop = false,
+                            restore = false,
+                            popUpToStartDestination = false
+                        )
+                    }
+                } else {
+                    LoadingAnimation()
+                }
+            }
+
         }
     }
 
@@ -193,30 +211,36 @@ fun ShowPet(id: String = "", room: AppDatabase, navController: NavController){
     } else {
         // Firebase Pet
         var firebasePet by remember{ mutableStateOf<FirestorePet?>(null) }
+
+        Log.d(TAG, "id: $id")
+
         LaunchedEffect(firebasePet) {
             val deferredResult: Deferred<FirestorePet?> = GlobalScope.async {
-                petManager.getPetByEmailAndId(room.userDao().getEmail(), id)
+                petManager.getPetById(id)
             }
 
             firebasePet = deferredResult.await()
         }
 
         var firebaseUri by remember { mutableStateOf<Uri?>(null) }
-        LaunchedEffect(firebaseUri) {
+        LaunchedEffect(firebaseUri, firebasePet) {
             if (firebasePet != null) {
                 val imageDeferredResult: Deferred<Uri?> = GlobalScope.async {
-                    imageManager.getImageUrl(ImageManager.pets + firebasePet!!.getImageFile())
+                    imageManager.getImageUrl(ImageManager.pets + id + ".jpg")
                 }
 
                 firebaseUri = imageDeferredResult.await()
             }
         }
 
-        pet = LocalPet(firebasePet!!)
+        Log.d(TAG, "Pet: ${pet.toString()}")
+        Log.d(TAG, "Uri: ${uri.toString()}")
+
+        pet = if (firebasePet == null) null else LocalPet(firebasePet!!)
         uri = firebaseUri
     }
 
-    if (pet != null) {
+    if (pet != null && uri != null) {
         val scrollState = rememberScrollState()
         Column (
             modifier = Modifier.verticalScroll(scrollState),
@@ -224,7 +248,10 @@ fun ShowPet(id: String = "", room: AppDatabase, navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Showcase(pet = pet!!, uri.toString(), navController, room)
-
+        }
+    } else {
+        Center(modifier = Modifier.fillMaxSize()) {
+            LoadingAnimation(64.dp)
         }
     }
 

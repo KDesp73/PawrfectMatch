@@ -140,6 +140,21 @@ class PetManager {
         }
     }
 
+    suspend fun getPetById(id: String) : FirestorePet? {
+        return try {
+            val querySnapshot = db.collection("Pets")
+                .whereEqualTo("id", id)
+                .get()
+                .await()
+
+            if(querySnapshot.documents.isNotEmpty()) {
+                FirestorePet(querySnapshot.documents[0])
+            } else null
+        } catch (_: Exception) {
+            null
+        }
+    }
+
     private fun getPetDocumentId(id: String, onComplete: (String?) -> Unit){
         db.collection("Pets").whereEqualTo("id", id).get()
             .addOnSuccessListener { snapshot ->
