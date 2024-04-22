@@ -2,6 +2,9 @@ package io.github.kdesp73.petadoption.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowColumn
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -18,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import io.github.kdesp73.petadoption.enums.Orientation
 import kotlinx.coroutines.flow.MutableStateFlow
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun OptionPicker(
     modifier: Modifier = Modifier,
@@ -53,12 +57,12 @@ fun OptionPicker(
 
     when(orientation){
         Orientation.HORIZONTAL -> {
-            Row (modifier = modifier){
+            FlowRow (modifier = modifier){
                 Options(null)
             }
         }
         Orientation.VERTICAL -> {
-            Column (
+            FlowColumn (
                 modifier = modifier,
                 verticalArrangement = Arrangement.spacedBy(0.dp)
             ){

@@ -12,3 +12,5 @@ enum class PetSize(val label: String, val value: String) {
 
 val petSizeFromLabel = PetSize.entries.associateBy { it.label }
 val petSizeFromValue = PetSize.entries.associateBy { it.value }
+val petSizeLabelList = PetSize.entries.map { it.label }.toList()
+val petSizeValueList = PetSize.entries.map { it.value }.toList()

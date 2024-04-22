@@ -111,4 +111,9 @@
     <string name="create_an_account">Create an Account</string>
     <string name="dynamic">Dynamic</string>
     <string name="route_user_page">User Page</string>
+    <string name="search_filters">Search Filters</string>
+    <string name="clear_all">Clear All</string>
+    <string name="select_all">Select All</string>
+    <string name="route_search_results">Search Results</string>
+    <string name="select_at_least_one_of_each">Select at least one of each</string>
 </resources>

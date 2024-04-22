@@ -1,11 +1,7 @@
 package io.github.kdesp73.petadoption.enums
 
-import android.content.res.Resources
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat.getString
 import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.enums.Gender
 
 
 enum class Gender(val label: String, val value: String) {
@@ -16,4 +12,5 @@ enum class Gender(val label: String, val value: String) {
 
 val genderFromLabel = Gender.entries.associateBy { it.label }
 val genderFromValue = Gender.entries.associateBy { it.value }
-
+val genderLabelList = Gender.entries.map { it.label }.toList()
+val genderValueList = Gender.entries.map { it.value}.toList()

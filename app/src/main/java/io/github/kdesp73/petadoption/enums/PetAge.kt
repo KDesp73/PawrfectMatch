@@ -12,3 +12,5 @@ enum class PetAge (val label: String, val value: String){
 
 val petAgeFromLabel = PetAge.entries.associateBy { it.label }
 val petAgeFromValue = PetAge.entries.associateBy { it.value}
+val petAgeLabelList = PetAge.entries.map { it.label }.toList()
+val petAgeValueList = PetAge.entries.map { it.value }.toList()

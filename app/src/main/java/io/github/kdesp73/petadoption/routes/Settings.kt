@@ -7,9 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,8 +25,6 @@ import androidx.compose.ui.unit.em
 import io.github.kdesp73.petadoption.LocaleManager
 import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.Route
-import io.github.kdesp73.petadoption.changeLocale
 import io.github.kdesp73.petadoption.enums.CustomAlignment
 import io.github.kdesp73.petadoption.enums.Language
 import io.github.kdesp73.petadoption.enums.ThemeName
@@ -79,12 +75,12 @@ fun Settings(room: AppDatabase?){
                 }
 
                 Dropdown(
-                    viewModel.theme,
+                    state = viewModel.theme,
                     title = stringResource(R.string.theme),
                     items = themes
                 )
                 Dropdown(
-                    viewModel.language,
+                    state = viewModel.language,
                     title = stringResource(R.string.language),
                     items = listOf(Language.ENGLISH.label, Language.GREEK.label)
                 )

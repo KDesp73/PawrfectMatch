@@ -5,7 +5,7 @@ TODO: Toy Exchange
 TODO: Switch Languages
 TODO: Like Pet
 TODO: About Composable
-TODO: owner page
+TODO: resolve warnings
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -45,3 +45,4 @@ DONE: beta download website
 DONE: password requirements
 DONE: fix drawer width
 DONE: Landscape orientation features
+DONE: owner page

@@ -107,4 +107,9 @@
     <string name="create_an_account">Δημιουργησε Λογαρισμό</string>
     <string name="dynamic">Δυναμικό</string>
     <string name="route_user_page">Προφίλ Χρήστη</string>
+    <string name="search_filters">Φίλτρα Αναζήτησης</string>
+    <string name="clear_all">Καθαρισμός Όλων</string>
+    <string name="select_all">Επιλογ\'η Όλων</string>
+    <string name="route_search_results">Αποτελέσματα Αναζήτησης</string>
+    <string name="select_at_least_one_of_each">Διάλεξε ένα τουλάχιστον απο το καθένα</string>
 </resources>

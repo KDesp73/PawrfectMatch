@@ -37,6 +37,7 @@ import io.github.kdesp73.petadoption.routes.Home
 import io.github.kdesp73.petadoption.routes.Login
 import io.github.kdesp73.petadoption.routes.MyPets
 import io.github.kdesp73.petadoption.routes.Search
+import io.github.kdesp73.petadoption.routes.SearchResults
 import io.github.kdesp73.petadoption.routes.Settings
 import io.github.kdesp73.petadoption.routes.ShowPet
 import io.github.kdesp73.petadoption.routes.SignIn
@@ -108,7 +109,7 @@ class MainActivity : ComponentActivity() {
             Layout(topAppBarText = stringResource(id = R.string.app_name), navController = navController, room) {
                 NavHost(navController, startDestination = Route.Home.route) {
                     composable(Route.Home.route) { Home() }
-                    composable(Route.Search.route) { Search(room) }
+                    composable(Route.Search.route) { Search(navController) }
                     composable(Route.Favourites.route) { Favourites() }
                     composable(Route.About.route) { About() }
                     composable(Route.Settings.route) { Settings(room) }
@@ -125,6 +126,17 @@ class MainActivity : ComponentActivity() {
                     composable(Route.ChangePassword.route) { ChangePassword(room, navController) }
                     composable(Route.CreateAccount.route) { CreateAccount(navController)}
                     composable(Route.MyPets.route) { MyPets(room = room, navController) }
+                    composable(
+                        route = Route.SearchResults.route + "?search_options={search_options}",
+                        arguments = listOf(
+                            navArgument(
+                               name = "search_options"
+                            ) { defaultValue = "" },
+                        )
+                    ) { backStackEntry ->
+                        backStackEntry.arguments?.getString("search_options")
+                            ?.let { SearchResults(json = it, navController = navController) }
+                    }
                     composable(
                         route = Route.Login.route + "?email={email}",
                         arguments = listOf(navArgument(

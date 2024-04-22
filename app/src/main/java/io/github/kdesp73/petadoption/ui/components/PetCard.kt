@@ -10,6 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,8 +25,12 @@ import androidx.navigation.Navigation.findNavController
 import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.Pet
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.firestore.ImageManager
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.LocalPet
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 private const val TAG = "PetCard"
 
@@ -62,6 +71,37 @@ fun PetCard(
     uri: Uri?,
     navController: NavController?
 ){
+    Contents(
+        modifier = modifier,
+        pet = pet,
+        uri = uri.toString(),
+        id = id.toString(),
+        navController
+    )
+}
+
+
+@OptIn(DelicateCoroutinesApi::class)
+@SuppressLint("RememberReturnType")
+@Composable
+fun PetCard(
+    modifier: Modifier = Modifier,
+    pet: Pet,
+    id: String?,
+    navController: NavController?
+){
+    val imageManager = ImageManager()
+    var uri by remember { mutableStateOf<Uri?>(null) }
+
+    LaunchedEffect(key1 = uri) {
+        val deferredResult = GlobalScope.async {
+            imageManager.getImageUrl(ImageManager.pets + id + ".jpg")
+        }
+
+        uri = deferredResult.await()
+    }
+
+
     Contents(
         modifier = modifier,
         pet = pet,

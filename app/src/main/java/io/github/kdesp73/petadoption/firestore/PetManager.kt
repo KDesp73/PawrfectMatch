@@ -2,14 +2,52 @@ package io.github.kdesp73.petadoption.firestore
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import io.github.kdesp73.petadoption.Pet
+import io.github.kdesp73.petadoption.enums.PetAge
+import io.github.kdesp73.petadoption.enums.PetType
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
+import io.github.kdesp73.petadoption.viewmodels.SearchOptions
 import kotlinx.coroutines.tasks.await
 
 class PetManager {
     private val TAG = "PetManager"
     private val db = FirebaseFirestore.getInstance()
 
+
+    suspend fun filterPets(options: SearchOptions): MutableList<FirestorePet> {
+        fun typeIncluded(pet: FirestorePet): Boolean{
+            return options.type[pet.type] == true
+        }
+
+        fun ageIncluded(pet: FirestorePet): Boolean{
+            return options.age[pet.age] == true
+        }
+
+        fun sizeIncluded(pet: FirestorePet): Boolean{
+            return options.size[pet.size] == true
+        }
+
+        fun genderIncluded(pet: FirestorePet): Boolean{
+            return options.gender[pet.gender] == true
+        }
+
+        fun includePet(pet: FirestorePet): Boolean{
+            return typeIncluded(pet) && ageIncluded(pet) && sizeIncluded(pet) && genderIncluded(pet)
+        }
+
+        val list = mutableListOf<FirestorePet>()
+        val querySnapshot = db.collection("Pets").get().await()
+
+
+        for(doc in querySnapshot.documents){
+            val pet = FirestorePet(doc)
+            if(includePet(pet)){
+                list.add(pet)
+            }
+        }
+        return list
+    }
 
     private fun checkPetExists(pet: FirestorePet, onComplete: (Boolean) -> Unit){
         db.collection("Pets")
