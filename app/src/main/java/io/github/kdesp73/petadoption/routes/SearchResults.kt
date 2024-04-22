@@ -3,10 +3,16 @@ package io.github.kdesp73.petadoption.routes
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Card
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,9 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.enums.genderFromValue
 import io.github.kdesp73.petadoption.enums.genderLabelList
+import io.github.kdesp73.petadoption.enums.petAgeFromValue
 import io.github.kdesp73.petadoption.enums.petAgeLabelList
+import io.github.kdesp73.petadoption.enums.petSizeFromValue
 import io.github.kdesp73.petadoption.enums.petSizeLabelList
+import io.github.kdesp73.petadoption.enums.petTypeFromValue
 import io.github.kdesp73.petadoption.enums.petTypeLabelList
 import io.github.kdesp73.petadoption.firestore.FirestorePet
 import io.github.kdesp73.petadoption.firestore.PetManager
@@ -33,7 +43,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
-@OptIn(DelicateCoroutinesApi::class)
+@OptIn(DelicateCoroutinesApi::class, ExperimentalLayoutApi::class)
 @SuppressLint("MutableCollectionMutableState")
 @Composable
 fun SearchResults(json: String, navController: NavController){
@@ -63,6 +73,43 @@ fun SearchResults(json: String, navController: NavController){
             verticalArrangement = Arrangement.spacedBy(15.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
+            item {
+                FlowRow (
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ){
+                    for (type in options.type){
+                        if(type.value){
+                            AssistChip(
+                                onClick = { /*TODO*/ },
+                                label = { Text(text = petTypeFromValue[type.key]?.label.toString()) })
+                        }
+                    }
+                    for (age in options.age) {
+                        if(age.value) {
+                            AssistChip(
+                                onClick = { /*TODO*/ },
+                                label = { Text(text = petAgeFromValue[age.key]?.label.toString()) })
+                        }
+                    }
+
+                    for(gender in options.gender) {
+                        if(gender.value) {
+                            AssistChip(
+                                onClick = { /*TODO*/ },
+                                label = { Text(text = genderFromValue[gender.key]?.label.toString()) })
+                        }
+                    }
+
+                    for (size in options.size) {
+                        if (size.value) {
+                            AssistChip(
+                                onClick = { /*TODO*/ },
+                                label = { Text(text = petSizeFromValue[size.key]?.label.toString()) })
+                        }
+                    }
+                }
+            }
             items(list){ item ->
                 PetCard(pet = item, id = item.id, navController = navController)
             }

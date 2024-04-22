@@ -25,6 +25,7 @@ import io.github.kdesp73.petadoption.enums.genderFromValue
 import io.github.kdesp73.petadoption.firestore.ImageManager
 import io.github.kdesp73.petadoption.firestore.User
 import io.github.kdesp73.petadoption.firestore.UserManager
+import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.CircularImage
 import io.github.kdesp73.petadoption.ui.components.InfoBox
 import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
@@ -76,9 +77,9 @@ fun UserPage(email: String, navController: NavController){
             }
         }
 
-        CircularImage(uri = uri, contentDescription = "Profile Image", size = 200.dp)
 
         if(user != null){
+            CircularImage(uri = uri, contentDescription = "Profile Image", size = 200.dp)
             InfoBoxRow {
                 InfoBox(label = stringResource(id = R.string.first_name), info = user?.info?.firstName)
                 InfoBox(label = stringResource(id = R.string.last_name), info = user?.info?.lastName)
@@ -90,7 +91,9 @@ fun UserPage(email: String, navController: NavController){
             InfoBox(width = 250.dp, label = stringResource(id = R.string.email), info = email)
             InfoBox(width = 250.dp, label = stringResource(id = R.string.phone), info = user?.info?.phone)
         } else {
-            LoadingAnimation()
+            Center(modifier = Modifier.fillMaxSize()) {
+                LoadingAnimation(64.dp)
+            }
         }
     }
 }

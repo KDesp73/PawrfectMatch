@@ -141,7 +141,12 @@ fun Search(navController: NavController){
                 onClick = {
                     Log.d(TAG, viewModel.serialize())
                     if(viewModel.validate().isSuccess){
-                        navigateTo(Route.SearchResults.route + "?search_options=${viewModel.serialize()}", navController = navController)
+                        navigateTo(
+                            Route.SearchResults.route + "?search_options=${viewModel.serialize()}",
+                            navController = navController,
+                            popUpToStartDestination = false,
+                            launchAsSingleTop = false
+                        )
                     } else {
                         Toast.makeText(context,
                             context.getString(R.string.select_at_least_one_of_each), Toast.LENGTH_LONG).show()

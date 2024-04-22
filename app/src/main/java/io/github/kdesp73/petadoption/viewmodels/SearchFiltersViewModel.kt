@@ -52,7 +52,7 @@ class SearchFiltersViewModel () : ViewModel(){
         genderState.value = MutableList(genderLabelList.size) { value }
     }
 
-    fun exportType() : MutableMap<String, Boolean> {
+    private fun exportType() : MutableMap<String, Boolean> {
         val hashMap = mutableMapOf<String, Boolean>()
 
         for(i in petTypeValueList.indices){
@@ -62,7 +62,7 @@ class SearchFiltersViewModel () : ViewModel(){
         return hashMap
     }
 
-    fun exportAge() : MutableMap<String, Boolean> {
+    private fun exportAge() : MutableMap<String, Boolean> {
         val hashMap = mutableMapOf<String, Boolean>()
 
         for(i in petAgeValueList.indices){
@@ -72,7 +72,7 @@ class SearchFiltersViewModel () : ViewModel(){
         return hashMap
     }
 
-    fun exportSize() : MutableMap<String, Boolean> {
+    private fun exportSize() : MutableMap<String, Boolean> {
         val hashMap = mutableMapOf<String, Boolean>()
 
         for(i in petSizeValueList.indices){
@@ -82,7 +82,7 @@ class SearchFiltersViewModel () : ViewModel(){
         return hashMap
     }
 
-    fun exportGender() : MutableMap<String, Boolean> {
+    private fun exportGender() : MutableMap<String, Boolean> {
         val hashMap = mutableMapOf<String, Boolean>()
 
         for(i in genderValueList.indices){
