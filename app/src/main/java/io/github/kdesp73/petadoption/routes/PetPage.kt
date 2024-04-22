@@ -141,6 +141,7 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
                         if (deleted){
                             room.petDao().delete(pet)
                             navigateTo(Route.Home.route, navController)
+                            navController.popBackStack(Route.Home.route, inclusive = false)
                             notificationService.showBasicNotification(
                                 context.getString(R.string.notif_channel_main),
                                 context.getString(R.string.success),

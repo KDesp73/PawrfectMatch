@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
@@ -67,14 +68,18 @@ fun Search(room: AppDatabase, navController: NavController){
     val scrollState = rememberScrollState()
 
     Column (
-        verticalArrangement = Arrangement.SpaceEvenly,
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
+            .verticalScroll(scrollState)
     ){
-        Text(text = stringResource(R.string.search_filters), fontSize = 6.em)
-        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            modifier = Modifier.padding(vertical = 10.dp),
+            text = stringResource(R.string.search_filters),
+            fontSize = 6.em
+        )
         @Composable
         fun CheckboxContainer(
             title: String,
@@ -115,31 +120,25 @@ fun Search(room: AppDatabase, navController: NavController){
         ) {
             CheckBoxCollection(state = viewModel.sizeState, list = petSizeLabelList)
         }
-
-        Row (
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
-        ){
-            val m = Modifier
-                .height(200.dp)
-                .width(LocalConfiguration.current.screenWidthDp.dp / 2 - 10.dp)
-            CheckboxContainer(
-                modifier = m,
-                title = stringResource(id = R.string.age)
-            ) {
-                CheckBoxCollection(state = viewModel.ageState, list = petAgeLabelList)
-            }
-            CheckboxContainer(
-                modifier = m,
-                title = stringResource(id = R.string.gender)
-            ) {
-                CheckBoxCollection(state = viewModel.genderState, list = genderLabelList)
-            }
+        CheckboxContainer(
+            modifier = bigModifier,
+            title = stringResource(id = R.string.age)
+        ) {
+            CheckBoxCollection(state = viewModel.ageState, list = petAgeLabelList)
+        }
+        CheckboxContainer(
+            modifier = bigModifier,
+            title = stringResource(id = R.string.gender)
+        ) {
+            val genders = genderLabelList.dropLast(1)
+            Log.d(TAG, genders.toString())
+            CheckBoxCollection(state = viewModel.genderState, list = genders)
         }
 
         Row (
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 5.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
@@ -154,18 +153,14 @@ fun Search(room: AppDatabase, navController: NavController){
 //            }
             Button(
                 onClick = {
+                    viewModel.checkEmpty()
                     Log.d(TAG, viewModel.serialize())
-                    if(viewModel.validate().isSuccess){
-                        navigateTo(
-                            Route.SearchResults.route + "?search_options=${viewModel.serialize()}",
-                            navController = navController,
-                            popUpToStartDestination = false,
-                            launchAsSingleTop = false
-                        )
-                    } else {
-                        Toast.makeText(context,
-                            context.getString(R.string.select_at_least_one_of_each), Toast.LENGTH_LONG).show()
-                    }
+                    navigateTo(
+                        Route.SearchResults.route + "?search_options=${viewModel.serialize()}",
+                        navController = navController,
+                        popUpToStartDestination = false,
+                        launchAsSingleTop = false
+                    )
                 }
             ) {
                 Text(text = stringResource(id = R.string.route_search))

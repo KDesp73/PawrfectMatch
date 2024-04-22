@@ -38,6 +38,24 @@ class SearchFiltersViewModel () : ViewModel(){
         initSize(true)
     }
 
+    fun checkEmpty(){
+        if(genderState.value.all { !it }){
+            initGender(true)
+        }
+
+        if(typeState.value.all { !it }){
+            initType(true)
+        }
+
+        if(ageState.value.all { !it }){
+            initAge(true)
+        }
+
+        if(sizeState.value.all { !it }) {
+            initSize(true)
+        }
+    }
+
 
     private fun initType(value: Boolean = false){
         typeState.value = MutableList(petTypeLabelList.size) { value }
@@ -49,7 +67,7 @@ class SearchFiltersViewModel () : ViewModel(){
         sizeState.value = MutableList(petSizeLabelList.size) { value }
     }
     private fun initGender(value: Boolean = false) {
-        genderState.value = MutableList(genderLabelList.size) { value }
+        genderState.value = MutableList(genderLabelList.size - 1) { value }
     }
 
     private fun exportType() : MutableMap<String, Boolean> {
@@ -85,7 +103,7 @@ class SearchFiltersViewModel () : ViewModel(){
     private fun exportGender() : MutableMap<String, Boolean> {
         val hashMap = mutableMapOf<String, Boolean>()
 
-        for(i in genderValueList.indices){
+        for(i in genderValueList.dropLast(1).indices){
             hashMap[genderValueList[i]] = genderState.value[i]
         }
 
