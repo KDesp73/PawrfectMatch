@@ -4,6 +4,8 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.devtools.ksp")
+    id("com.google.firebase.firebase-perf")
+
 }
 
 android {
@@ -109,6 +111,8 @@ dependencies {
     implementation("com.google.firebase:firebase-database-ktx:20.3.1")
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-perf")
+
     /*  Firebase  **/
 
     /** Coil  */
