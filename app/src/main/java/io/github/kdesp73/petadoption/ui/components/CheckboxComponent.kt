@@ -20,19 +20,23 @@ import androidx.compose.ui.unit.dp
 import io.github.kdesp73.petadoption.R
 
 @Composable
-fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit) {
+private fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit) {
     val initialText = stringResource(R.string.by_continuing_you_accept_our)
     val privacyPolicyText = stringResource(R.string.privacy_policy)
     val andText = stringResource(R.string.and)
     val termsAndConditionsText = stringResource(R.string.terms_of_use)
 
     val annotatedString = buildAnnotatedString {
-        append(initialText)
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+            append(initialText)
+        }
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
             pushStringAnnotation(tag = privacyPolicyText, annotation = privacyPolicyText)
             append(privacyPolicyText)
         }
-        append(andText)
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+            append(andText)
+        }
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
             pushStringAnnotation(tag = termsAndConditionsText, annotation = termsAndConditionsText)
             append(termsAndConditionsText)

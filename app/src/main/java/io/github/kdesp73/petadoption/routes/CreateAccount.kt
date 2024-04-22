@@ -18,7 +18,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.ElevatedButton
@@ -28,8 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -41,19 +38,19 @@ import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
-import io.github.kdesp73.petadoption.firestore.User
-import io.github.kdesp73.petadoption.firestore.UserInfo
-import io.github.kdesp73.petadoption.firestore.UserManager
+import io.github.kdesp73.petadoption.checkEmail
+import io.github.kdesp73.petadoption.checkName
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.ProfileType
 import io.github.kdesp73.petadoption.enums.TextFieldType
+import io.github.kdesp73.petadoption.firestore.User
+import io.github.kdesp73.petadoption.firestore.UserInfo
+import io.github.kdesp73.petadoption.firestore.UserManager
+import io.github.kdesp73.petadoption.hash
 import io.github.kdesp73.petadoption.ui.components.CheckboxComponent
 import io.github.kdesp73.petadoption.ui.components.EmailFieldComponent
 import io.github.kdesp73.petadoption.ui.components.PasswordTextFieldComponent
 import io.github.kdesp73.petadoption.ui.components.TextFieldComponent
-import io.github.kdesp73.petadoption.checkEmail
-import io.github.kdesp73.petadoption.checkName
-import io.github.kdesp73.petadoption.hash
 import io.github.kdesp73.petadoption.validatePassword
 import io.github.kdesp73.petadoption.viewmodels.CreateAccountViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -116,7 +113,7 @@ fun CreateAccount(navController: NavController?){
                     icon = Icons.Filled.Email,
                     type = TextFieldType.OUTLINED
                 ){
-                    viewModel.emailError.value = !checkEmail(viewModel.emailState.value)
+                    viewModel.emailError.value = checkEmail(viewModel.emailState.value).isFailure
                 }
 
                 PasswordTextFieldComponent(
@@ -184,21 +181,24 @@ fun CreateAccount(navController: NavController?){
                 ElevatedButton(
                     onClick = {
                         Log.i(TAG, "Submit Pressed")
+                        viewModel.log(TAG)
+
+                        viewModel.clean()
 
                         viewModel.fnameError.value = checkName(viewModel.fnameState.value).isFailure
                         viewModel.lnameError.value = checkName(viewModel.lnameState.value).isFailure
-                        viewModel.emailError.value = !checkEmail(viewModel.emailState.value)
+                        viewModel.emailError.value = checkEmail(viewModel.emailState.value).isFailure
                         val validPassword = validatePassword(viewModel.passwordState.value)
                         viewModel.passwordError.value = validPassword.isFailure
                         viewModel.repeatPasswordError.value = viewModel.passwordState.value.compareTo(viewModel.repeatPasswordState.value) != 0
 
                         val message = when{
-                            !viewModel.fnameError.value -> "Invalid First Name"
-                            !viewModel.lnameError.value -> "Invalid First Name"
-                            !viewModel.emailError.value -> "Invalid Email"
+                            viewModel.fnameError.value -> "Invalid First Name"
+                            viewModel.lnameError.value -> "Invalid First Name"
+                            viewModel.emailError.value -> "Invalid Email"
                             validPassword.isFailure -> validPassword.exceptionOrNull()?.message
-                            !viewModel.repeatPasswordError.value -> "Passwords don't match"
-                            !viewModel.termsAndConditionsAcceptedState.value-> "Please accept our Terms and Conditions"
+                            viewModel.repeatPasswordError.value -> "Passwords don't match"
+                            viewModel.termsAndConditionsAcceptedState.value-> "Please accept our Terms and Conditions"
                             else -> "Success"
                         }
 

@@ -56,12 +56,11 @@ fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){
             .fillMaxWidth()
             .height(containerHeight)
             .clickable(onClick = {
-                navController?.navigate(if (user == null || !user.loggedIn) Route.SignIn.route else Route.AccountSettings.route) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
+                if (navController != null) {
+                    navigateTo(
+                        if (user == null || !user.loggedIn) Route.SignIn.route else Route.AccountSettings.route,
+                        navController
+                    )
                 }
             })
             .padding(8.dp)
@@ -136,8 +135,6 @@ fun AccountPreview(user: LocalUser?, navController: NavController?){
                             navigateTo(
                                 if (!user.loggedIn) Route.SignIn.route else Route.AccountSettings.route,
                                 navController,
-                                popUpToStartDestination = false,
-                                launchAsSingleTop = false
                             )
                         }
                     }

@@ -14,9 +14,14 @@ class LoginViewModel : ViewModel() {
         passwordState.value = ""
     }
 
+    fun clean(){
+        emailState.value = emailState.value.trim()
+        passwordState.value = passwordState.value.trim()
+    }
+
     fun log(tag: String){
-        Log.d(tag, "email: ${emailState.value}")
-        Log.d(tag, "password: ${passwordState.value}")
+        Log.d(tag, "email: '${emailState.value}'")
+        Log.d(tag, "password: '${passwordState.value}'")
     }
 }
 

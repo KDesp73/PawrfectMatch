@@ -58,6 +58,14 @@ class CreateAccountViewModel : ViewModel(){
         termsAndConditionsAcceptedState.value = false
     }
 
+    fun clean(){
+        fnameState.value = fnameState.value.trim()
+        lnameState.value = lnameState.value.trim()
+        emailState.value = emailState.value.trim()
+        passwordState.value = passwordState.value.trim()
+        repeatPasswordState.value = repeatPasswordState.value.trim()
+    }
+
     fun log(TAG: String){
         Log.d(TAG, "fname: ${fnameState.value}")
         Log.d(TAG, "lname: ${lnameState.value}")

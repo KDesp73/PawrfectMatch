@@ -93,7 +93,6 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
                             Route.MyPets.route,
                             navController = navController,
                             popUpToStartDestination = false,
-                            launchAsSingleTop = false
                         )
                     }
                 }) {

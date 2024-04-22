@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -38,16 +40,29 @@ import io.github.kdesp73.petadoption.enums.petSizeValueList
 import io.github.kdesp73.petadoption.enums.petTypeLabelList
 import io.github.kdesp73.petadoption.enums.petTypeValueList
 import io.github.kdesp73.petadoption.navigateTo
+import io.github.kdesp73.petadoption.room.AppDatabase
+import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.CheckBoxCollection
+import io.github.kdesp73.petadoption.ui.components.IconButton
 import io.github.kdesp73.petadoption.viewmodels.SearchFiltersViewModel
 
 private const val TAG = "Search"
 
 @Composable
-fun Search(navController: NavController){
+fun Search(room: AppDatabase, navController: NavController){
     val context = LocalContext.current
     val viewModel = SearchFiltersViewModel()
     viewModel.reset()
+
+    if(room.userDao().getEmail().isEmpty()){
+        Center(modifier = Modifier.fillMaxSize()) {
+            Text(text = "Please login first to use this feature")
+            IconButton(text = "Login", imageVector = Icons.Filled.AccountCircle) {
+                navigateTo(Route.Login.route, navController)
+            }
+        }
+        return
+    }
 
     val scrollState = rememberScrollState()
 

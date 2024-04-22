@@ -226,6 +226,7 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
             ) {
                 userDao.insert(LocalUser()) // Log out
                 navigateTo(Route.Home.route, navController)
+
             }
         }
     }

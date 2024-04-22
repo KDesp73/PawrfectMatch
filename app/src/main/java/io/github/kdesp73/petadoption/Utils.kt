@@ -23,9 +23,9 @@ fun checkName(name: String) = runCatching {
     require(name.all { it.isLetter() })
 }
 
-fun checkEmail(email: String): Boolean {
+fun checkEmail(email: String) = runCatching {
     val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$"
-    return email.matches(emailRegex.toRegex())
+    require(email.matches(emailRegex.toRegex()))
 }
 
 val ERR_LEN = MainActivity.appContext.getString(R.string.password_must_have_at_least_eight_characters)
@@ -64,7 +64,7 @@ fun navigateTo(
                 saveState = true
             }
         }
-        launchSingleTop = launchAsSingleTop
+        launchSingleTop = true
         restoreState = restore
     }
 }

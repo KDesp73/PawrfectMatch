@@ -116,4 +116,7 @@
     <string name="select_all">Select All</string>
     <string name="route_search_results">Search Results</string>
     <string name="select_at_least_one_of_each">Select at least one of each</string>
+    <string name="don_t_have_an_account_click">"Don't have an account? Click "</string>
+    <string name="here">here</string>
+    <string name="to_register">" to register"</string>
 </resources>

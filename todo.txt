@@ -5,6 +5,9 @@ TODO: Switch Languages
 TODO: Like Pet
 TODO: About Composable
 TODO: resolve warnings
+TODO: search only when logged in
+TODO: stop loading animation if results are 0
+TODO: if no filter is selected select all
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -46,3 +49,4 @@ DONE: fix drawer width
 DONE: Landscape orientation features
 DONE: owner page
 DONE: Search using filters
+DONE: fix register form issue
