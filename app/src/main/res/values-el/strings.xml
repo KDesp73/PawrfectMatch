@@ -115,4 +115,5 @@
     <string name="don_t_have_an_account_click">"Δεν έχεις λογαριασμό; Κάνε κλικ "</string>
     <string name="here">εδώ</string>
     <string name="to_register"> για να εγγραφείς</string>
+    <string name="no_results">Δεν βρέθηκαν αποτελέσματα</string>
 </resources>

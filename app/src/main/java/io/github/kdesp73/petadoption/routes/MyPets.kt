@@ -43,7 +43,7 @@ private const val TAG = "MyPets"
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun MyPets(room: AppDatabase, navController: NavController){
-    val pets: List<LocalPet> = room.petDao().selectPets(room.userDao().getEmail())
+    val pets: List<LocalPet>? = room.userDao().getEmail()?.let { room.petDao().selectPets(it) }
     val scrollState = rememberScrollState()
     val imageManager = ImageManager()
     val petManager = PetManager()
@@ -64,21 +64,23 @@ fun MyPets(room: AppDatabase, navController: NavController){
         )
         @Composable
         fun PetList(){
-            for(pet in pets){
-                var uri by remember { mutableStateOf(Uri.EMPTY) }
-                LaunchedEffect(pet) {
-                    val deferredResult: Deferred<Uri?> = GlobalScope.async {
-                        imageManager.getImageUrl(ImageManager.pets + pet.generateId() + ".jpg")
+            if (pets != null) {
+                for(pet in pets){
+                    var uri by remember { mutableStateOf(Uri.EMPTY) }
+                    LaunchedEffect(pet) {
+                        val deferredResult: Deferred<Uri?> = GlobalScope.async {
+                            imageManager.getImageUrl(ImageManager.pets + pet.generateId() + ".jpg")
+                        }
+                        uri = deferredResult.await()
                     }
-                    uri = deferredResult.await()
-                }
 
-                PetCard(
-                    pet = pet,
-                    uri = uri,
-                    id = pet.id.toString(),
-                    navController = navController
-                )
+                    PetCard(
+                        pet = pet,
+                        uri = uri,
+                        id = pet.id.toString(),
+                        navController = navController
+                    )
+                }
             }
         }
         if(!landscape){

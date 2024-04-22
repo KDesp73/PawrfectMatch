@@ -178,7 +178,7 @@ class PetManager {
     }
 
     fun syncPets(room: AppDatabase){
-        val email = room.userDao().getEmail()
+        val email = room.userDao().getEmail() ?: return
         getPetsByEmail(email) { list ->
             val localPets = room.petDao().selectPets(email)
             if (localPets.size < list.size){

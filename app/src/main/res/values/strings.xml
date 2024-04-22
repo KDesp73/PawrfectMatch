@@ -119,4 +119,5 @@
     <string name="don_t_have_an_account_click">"Don't have an account? Click "</string>
     <string name="here">here</string>
     <string name="to_register">" to register"</string>
+    <string name="no_results">No results</string>
 </resources>

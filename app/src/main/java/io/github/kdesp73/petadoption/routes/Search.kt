@@ -55,7 +55,8 @@ fun Search(room: AppDatabase, navController: NavController){
     val viewModel = SearchFiltersViewModel()
     viewModel.reset()
 
-    if(room.userDao().getEmail().isEmpty()){
+    val email: String? = room.userDao().getEmail()
+    if(email?.isEmpty() == true){
         Center(modifier = Modifier.fillMaxSize()) {
             Text(text = "Please login first to use this feature")
             IconButton(text = "Login", imageVector = Icons.Filled.AccountCircle) {

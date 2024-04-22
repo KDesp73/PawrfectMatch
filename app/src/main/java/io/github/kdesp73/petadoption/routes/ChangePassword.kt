@@ -70,56 +70,62 @@ fun ChangePassword(room: AppDatabase, navController: NavController){
             var password: String?
             val userDao = room.userDao()
 
-            userManager.getUserByEmail(userDao.getEmail()){ users ->
-                if(users.isNotEmpty()) {
-                    password = users[0].password
+            userDao.getEmail()?.let {
+                userManager.getUserByEmail(it){ users ->
+                    if(users.isNotEmpty()) {
+                        password = users[0].password
 
-                    val checkForm = viewModel.validate()
-                    if(password != null && password == hash(viewModel.oldPasswordState.value)){
-                        if(checkForm.isSuccess){
-                            if(viewModel.newPasswordState.value != viewModel.oldPasswordState.value){
-                                userManager.updateUser(User(room.userDao().getEmail(), hash(viewModel.newPasswordState.value))) { updated ->
-                                    if(updated){
-                                        // SUCCESS
-                                        notificationService.showBasicNotification(
-                                            context.getString(
-                                                R.string.notif_channel_main
-                                            ),
-                                            context.getString(R.string.success),
-                                            context.getString(R.string.your_password_has_changed_successfully),
-                                            NotificationManager.IMPORTANCE_HIGH
-                                        )
+                        val checkForm = viewModel.validate()
+                        if(password != null && password == hash(viewModel.oldPasswordState.value)){
+                            if(checkForm.isSuccess){
+                                if(viewModel.newPasswordState.value != viewModel.oldPasswordState.value){
+                                    val email = room.userDao().getEmail()
+                                    if(email != null){
+                                        userManager.updateUser(User(email, hash(viewModel.newPasswordState.value))) { updated ->
+                                            if(updated){
+                                                // SUCCESS
+                                                notificationService.showBasicNotification(
+                                                    context.getString(
+                                                        R.string.notif_channel_main
+                                                    ),
+                                                    context.getString(R.string.success),
+                                                    context.getString(R.string.your_password_has_changed_successfully),
+                                                    NotificationManager.IMPORTANCE_HIGH
+                                                )
 
-                                        userDao.insert(LocalUser()) // Log out
-                                        navigateTo(Route.Login.route, navController = navController)
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            context.getString(R.string.something_went_wrong),
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                                userDao.insert(LocalUser()) // Log out
+                                                navigateTo(Route.Login.route, navController = navController)
+                                            } else {
+                                                Toast.makeText(
+                                                    context,
+                                                    context.getString(R.string.something_went_wrong),
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
+                                        }
+
                                     }
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.new_password_cannot_be_the_same_as_old_password),
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
                             } else {
                                 Toast.makeText(
                                     context,
-                                    context.getString(R.string.new_password_cannot_be_the_same_as_old_password),
+                                    checkForm.exceptionOrNull()?.message,
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
                         } else {
                             Toast.makeText(
                                 context,
-                                checkForm.exceptionOrNull()?.message,
+                                context.getString(R.string.old_password_is_incorrect),
                                 Toast.LENGTH_LONG
                             ).show()
                         }
-                    } else {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.old_password_is_incorrect),
-                            Toast.LENGTH_LONG
-                        ).show()
                     }
                 }
             }
