@@ -2,10 +2,11 @@ TODO: Home Page
 TODO: Drawer Content
 TODO: Toy Exchange
 TODO: Switch Languages
-TODO: Like Pet
 TODO: About Composable
 TODO: resolve warnings
-TODO: stop loading animation if results are 0
+TODO: Edit Pet
+TODO: specify pet location at creation
+TODO: favourites
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -50,3 +51,5 @@ DONE: Search using filters
 DONE: fix register form issue
 DONE: if no filter is selected select all
 DONE: search only when logged in
+DONE: stop loading animation if results are 0
+DONE: Like Pet

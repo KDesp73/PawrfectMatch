@@ -1,13 +1,5 @@
 package io.github.kdesp73.petadoption.room
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.em
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,11 +8,7 @@ import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
 import io.github.kdesp73.petadoption.enums.PetType
-import io.github.kdesp73.petadoption.enums.genderFromValue
-import io.github.kdesp73.petadoption.enums.petAgeFromValue
-import io.github.kdesp73.petadoption.enums.petSizeFromValue
-import io.github.kdesp73.petadoption.enums.petTypeFromValue
-import io.github.kdesp73.petadoption.firestore.FirestorePet
+import io.github.kdesp73.petadoption.firebase.FirestorePet
 import io.github.kdesp73.petadoption.hash
 
 @Entity

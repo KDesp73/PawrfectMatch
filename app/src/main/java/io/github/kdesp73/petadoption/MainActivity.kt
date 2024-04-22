@@ -110,7 +110,7 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController, startDestination = Route.Home.route) {
                     composable(Route.Home.route) { Home() }
                     composable(Route.Search.route) { Search(room, navController) }
-                    composable(Route.Favourites.route) { Favourites() }
+                    composable(Route.Favourites.route) { Favourites(room, navController) }
                     composable(Route.About.route) { About() }
                     composable(Route.Settings.route) { Settings(room) }
                     composable(route = Route.Account.route) {

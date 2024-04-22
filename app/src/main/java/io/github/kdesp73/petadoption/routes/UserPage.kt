@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.enums.genderFromValue
-import io.github.kdesp73.petadoption.firestore.ImageManager
-import io.github.kdesp73.petadoption.firestore.User
-import io.github.kdesp73.petadoption.firestore.UserManager
+import io.github.kdesp73.petadoption.firebase.ImageManager
+import io.github.kdesp73.petadoption.firebase.User
+import io.github.kdesp73.petadoption.firebase.UserManager
 import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.CircularImage
 import io.github.kdesp73.petadoption.ui.components.InfoBox

@@ -4,9 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.firestore.UserManager
-import io.github.kdesp73.petadoption.hash
-import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.validatePassword
 import kotlinx.coroutines.flow.MutableStateFlow
 

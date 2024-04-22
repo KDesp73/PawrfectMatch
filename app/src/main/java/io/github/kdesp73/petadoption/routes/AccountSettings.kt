@@ -45,9 +45,9 @@ import io.github.kdesp73.petadoption.enums.Orientation
 import io.github.kdesp73.petadoption.enums.TextFieldType
 import io.github.kdesp73.petadoption.enums.genderFromLabel
 import io.github.kdesp73.petadoption.enums.genderFromValue
-import io.github.kdesp73.petadoption.firestore.ImageManager
-import io.github.kdesp73.petadoption.firestore.UserInfo
-import io.github.kdesp73.petadoption.firestore.UserManager
+import io.github.kdesp73.petadoption.firebase.ImageManager
+import io.github.kdesp73.petadoption.firebase.UserInfo
+import io.github.kdesp73.petadoption.firebase.UserManager
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalUser
@@ -63,7 +63,6 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
 
 private const val TAG = "AccountSettings"
 

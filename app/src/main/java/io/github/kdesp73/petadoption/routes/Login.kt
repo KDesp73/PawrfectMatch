@@ -3,15 +3,12 @@ package io.github.kdesp73.petadoption.routes
 import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.util.Log
-import android.widget.Space
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
@@ -23,7 +20,6 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,7 +36,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
-import io.github.kdesp73.petadoption.firestore.UserManager
+import io.github.kdesp73.petadoption.firebase.UserManager
 import io.github.kdesp73.petadoption.checkEmail
 import io.github.kdesp73.petadoption.enums.CustomAlignment
 import io.github.kdesp73.petadoption.enums.TextFieldType
@@ -48,7 +44,6 @@ import io.github.kdesp73.petadoption.hash
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalUser
-import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.EmailFieldComponent
 import io.github.kdesp73.petadoption.ui.components.PasswordTextFieldComponent
 import io.github.kdesp73.petadoption.ui.components.VerticalScaffold

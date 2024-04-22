@@ -1,4 +1,4 @@
-package io.github.kdesp73.petadoption.firestore
+package io.github.kdesp73.petadoption.firebase
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

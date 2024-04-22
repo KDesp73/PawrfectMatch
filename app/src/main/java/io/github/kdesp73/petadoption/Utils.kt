@@ -69,6 +69,10 @@ fun navigateTo(
     }
 }
 
+fun clearBackTracks(navController: NavController){
+    navController.popBackStack(navController.graph.startDestinationId, inclusive = true)
+}
+
 fun changeLocale(locale: String) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         MainActivity.appContext.getSystemService(LocaleManager::class.java)

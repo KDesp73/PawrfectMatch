@@ -2,7 +2,6 @@ package io.github.kdesp73.petadoption.ui.components
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -20,12 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
 import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.Pet
 import io.github.kdesp73.petadoption.Route
-import io.github.kdesp73.petadoption.firestore.ImageManager
+import io.github.kdesp73.petadoption.firebase.ImageManager
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.LocalPet
 import kotlinx.coroutines.DelicateCoroutinesApi

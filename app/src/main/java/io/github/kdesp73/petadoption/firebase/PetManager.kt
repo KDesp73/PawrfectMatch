@@ -1,19 +1,19 @@
-package io.github.kdesp73.petadoption.firestore
+package io.github.kdesp73.petadoption.firebase
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import io.github.kdesp73.petadoption.Pet
-import io.github.kdesp73.petadoption.enums.PetAge
-import io.github.kdesp73.petadoption.enums.PetType
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
 import io.github.kdesp73.petadoption.viewmodels.SearchOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 
 class PetManager {
     private val TAG = "PetManager"
     private val db = FirebaseFirestore.getInstance()
-
 
     suspend fun filterPets(options: SearchOptions): MutableList<FirestorePet> {
         fun typeIncluded(pet: FirestorePet): Boolean{
@@ -153,6 +153,15 @@ class PetManager {
         } catch (_: Exception) {
             null
         }
+    }
+
+    suspend fun getPetsByIds(ids: List<String>): List<FirestorePet?> = coroutineScope {
+        val deferredPets = ids.map { id ->
+            async(Dispatchers.IO) {
+                getPetById(id)
+            }
+        }
+        deferredPets.map { it.await() }
     }
 
     private fun getPetDocumentId(id: String, onComplete: (String?) -> Unit){

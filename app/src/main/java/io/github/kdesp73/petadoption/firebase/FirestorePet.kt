@@ -1,10 +1,5 @@
-package io.github.kdesp73.petadoption.firestore
+package io.github.kdesp73.petadoption.firebase
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import com.google.firebase.firestore.DocumentSnapshot
 import io.github.kdesp73.petadoption.Pet
 import io.github.kdesp73.petadoption.enums.Gender

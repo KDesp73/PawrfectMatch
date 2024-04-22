@@ -4,8 +4,6 @@ package io.github.kdesp73.petadoption.routes
 import android.app.NotificationManager
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,9 +21,9 @@ import io.github.kdesp73.petadoption.enums.genderFromLabel
 import io.github.kdesp73.petadoption.enums.petAgeFromLabel
 import io.github.kdesp73.petadoption.enums.petSizeFromLabel
 import io.github.kdesp73.petadoption.enums.petTypeFromLabel
-import io.github.kdesp73.petadoption.firestore.ImageManager
-import io.github.kdesp73.petadoption.firestore.FirestorePet
-import io.github.kdesp73.petadoption.firestore.PetManager
+import io.github.kdesp73.petadoption.firebase.ImageManager
+import io.github.kdesp73.petadoption.firebase.FirestorePet
+import io.github.kdesp73.petadoption.firebase.PetManager
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet

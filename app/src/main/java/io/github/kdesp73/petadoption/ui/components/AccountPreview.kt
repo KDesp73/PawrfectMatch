@@ -30,19 +30,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
-import io.github.kdesp73.petadoption.firestore.ImageManager
-import io.github.kdesp73.petadoption.firestore.User
+import io.github.kdesp73.petadoption.firebase.ImageManager
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.LocalUser
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
 
 @Composable
 fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){

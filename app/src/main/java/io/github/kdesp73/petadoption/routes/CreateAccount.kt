@@ -43,9 +43,9 @@ import io.github.kdesp73.petadoption.checkName
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.ProfileType
 import io.github.kdesp73.petadoption.enums.TextFieldType
-import io.github.kdesp73.petadoption.firestore.User
-import io.github.kdesp73.petadoption.firestore.UserInfo
-import io.github.kdesp73.petadoption.firestore.UserManager
+import io.github.kdesp73.petadoption.firebase.User
+import io.github.kdesp73.petadoption.firebase.UserInfo
+import io.github.kdesp73.petadoption.firebase.UserManager
 import io.github.kdesp73.petadoption.hash
 import io.github.kdesp73.petadoption.ui.components.CheckboxComponent
 import io.github.kdesp73.petadoption.ui.components.EmailFieldComponent

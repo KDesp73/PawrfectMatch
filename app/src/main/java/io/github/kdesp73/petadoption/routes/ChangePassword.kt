@@ -26,8 +26,8 @@ import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.enums.TextFieldType
-import io.github.kdesp73.petadoption.firestore.User
-import io.github.kdesp73.petadoption.firestore.UserManager
+import io.github.kdesp73.petadoption.firebase.User
+import io.github.kdesp73.petadoption.firebase.UserManager
 import io.github.kdesp73.petadoption.hash
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase

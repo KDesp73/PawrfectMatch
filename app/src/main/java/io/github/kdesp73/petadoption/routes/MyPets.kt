@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.Route
-import io.github.kdesp73.petadoption.firestore.ImageManager
-import io.github.kdesp73.petadoption.firestore.PetManager
+import io.github.kdesp73.petadoption.firebase.ImageManager
+import io.github.kdesp73.petadoption.firebase.PetManager
 import io.github.kdesp73.petadoption.isLandscape
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet

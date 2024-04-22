@@ -132,7 +132,6 @@ fun Search(room: AppDatabase, navController: NavController){
             title = stringResource(id = R.string.gender)
         ) {
             val genders = genderLabelList.dropLast(1)
-            Log.d(TAG, genders.toString())
             CheckBoxCollection(state = viewModel.genderState, list = genders)
         }
 

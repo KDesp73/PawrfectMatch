@@ -10,10 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AssistChip
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,8 +29,8 @@ import io.github.kdesp73.petadoption.enums.genderFromValue
 import io.github.kdesp73.petadoption.enums.petAgeFromValue
 import io.github.kdesp73.petadoption.enums.petSizeFromValue
 import io.github.kdesp73.petadoption.enums.petTypeFromValue
-import io.github.kdesp73.petadoption.firestore.FirestorePet
-import io.github.kdesp73.petadoption.firestore.PetManager
+import io.github.kdesp73.petadoption.firebase.FirestorePet
+import io.github.kdesp73.petadoption.firebase.PetManager
 import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
 import io.github.kdesp73.petadoption.ui.components.PetCard

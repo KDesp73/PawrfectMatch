@@ -1,4 +1,4 @@
-package io.github.kdesp73.petadoption.firestore
+package io.github.kdesp73.petadoption.firebase
 
 import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
