@@ -18,6 +18,7 @@ class PetFormViewModel : ViewModel(){
     var sizeState = MutableStateFlow(PetSize.SMALL.label)
     var typeState = MutableStateFlow(PetType.DOG.label)
     var genderState = MutableStateFlow(Gender.MALE.label)
+    var locationState = MutableStateFlow("")
 
     fun reset(){
         imageState.value = null
@@ -26,11 +27,13 @@ class PetFormViewModel : ViewModel(){
         sizeState.value = PetSize.SMALL.label
         typeState.value = PetType.DOG.label
         genderState.value = Gender.MALE.label
+        locationState.value = ""
     }
 
     fun validate() = runCatching {
         require(nameState.value.isNotEmpty()) { MainActivity.appContext.getString(R.string.name_cannot_be_empty) }
         require(imageState.value != null) { MainActivity.appContext.getString(R.string.you_need_to_select_an_image) }
+        require(locationState.value.isNotEmpty()) { MainActivity.appContext.getString(R.string.location_cannot_be_empty) }
     }
 
     fun log(TAG: String){
@@ -40,5 +43,6 @@ class PetFormViewModel : ViewModel(){
         Log.d(TAG, "size ${sizeState.value}")
         Log.d(TAG, "type: ${typeState.value}")
         Log.d(TAG, "gender: ${genderState.value}")
+        Log.d(TAG, "location ${locationState.value}")
     }
 }

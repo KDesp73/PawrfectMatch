@@ -89,7 +89,7 @@ fun CreateAccount(navController: NavController?){
                 TextFieldComponent(
                     isError = viewModel.fnameError,
                     state = viewModel.fnameState,
-                    labelValue = "First Name",
+                    labelValue = stringResource(id = R.string.first_name),
                     icon = Icons.Filled.AccountCircle,
                     type = TextFieldType.OUTLINED
                 ) {
@@ -99,7 +99,7 @@ fun CreateAccount(navController: NavController?){
                 TextFieldComponent(
                     isError = viewModel.lnameError,
                     state = viewModel.lnameState,
-                    labelValue = "Last Name",
+                    labelValue = stringResource(id = R.string.last_name),
                     icon = Icons.Filled.AccountCircle,
                     type = TextFieldType.OUTLINED
                 ) {
@@ -109,7 +109,7 @@ fun CreateAccount(navController: NavController?){
                 EmailFieldComponent(
                     isError = viewModel.emailError,
                     state = viewModel.emailState,
-                    labelValue = "Email",
+                    labelValue = stringResource(id = R.string.email),
                     icon = Icons.Filled.Email,
                     type = TextFieldType.OUTLINED
                 ){
@@ -119,7 +119,7 @@ fun CreateAccount(navController: NavController?){
                 PasswordTextFieldComponent(
                     isError = viewModel.passwordError,
                     state = viewModel.passwordState,
-                    labelValue = "Password",
+                    labelValue = stringResource(id = R.string.password),
                     icon = Icons.Filled.Lock,
                     type = TextFieldType.OUTLINED
                 ) {
@@ -131,7 +131,7 @@ fun CreateAccount(navController: NavController?){
                 PasswordTextFieldComponent(
                     isError = viewModel.repeatPasswordError,
                     state = viewModel.repeatPasswordState,
-                    labelValue = "Repeat Password",
+                    labelValue = stringResource(R.string.repeat_password),
                     icon = Icons.Filled.Lock,
                     type = TextFieldType.OUTLINED
                 ){

@@ -116,4 +116,7 @@
     <string name="here">εδώ</string>
     <string name="to_register"> για να εγγραφείς</string>
     <string name="no_results">Δεν βρέθηκαν αποτελέσματα</string>
+    <string name="location_cannot_be_empty">Η τοποθεσία δέν πρέπει να είναι άδεια</string>
+    <string name="name">Όνομα</string>
+    <string name="repeat_password">Επιβεβαίωση Κωδικού</string>
 </resources>

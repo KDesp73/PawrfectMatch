@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.rounded.Face
+import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -50,7 +51,9 @@ fun PetInfoForm(modifier: Modifier = Modifier, viewModel: PetFormViewModel, subm
             viewModel.imageState.value = uri
         }
         // TODO: change icon
-        TextFieldComponent(viewModel.nameState, labelValue = "Name", icon = Icons.Rounded.Face, type = TextFieldType.OUTLINED)
+        TextFieldComponent(viewModel.nameState, labelValue = stringResource(R.string.name), icon = Icons.Rounded.Face, type = TextFieldType.OUTLINED)
+        TextFieldComponent(viewModel.locationState, labelValue = stringResource(id = R.string.location), icon = Icons.Rounded.LocationOn, type = TextFieldType.OUTLINED)
+
         Row {
             Dropdown(
                 state = viewModel.typeState,

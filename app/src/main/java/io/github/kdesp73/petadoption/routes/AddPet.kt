@@ -1,6 +1,7 @@
 
 package io.github.kdesp73.petadoption.routes
 
+import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.util.Log
 import android.widget.Toast
@@ -33,6 +34,7 @@ import io.github.kdesp73.petadoption.viewmodels.PetFormViewModel
 private const val TAG = "AddPet"
 
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun AddPet(navController: NavController?, room: AppDatabase?){
     val viewModel = PetFormViewModel()
@@ -42,18 +44,7 @@ fun AddPet(navController: NavController?, room: AppDatabase?){
     val notificationService = NotificationService(context)
     val imageManager = ImageManager()
 
-    if(userDao?.getUser()?.location?.isEmpty()!!) {
-        if (navController != null) {
-            navigateTo(Route.AccountSettings.route, navController)
-        }
-
-        Toast.makeText(
-            context,
-            stringResource(R.string.please_specify_your_location_first),
-            Toast.LENGTH_LONG
-        ).show()
-        return
-    }
+    viewModel.locationState.value = userDao?.getUser()?.location ?: ""
 
     PetInfoForm(viewModel = viewModel) {
         viewModel.log(TAG)
@@ -69,7 +60,7 @@ fun AddPet(navController: NavController?, room: AppDatabase?){
                 type = petTypeFromLabel[viewModel.typeState.value]?.value ?: PetType.DOG.value,
                 gender = genderFromLabel[viewModel.genderState.value]?.value ?: Gender.OTHER.value,
                 size = petSizeFromLabel[viewModel.sizeState.value]?.value ?: PetSize.SMALL.value,
-                location = userDao?.getUser()?.location ?: "",
+                location = viewModel.locationState.value.trim(),
                 ownerEmail = userDao?.getEmail() ?: ""
             )
 

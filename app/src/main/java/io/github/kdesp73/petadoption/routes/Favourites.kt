@@ -18,9 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
+import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.firebase.FirestorePet
 import io.github.kdesp73.petadoption.firebase.LikedManager
 import io.github.kdesp73.petadoption.firebase.PetManager
@@ -80,8 +82,10 @@ fun Favourites(room: AppDatabase, navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             item {
-                Text(text = "Favourites", fontSize = 6.em)
-                Spacer(modifier = Modifier.height(15.dp))
+                Text(
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    text = stringResource(id = R.string.route_favourites), fontSize = 6.em
+                )
             }
             items(pets!!) { item ->
                 if (item != null) {

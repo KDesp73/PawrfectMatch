@@ -120,4 +120,7 @@
     <string name="here">here</string>
     <string name="to_register">" to register"</string>
     <string name="no_results">No results</string>
+    <string name="location_cannot_be_empty">Location cannot be empty</string>
+    <string name="name">Name</string>
+    <string name="repeat_password">Repeat Password</string>
 </resources>
