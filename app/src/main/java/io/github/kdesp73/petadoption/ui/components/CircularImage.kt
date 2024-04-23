@@ -26,7 +26,12 @@ import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.R
 
 @Composable
-fun CircularImage(modifier: Modifier = Modifier, pic: Int, size: Dp) {
+fun CircularImage(
+    modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Crop,
+    pic: Int,
+    size: Dp
+) {
     Surface(
         modifier = Modifier
             .size(154.dp)
@@ -40,7 +45,7 @@ fun CircularImage(modifier: Modifier = Modifier, pic: Int, size: Dp) {
             contentDescription = "profile image",
             modifier = modifier
                 .size(size),
-            contentScale = ContentScale.Crop
+            contentScale = contentScale
         )
     }
 }
@@ -51,6 +56,7 @@ fun CircularImage(
     modifier: Modifier = Modifier,
     painter: Painter?,
     contentDescription: String?,
+    contentScale: ContentScale = ContentScale.Crop,
     size: Dp,
     placeholderId: Int = R.drawable.profile_pic_placeholder
 ) {
@@ -60,14 +66,14 @@ fun CircularImage(
             .padding(5.dp),
         shape = CircleShape,
         border = BorderStroke(0.5.dp, Color.LightGray),
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
     ) {
         if (painter != null) {
             Image(
                 painter = painter,
                 contentDescription = contentDescription,
                 modifier = modifier,
-                contentScale = ContentScale.Crop
+                contentScale = contentScale
             )
         } else {
             // Placeholder or loading indicator when painter is null
@@ -82,7 +88,7 @@ fun CircularImage(
                     contentDescription = "profile image",
                     modifier = modifier
                         .size(size),
-                    contentScale = ContentScale.Crop
+                    contentScale = contentScale
                 )
             }
         }
@@ -94,6 +100,7 @@ fun CircularImage(
     modifier: Modifier = Modifier,
     uri: Uri?,
     contentDescription: String?,
+    contentScale: ContentScale = ContentScale.Crop,
     size: Dp,
     placeholderId: Int = R.drawable.profile_pic_placeholder
 ) {
@@ -111,7 +118,7 @@ fun CircularImage(
                 painter = p,
                 contentDescription = contentDescription,
                 modifier = modifier,
-                contentScale = ContentScale.Crop
+                contentScale = contentScale
             )
         } else {
             // Placeholder or loading indicator when painter is null
@@ -126,7 +133,7 @@ fun CircularImage(
                     contentDescription = "profile image",
                     modifier = modifier
                         .size(size),
-                    contentScale = ContentScale.Crop
+                    contentScale = contentScale
                 )
             }
         }

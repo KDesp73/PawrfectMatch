@@ -45,6 +45,7 @@ import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.CheckBoxCollection
 import io.github.kdesp73.petadoption.ui.components.IconButton
+import io.github.kdesp73.petadoption.ui.components.MyCard
 import io.github.kdesp73.petadoption.viewmodels.SearchFiltersViewModel
 
 private const val TAG = "Search"
@@ -87,17 +88,11 @@ fun Search(room: AppDatabase, navController: NavController){
             modifier: Modifier = Modifier,
             content: @Composable () -> Unit
         ){
-            Card (
-                colors = CardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContainerColor = CardDefaults.cardColors().disabledContainerColor,
-                    disabledContentColor = CardDefaults.cardColors().disabledContentColor
-                ),
+            MyCard (
                 modifier = modifier
             ){
                 Column (
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(10.dp)
                 ){
                     Text(text = title, fontSize = 5.em)
                     Spacer(modifier = Modifier.height(10.dp))

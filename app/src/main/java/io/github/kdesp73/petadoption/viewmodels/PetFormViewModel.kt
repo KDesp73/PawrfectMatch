@@ -31,6 +31,7 @@ class PetFormViewModel : ViewModel(){
     }
 
     fun validate() = runCatching {
+        require(nameState.value.length <= 16) { MainActivity.appContext.getString(R.string.name_must_not_be_longer_than_16_characters) }
         require(nameState.value.isNotEmpty()) { MainActivity.appContext.getString(R.string.name_cannot_be_empty) }
         require(imageState.value != null) { MainActivity.appContext.getString(R.string.you_need_to_select_an_image) }
         require(locationState.value.isNotEmpty()) { MainActivity.appContext.getString(R.string.location_cannot_be_empty) }

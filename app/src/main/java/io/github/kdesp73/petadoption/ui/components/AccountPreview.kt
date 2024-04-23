@@ -46,9 +46,7 @@ fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){
     val imageSize = 135.dp
     val containerHeight = imageSize + 100.dp
 
-    Surface(
-        color = MaterialTheme.colorScheme.secondaryContainer,
-        shape = RoundedCornerShape(10.dp),
+    MyCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(containerHeight)
@@ -74,7 +72,7 @@ fun AccountPreview(pic: Int, user: LocalUser?, navController: NavController?){
                     )
                     Text(
                         fontSize = 6.em,
-                        text = "Sign Up / Log In"
+                        text = stringResource(id = R.string.sign_up_log_in)
                     )
                 }
             }
@@ -120,20 +118,16 @@ fun AccountPreview(user: LocalUser?, navController: NavController?){
             navController = navController
         )
     } else {
-        Surface(
-            color = MaterialTheme.colorScheme.secondaryContainer,
-            shape = RoundedCornerShape(10.dp),
+        MyCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(containerHeight)
                 .clickable(onClick = {
-                    if (user != null) {
-                        if (navController != null) {
-                            navigateTo(
-                                if (!user.loggedIn) Route.SignIn.route else Route.AccountSettings.route,
-                                navController,
-                            )
-                        }
+                    if (navController != null) {
+                        navigateTo(
+                            if (user == null || !user.loggedIn) Route.SignIn.route else Route.AccountSettings.route,
+                            navController
+                        )
                     }
                 })
                 .padding(8.dp)

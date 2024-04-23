@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -82,6 +83,7 @@ data class LocalUser (
 
     @Composable
     fun ToComposable(height: Dp){
+        val color = MaterialTheme.colorScheme.onPrimaryContainer
         val textModifier = Modifier
             .padding(2.dp)
 
@@ -105,23 +107,23 @@ data class LocalUser (
             val iconModifier = Modifier.size(20.dp)
             InfoRow {
                 Icon(modifier = iconModifier, imageVector = Icons.Filled.Person, contentDescription = "")
-                Text(modifier = textModifier, text = "$firstName $lastName")
+                Text(modifier = textModifier, text = "$firstName $lastName", color = color)
             }
             InfoRow {
                 Icon(modifier = iconModifier, imageVector = Icons.Filled.Email, contentDescription = "")
-                Text(modifier = textModifier, text = email)
+                Text(modifier = textModifier, text = email, color = color)
             }
             InfoRow {
                 Icon(modifier = iconModifier, imageVector = Icons.Filled.Phone, contentDescription = "")
-                Text(modifier = textModifier, text = phone ?: "")
+                Text(modifier = textModifier, text = phone ?: "", color = color)
             }
             InfoRow {
                 Icon(modifier = iconModifier, imageVector = Icons.Filled.LocationOn, contentDescription = "")
-                Text(modifier = textModifier, text = location)
+                Text(modifier = textModifier, text = location, color = color)
             }
             InfoRow {
                 Icon(modifier = iconModifier, imageVector = Icons.Filled.Face, contentDescription = "")
-                Text(modifier = textModifier, text = gender.toString().lowercase().replaceFirstChar { it.uppercase() })
+                Text(modifier = textModifier, text = gender.toString().lowercase().replaceFirstChar { it.uppercase() }, color = color)
             }
         }
     }

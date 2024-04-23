@@ -8,16 +8,21 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.enums.ThemeName
 import io.github.kdesp73.petadoption.isLandscape
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
-import io.github.kdesp73.petadoption.ui.theme.PetAdoptionTheme
+import io.github.kdesp73.petadoption.ui.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -29,8 +34,14 @@ fun Layout(topAppBarText: String, navController: NavHostController, room: AppDat
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    val themeName = room.settingsDao().getTheme()
-    PetAdoptionTheme (
+    var themeName by remember {
+        mutableStateOf(ThemeName.AUTO.value)
+    }
+
+    LaunchedEffect(key1 = themeName) {
+        themeName = room.settingsDao().getTheme()
+    }
+    AppTheme (
         theme = themeName
     ){
         Drawer(

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,22 +26,25 @@ fun InfoBox(
     height: Dp = 80.dp,
     infoFontSize: Float = 4.em.value
 ) {
-    Card(
+    MyCard(
         modifier = modifier
             .size(width, height),
-        content = {
-            Column (
-                modifier = Modifier
-                    .padding(2.dp)
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Text(text = label, color = Color.Gray)
-                Text(text = info.toString(), fontSize = infoFontSize.em)
-            }
+    ) {
+        Column (
+            modifier = Modifier
+                .padding(2.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Text(text = label, color = Color.Gray)
+            Text(
+                text = info.toString(),
+                fontSize = infoFontSize.em,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
         }
-    )
+    }
 }
 
 @Composable

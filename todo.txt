@@ -3,6 +3,7 @@ TODO: Toy Exchange
 TODO: Switch Languages
 TODO: About Composable
 TODO: resolve warnings
+TODO: weird font colors in light theme
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing

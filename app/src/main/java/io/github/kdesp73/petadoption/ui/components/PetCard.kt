@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,7 +34,7 @@ private const val TAG = "PetCard"
 
 @Composable
 private fun Contents(modifier: Modifier, pet: Pet, uri: String?, id: String, navController: NavController?){
-    Card(
+    MyCard (
         modifier = modifier
             .clickable {
                 if (navController != null) {
@@ -48,18 +49,24 @@ private fun Contents(modifier: Modifier, pet: Pet, uri: String?, id: String, nav
             }
             .height(200.dp)
             .fillMaxWidth(),
-        content = {
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val painter = rememberAsyncImagePainter(model = uri)
-                CircularImage(painter = painter, contentDescription = "", size = 150.dp)
-                pet.ToComposable()
-            }
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val painter = rememberAsyncImagePainter(model = uri)
+            CircularImage(
+                modifier = Modifier.padding(horizontal = 10.dp),
+                painter = painter,
+                contentDescription = "",
+                size = 150.dp
+            )
+            pet.ToComposable()
         }
-    )
+    }
 }
 
 @SuppressLint("RememberReturnType")

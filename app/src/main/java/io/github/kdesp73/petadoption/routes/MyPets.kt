@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,60 +52,62 @@ fun MyPets(room: AppDatabase, navController: NavController){
 
 //    petManager.syncPets(room)
 
-    Column (
-        modifier = Modifier
-            .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-
-    ){
-        val landscape = isLandscape(LocalConfiguration.current)
-        Text(
-            modifier = Modifier.padding(vertical = 20.dp),
-            text = stringResource(id = Route.MyPets.resId),
-            fontSize = if(landscape) 4.em else 6.em
-        )
-        @Composable
-        fun PetList(){
-            if (pets != null) {
-                for(pet in pets){
-                    var uri by remember { mutableStateOf(Uri.EMPTY) }
-                    LaunchedEffect(pet) {
-                        val deferredResult: Deferred<Uri?> = GlobalScope.async {
-                            imageManager.getImageUrl(ImageManager.pets + pet.generateId() + ".jpg")
+    Surface {
+        Column (
+            modifier = Modifier
+                .verticalScroll(scrollState)
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ){
+            val landscape = isLandscape(LocalConfiguration.current)
+            Text(
+                modifier = Modifier.padding(vertical = 20.dp),
+                text = stringResource(id = Route.MyPets.resId),
+                fontSize = if(landscape) 4.em else 6.em,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            @Composable
+            fun PetList(){
+                if (pets != null) {
+                    for(pet in pets){
+                        var uri by remember { mutableStateOf(Uri.EMPTY) }
+                        LaunchedEffect(pet) {
+                            val deferredResult: Deferred<Uri?> = GlobalScope.async {
+                                imageManager.getImageUrl(ImageManager.pets + pet.generateId() + ".jpg")
+                            }
+                            uri = deferredResult.await()
                         }
-                        uri = deferredResult.await()
-                    }
 
-                    PetCard(
-                        pet = pet,
-                        uri = uri,
-                        id = pet.id.toString(),
-                        navController = navController
-                    )
+                        PetCard(
+                            pet = pet,
+                            uri = uri,
+                            id = pet.id.toString(),
+                            navController = navController
+                        )
+                    }
                 }
             }
-        }
-        if(!landscape){
-            Column (
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxSize()
-                    .verticalScroll(scrollState),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(15.dp)
-            ){
-                PetList()
-            }
-        } else {
-            Row (
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxSize()
-                    .horizontalScroll(scrollState),
-                horizontalArrangement = Arrangement.spacedBy(15.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                PetList()
+            if(!landscape){
+                Column (
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(15.dp)
+                ){
+                    PetList()
+                }
+            } else {
+                Row (
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxSize()
+                        .horizontalScroll(scrollState),
+                    horizontalArrangement = Arrangement.spacedBy(15.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    PetList()
+                }
             }
         }
     }

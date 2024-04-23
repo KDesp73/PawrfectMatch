@@ -17,6 +17,7 @@ import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import java.security.MessageDigest
+import java.util.Locale
 
 fun checkName(name: String) = runCatching {
     require(name.all { !it.isWhitespace() })
@@ -73,13 +74,17 @@ fun clearBackTracks(navController: NavController){
     navController.popBackStack(navController.graph.startDestinationId, inclusive = true)
 }
 
-fun changeLocale(locale: String) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        MainActivity.appContext.getSystemService(LocaleManager::class.java)
-            .applicationLocales = LocaleList.forLanguageTags(locale)
-    } else {
-        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(locale))
-    }
+fun changeLocale(language: String) {
+    val locale = Locale(language)
+    Locale.setDefault(locale)
+
+    val resources = MainActivity.appContext.resources
+
+    val configuration = resources.configuration
+    configuration.setLocale(locale)
+    configuration.setLayoutDirection(locale)
+
+    resources.configuration.updateFrom(configuration)
 }
 
 fun imageBitmapFromBitmap(bitmap: Bitmap, context: Context) : ImageBitmap {

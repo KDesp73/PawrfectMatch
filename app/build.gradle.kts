@@ -76,6 +76,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.code.gson:gson:2.10.1")
 
+    implementation("com.catppuccin:catppuccin-palette:1.0.0")
 
     /**  ROOM API  */
     val roomVersion = "2.6.1"

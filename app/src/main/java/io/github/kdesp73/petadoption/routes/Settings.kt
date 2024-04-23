@@ -5,6 +5,7 @@ import android.app.Activity
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,9 +23,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.core.app.ActivityCompat.recreate
+import androidx.core.os.LocaleListCompat
 import io.github.kdesp73.petadoption.LocaleManager
 import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.R
+import io.github.kdesp73.petadoption.changeLocale
 import io.github.kdesp73.petadoption.enums.CustomAlignment
 import io.github.kdesp73.petadoption.enums.Language
 import io.github.kdesp73.petadoption.enums.ThemeName
@@ -38,6 +42,7 @@ import io.github.kdesp73.petadoption.ui.components.Dropdown
 import io.github.kdesp73.petadoption.ui.components.HalfButton
 import io.github.kdesp73.petadoption.ui.components.VerticalScaffold
 import io.github.kdesp73.petadoption.viewmodels.SettingsViewModel
+import java.util.Locale
 
 private const val TAG = "Settings"
 
@@ -97,11 +102,13 @@ fun Settings(room: AppDatabase?){
             ){
                 viewModel.log(TAG)
                 Log.d(TAG, "Selected locale: ${locales[viewModel.language.value] ?: "null"}")
-                Log.d(TAG, "Current locale: ${LocaleManager.getLocale()}")
 
                 if(settingsDao?.getLanguage() != viewModel.language.value){
-                    // TODO: doesn't change (fix)
-                    locales[viewModel.language.value]?.let { LocaleManager.setLocale(MainActivity.appContext, it) }
+                    locales[viewModel.language.value]?.let {
+                        AppCompatDelegate.setApplicationLocales(
+                            LocaleListCompat.create(Locale.forLanguageTag(it))
+                        )
+                    }
                 }
 
                 if(settingsDao?.getTheme() != themeNameFromLabel[viewModel.theme.value]?.value){

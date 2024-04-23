@@ -9,8 +9,8 @@ enum class Language (val label: String, val value: String){
 }
 
 val locales = hashMapOf(
-    Language.ENGLISH.label to "en_US",
-    Language.GREEK.label to "el_GR"
+    Language.ENGLISH.value to "en_US",
+    Language.GREEK.value to "el_GR"
 )
 
 val languageFromLabel = Language.entries.associateBy { it.label }

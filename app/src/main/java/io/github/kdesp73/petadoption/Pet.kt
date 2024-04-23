@@ -29,12 +29,13 @@ open class Pet (
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.Start
         ) {
+            val color = MaterialTheme.colorScheme.onSecondaryContainer
             Text(text = name, fontSize = 5.em, color = MaterialTheme.colorScheme.primary)
-            Text(text = petTypeFromValue[type]?.label.toString())
-            Text(text = location)
-            Text(text = genderFromValue[gender]?.label.toString())
-            Text(text = petAgeFromValue[age]?.label.toString())
-            Text(text = petSizeFromValue[size]?.label.toString())
+            Text(text = petTypeFromValue[type]?.label.toString(), color = color)
+            Text(text = location, color = color)
+            Text(text = genderFromValue[gender]?.label.toString(), color = color)
+            Text(text = petAgeFromValue[age]?.label.toString(), color = color)
+            Text(text = petSizeFromValue[size]?.label.toString(), color = color)
         }
     }
 }

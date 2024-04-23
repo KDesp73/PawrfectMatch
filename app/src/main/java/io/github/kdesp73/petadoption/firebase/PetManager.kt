@@ -173,7 +173,7 @@ class PetManager {
         }
 
         val documents = deferredDocs.awaitAll().filterNotNull()
-        documents.map { FirestorePet(it.documents[0]) }
+        return@coroutineScope documents.map { FirestorePet(it.documents[0]) }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
