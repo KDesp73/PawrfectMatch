@@ -79,7 +79,8 @@ class NotificationService(private val context: Context) {
             val inputStream = context.contentResolver.openInputStream(uri)
             val bitmap = BitmapFactory.decodeStream(inputStream)
 
-            rotateBitmap(bitmap, 90f)
+//            rotateBitmap(bitmap, 90f)
+            bitmap
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
             null

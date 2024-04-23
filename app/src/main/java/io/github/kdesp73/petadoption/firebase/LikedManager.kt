@@ -14,11 +14,12 @@ class LikedManager {
     suspend fun getLikedPetIds(email: String) : List<String>{
         return try {
             val querySnapshot = db.collection("Liked")
-                .whereEqualTo("email", email)
+                .whereEqualTo("userEmail", email)
                 .get()
                 .await()
 
-            return querySnapshot.documents.map { it["petId"].toString() }
+            val list = querySnapshot.documents.map { it["petId"].toString() }
+            return list
         } catch (_: Exception){
             emptyList<String>()
         }

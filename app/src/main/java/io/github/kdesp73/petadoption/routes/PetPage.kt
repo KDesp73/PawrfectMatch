@@ -131,7 +131,7 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
             val heart = MutableStateFlow<ImageVector>(if (liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder)
             CircularImage(painter = painter, contentDescription = "Pet image", size = 200.dp)
             Row (
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Text(text = pet.name, fontSize = 6.em, color = MaterialTheme.colorScheme.primary)

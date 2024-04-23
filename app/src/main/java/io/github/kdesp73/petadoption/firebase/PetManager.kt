@@ -1,13 +1,18 @@
 package io.github.kdesp73.petadoption.firebase
 
 import android.util.Log
+import com.google.android.gms.tasks.Tasks.await
+import com.google.android.play.integrity.internal.i
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import io.github.kdesp73.petadoption.Pet
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
 import io.github.kdesp73.petadoption.viewmodels.SearchOptions
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 
@@ -155,13 +160,27 @@ class PetManager {
         }
     }
 
-    suspend fun getPetsByIds(ids: List<String>): List<FirestorePet?> = coroutineScope {
-        val deferredPets = ids.map { id ->
+    @OptIn(DelicateCoroutinesApi::class)
+    suspend fun getPetsByIds(ids: List<String?>): List<FirestorePet> = coroutineScope {
+        val deferredDocs = ids.map { id ->
             async(Dispatchers.IO) {
-                getPetById(id)
+                if (id != null) {
+                    db.collection("Pets").whereEqualTo("id", id).get().await()
+                } else {
+                    null
+                }
             }
         }
-        deferredPets.map { it.await() }
+
+        val documents = deferredDocs.awaitAll().filterNotNull()
+        documents.map { FirestorePet(it.documents[0]) }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    suspend fun getFavouritePets(email: String) : List<FirestorePet?> {
+        val likedManager = LikedManager()
+
+        return emptyList()
     }
 
     private fun getPetDocumentId(id: String, onComplete: (String?) -> Unit){

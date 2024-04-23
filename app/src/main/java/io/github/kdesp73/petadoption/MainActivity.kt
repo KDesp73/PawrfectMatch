@@ -6,13 +6,10 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
@@ -22,7 +19,6 @@ import androidx.navigation.navArgument
 import androidx.room.Room
 import com.google.firebase.FirebaseApp
 import io.github.kdesp73.petadoption.enums.ThemeName
-import io.github.kdesp73.petadoption.enums.locales
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalUser
 import io.github.kdesp73.petadoption.routes.About
@@ -44,7 +40,6 @@ import io.github.kdesp73.petadoption.routes.SignIn
 import io.github.kdesp73.petadoption.routes.UserPage
 import io.github.kdesp73.petadoption.ui.components.Layout
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 private const val TAG = "MainActivity"
 
