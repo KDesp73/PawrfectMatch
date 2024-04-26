@@ -122,7 +122,7 @@ class MainActivity : ComponentActivity() {
                     composable(Route.AccountSettings.route) { AccountSettings(navController, room) }
                     composable(Route.SignIn.route) { SignIn(navController) }
                     composable(Route.AddPet.route) { AddPet(navController, room) }
-                    composable(Route.AddToy.route) { AddToy() }
+                    composable(Route.AddToy.route) { AddToy(navController, room) }
                     composable(Route.ChangePassword.route) { ChangePassword(room, navController) }
                     composable(Route.CreateAccount.route) { CreateAccount(navController)}
                     composable(Route.MyPets.route) { MyPets(room = room, navController) }

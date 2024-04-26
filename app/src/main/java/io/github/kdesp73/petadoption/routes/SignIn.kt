@@ -108,15 +108,15 @@ fun SignIn(navController: NavController?){
                     text = stringResource(R.string.create_an_account_using),
                     fontSize = 5.em
                 )
-                AuthActionButton(
-                    textModifier = textModifier,
-                    iconButtonModifier = iconButtonModifier,
-                    contentDesciption = stringResource(R.string.sign_up_with_google),
-                    label = stringResource(R.string.google),
-                    painterRes = R.drawable.google
-                ) {
-                    // TODO: Sign Up with google action
-                }
+//                AuthActionButton(
+//                    textModifier = textModifier,
+//                    iconButtonModifier = iconButtonModifier,
+//                    contentDesciption = stringResource(R.string.sign_up_with_google),
+//                    label = stringResource(R.string.google),
+//                    painterRes = R.drawable.google
+//                ) {
+//                    // TODO: Sign Up with google action
+//                }
                 AuthActionButton(
                     textModifier = textModifier,
                     iconButtonModifier = iconButtonModifier,
@@ -142,15 +142,15 @@ fun SignIn(navController: NavController?){
                     text = stringResource(R.string.log_in_using),
                     fontSize = 5.em
                 )
-                AuthActionButton(
-                    textModifier = textModifier,
-                    iconButtonModifier = iconButtonModifier,
-                    contentDesciption = stringResource(R.string.log_in_with_google),
-                    label = stringResource(id = R.string.google),
-                    painterRes = R.drawable.google
-                ) {
-                    // TODO: Log in with google action
-                }
+//                AuthActionButton(
+//                    textModifier = textModifier,
+//                    iconButtonModifier = iconButtonModifier,
+//                    contentDesciption = stringResource(R.string.log_in_with_google),
+//                    label = stringResource(id = R.string.google),
+//                    painterRes = R.drawable.google
+//                ) {
+//                    // TODO: Log in with google action
+//                }
                 AuthActionButton(
                     textModifier = textModifier,
                     iconButtonModifier = iconButtonModifier,

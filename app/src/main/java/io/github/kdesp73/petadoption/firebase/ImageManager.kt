@@ -13,6 +13,7 @@ class ImageManager {
     companion object {
         val users = "users/"
         val pets = "pets/"
+        val toys = "toys/"
     }
 
 
@@ -39,6 +40,11 @@ class ImageManager {
 
     fun uploadPetImage(uri: Uri, filename: String, onComplete: (String?) -> Unit){
         uploadImage(uri, filename, "pets/"){ url ->
+            onComplete(url)
+        }
+    }
+    fun uploadToyImage(uri: Uri, filename: String, onComplete: (String?) -> Unit){
+        uploadImage(uri, filename, ImageManager.toys){ url ->
             onComplete(url)
         }
     }

@@ -155,13 +155,13 @@ fun Home(room: AppDatabase, navController: NavController) {
                         navigateTo(Route.UserPage.route + "?email=${room.userDao().getEmail()}", navController = navController)
                     }
                 }
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    BigIconButton(resId = R.drawable.paw_solid, contentDescription = "My Animals")
-                    BigIconButton(resId = R.drawable.paw_solid, contentDescription = "My Animals")
-                }
+//                Row (
+//                    horizontalArrangement = Arrangement.SpaceEvenly,
+//                    verticalAlignment = Alignment.CenterVertically
+//                ){
+//                    BigIconButton(resId = R.drawable.paw_solid, contentDescription = "My Animals")
+//                    BigIconButton(resId = R.drawable.paw_solid, contentDescription = "My Animals")
+//                }
             }
         }
     }

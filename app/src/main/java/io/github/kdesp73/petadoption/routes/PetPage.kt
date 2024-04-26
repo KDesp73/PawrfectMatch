@@ -199,8 +199,8 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
 
                             val notificationService = NotificationService(context)
                             if (deleted){
+                                clearBackTracks(navController = navController)
                                 navigateTo(Route.Home.route, navController)
-                                clearBackTracks(navController)
                                 notificationService.showBasicNotification(
                                     context.getString(R.string.notif_channel_main),
                                     context.getString(R.string.success),

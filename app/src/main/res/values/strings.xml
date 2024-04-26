@@ -126,4 +126,5 @@
     <string name="name_must_not_be_longer_than_16_characters">Name must not be longer than 16 characters</string>
     <string name="welcome_to">"Welcome to"</string>
     <string name="my_account">My Account</string>
+    <string name="no_pets_added_yet">No pets added yet</string>
 </resources>

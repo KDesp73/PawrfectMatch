@@ -1,62 +1,25 @@
 package io.github.kdesp73.petadoption.firebase
 
 import android.util.Log
-import com.google.android.gms.tasks.Tasks.await
-import com.google.android.play.integrity.internal.i
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
-import io.github.kdesp73.petadoption.viewmodels.SearchOptions
+import io.github.kdesp73.petadoption.room.LocalToy
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 
-class PetManager {
-    private val TAG = "PetManager"
+class ToyManager {
+    private val TAG = "ToyManager"
     private val db = FirebaseFirestore.getInstance()
-
-    suspend fun filterPets(options: SearchOptions): MutableList<FirestorePet> {
-        fun typeIncluded(pet: FirestorePet): Boolean{
-            return options.type[pet.type] == true
-        }
-
-        fun ageIncluded(pet: FirestorePet): Boolean{
-            return options.age[pet.age] == true
-        }
-
-        fun sizeIncluded(pet: FirestorePet): Boolean{
-            return options.size[pet.size] == true
-        }
-
-        fun genderIncluded(pet: FirestorePet): Boolean{
-            return options.gender[pet.gender] == true
-        }
-
-        fun includePet(pet: FirestorePet): Boolean{
-            return typeIncluded(pet) && ageIncluded(pet) && sizeIncluded(pet) && genderIncluded(pet)
-        }
-
-        val list = mutableListOf<FirestorePet>()
-        val querySnapshot = db.collection("Pets").get().await()
+    private val collection = "Toys"
 
 
-        for(doc in querySnapshot.documents){
-            val pet = FirestorePet(doc)
-            if(includePet(pet)){
-                list.add(pet)
-            }
-        }
-        return list
-    }
-
-
-    private fun checkPetExists(email: String, id: String, onComplete: (Boolean) -> Unit){
-        db.collection("Pets")
+    private fun checkToyExists(email: String, id: String, onComplete: (Boolean) -> Unit){
+        db.collection(collection)
             .whereEqualTo("ownerEmail", email)
             .whereEqualTo("id", id)
             .get()
@@ -68,8 +31,8 @@ class PetManager {
                 onComplete(false)
             }
     }
-    private fun checkPetExists(id: String, onComplete: (Boolean) -> Unit){
-        db.collection("Pets")
+    private fun checkToyExists(id: String, onComplete: (Boolean) -> Unit){
+        db.collection(collection)
             .whereEqualTo("id", id)
             .get()
             .addOnSuccessListener { snapshot ->
@@ -80,10 +43,10 @@ class PetManager {
                 onComplete(false)
             }
     }
-    private fun checkPetExists(pet: FirestorePet, onComplete: (Boolean) -> Unit){
-        db.collection("Pets")
-            .whereEqualTo("ownerEmail", pet.ownerEmail)
-            .whereEqualTo("id", pet.id)
+    private fun checkToyExists(toy: FirestoreToy, onComplete: (Boolean) -> Unit){
+        db.collection(collection)
+            .whereEqualTo("ownerEmail", toy.ownerEmail)
+            .whereEqualTo("id", toy.id)
             .get()
             .addOnSuccessListener { snapshot ->
                 onComplete(snapshot.documents.isNotEmpty())
@@ -94,14 +57,14 @@ class PetManager {
             }
     }
 
-    fun addPet(pet: FirestorePet, onComplete: (Boolean) -> Unit){
-        checkPetExists(pet){ exists ->
+    fun addToy(toy: FirestoreToy, onComplete: (Boolean) -> Unit){
+        checkToyExists(toy){ exists ->
             if(exists){
-                Log.d(TAG, "${pet.toString()} already exists")
+                Log.d(TAG, "${toy.toString()} already exists")
                 onComplete(false)
             } else {
-                db.collection("Pets")
-                    .add(pet)
+                db.collection(collection)
+                    .add(toy)
                     .addOnSuccessListener { snapshot ->
                         onComplete(true)
                     }
@@ -112,16 +75,16 @@ class PetManager {
         }
     }
 
-    fun getPetsByEmail(email: String, onComplete: (List<FirestorePet>) -> Unit) {
-        val list = mutableListOf<FirestorePet>()
+    fun getToysByEmail(email: String, onComplete: (List<FirestoreToy>) -> Unit) {
+        val list = mutableListOf<FirestoreToy>()
 
         try {
-            val querySnapshot = db.collection("Pets")
+            val querySnapshot = db.collection(collection)
                 .whereEqualTo("ownerEmail", email)
                 .get()
                 .addOnSuccessListener { querySnapshot ->
                     for(doc in querySnapshot.documents) {
-                        list.add(FirestorePet(doc))
+                        list.add(FirestoreToy(doc))
                     }
                     onComplete(list)
                 }
@@ -136,14 +99,14 @@ class PetManager {
         val list = mutableListOf<FirestorePet>()
 
         try {
-            val querySnapshot = db.collection("Pets")
+            val querySnapshot = db.collection(collection)
                 .whereEqualTo("ownerEmail", email)
                 .get()
                 .await()
 
-                for(doc in querySnapshot.documents) {
-                    list.add(FirestorePet(doc))
-                }
+            for(doc in querySnapshot.documents) {
+                list.add(FirestorePet(doc))
+            }
         } catch (_: Exception) {
         }
 
@@ -152,7 +115,7 @@ class PetManager {
 
     suspend fun getPetByEmailAndId(email: String, id: String) : FirestorePet? {
         return try {
-            val querySnapshot = db.collection("Pets")
+            val querySnapshot = db.collection(collection)
                 .whereEqualTo("ownerEmail", email)
                 .whereEqualTo("id", id)
                 .get()
@@ -168,7 +131,7 @@ class PetManager {
 
     suspend fun getPetById(id: String) : FirestorePet? {
         return try {
-            val querySnapshot = db.collection("Pets")
+            val querySnapshot = db.collection(collection)
                 .whereEqualTo("id", id)
                 .get()
                 .await()
@@ -182,12 +145,12 @@ class PetManager {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    suspend fun getPetsByIds(ids: List<String?>): List<FirestorePet> = coroutineScope {
+    suspend fun getToysByIds(ids: List<String?>): List<FirestoreToy> = coroutineScope {
         if(ids.isEmpty()) return@coroutineScope emptyList()
         val deferredDocs = ids.map { id ->
             async(Dispatchers.IO) {
                 if (id != null) {
-                    db.collection("Pets").whereEqualTo("id", id).get().await()
+                    db.collection(collection).whereEqualTo("id", id).get().await()
                 } else {
                     null
                 }
@@ -195,14 +158,14 @@ class PetManager {
         }
 
         val documents = deferredDocs.awaitAll().filterNotNull()
-        val list = documents.map { if(it.documents.isNotEmpty()) FirestorePet(it.documents[0]) else null }
+        val list = documents.map { if(it.documents.isNotEmpty()) FirestoreToy(it.documents[0]) else null }
 
         return@coroutineScope list.filterNotNull()
     }
 
 
-    private fun getPetDocumentId(id: String, onComplete: (String?) -> Unit){
-        db.collection("Pets").whereEqualTo("id", id).get()
+    private fun getToyDocumentId(id: String, onComplete: (String?) -> Unit){
+        db.collection(collection).whereEqualTo("id", id).get()
             .addOnSuccessListener { snapshot ->
                 if(snapshot.documents.isEmpty()) onComplete(null)
                 else {
@@ -211,10 +174,10 @@ class PetManager {
             }
     }
 
-    fun deletePetById(id: String, onComplete: (Boolean) -> Unit) {
-        getPetDocumentId(id) { documentId ->
+    fun deleteToyById(id: String, onComplete: (Boolean) -> Unit) {
+        getToyDocumentId(id) { documentId ->
             if (documentId != null) {
-                db.collection("Pets")
+                db.collection(collection)
                     .document(documentId)
                     .delete()
                     .addOnSuccessListener { onComplete(true) }
@@ -223,25 +186,26 @@ class PetManager {
         }
     }
 
-    fun syncPets(room: AppDatabase){
+    fun syncToys(room: AppDatabase){
         val email = room.userDao().getEmail() ?: return
-        getPetsByEmail(email) { list ->
-            val localPets = room.petDao().selectPets(email)
-            for (pet in list){
-                if (!localPets.any { it.generateId() == pet.generateId() }) {
-                    val newPet = LocalPet(pet)
-                    room.petDao().insert(newPet)
+        getToysByEmail(email) { list ->
+            val localToys = room.toyDao().selectToys(email)
+            for (toy in list){
+                if (!localToys.any { it.generateId() == toy.generateId() }) {
+                    val newToy = LocalToy(toy)
+                    room.toyDao().insert(newToy)
                 }
             }
 
-            for(localPet in localPets){
-                checkPetExists(localPet.ownerEmail, localPet.generateId()) { exists ->
+            for(localToy in localToys){
+                checkToyExists(localToy.ownerEmail, localToy.generateId()) { exists ->
                     if (!exists){
-                        room.petDao().delete(localPet)
+                        room.toyDao().delete(localToy)
                     }
                 }
             }
 
         }
     }
- }
+
+}

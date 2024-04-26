@@ -77,7 +77,7 @@ fun CircularImage(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = modifier.fillMaxSize(),
                     painter = painter,
                     contentDescription = contentDescription,
                     contentScale = contentScale
@@ -93,7 +93,7 @@ fun CircularImage(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = modifier.fillMaxSize(),
                     painter = painterResource(id = placeholderId),
                     contentDescription = "profile image",
                     contentScale = contentScale
