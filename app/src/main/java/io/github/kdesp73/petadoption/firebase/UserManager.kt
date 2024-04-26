@@ -95,13 +95,12 @@ class UserManager {
     fun getUserByEmail(email: String, onComplete: (List<User>) -> Unit) {
         val userDocument: DocumentSnapshot
 
-        val userTask = db.collection("Users")
+        db.collection("Users")
             .whereEqualTo("email", email)
             .get()
             .addOnSuccessListener { userDocs ->
-                val user = userDocs.documents[0] ?: null;
-
-                if(user != null){
+                if(userDocs.documents.isNotEmpty()){
+                    val user = userDocs.documents[0];
                     db.collection("UserInfo")
                         .whereEqualTo("email", email)
                         .get()
@@ -118,7 +117,6 @@ class UserManager {
                 } else {
                     onComplete(emptyList())
                 }
-
             }
     }
 

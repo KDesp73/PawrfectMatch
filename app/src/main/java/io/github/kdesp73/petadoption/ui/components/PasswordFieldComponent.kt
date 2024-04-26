@@ -1,5 +1,7 @@
 package io.github.kdesp73.petadoption.ui.components
 
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -12,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -34,6 +37,7 @@ fun PasswordTextFieldComponent(
     when (type) {
         TextFieldType.NORMAL -> {
             TextField(
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
                 isError = error,
                 value = password,
                 onValueChange = {
@@ -49,6 +53,7 @@ fun PasswordTextFieldComponent(
 
         TextFieldType.OUTLINED -> {
             OutlinedTextField(
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
                 isError = error,
                 value = password,
                 onValueChange = {

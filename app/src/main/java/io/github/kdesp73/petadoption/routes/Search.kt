@@ -46,6 +46,7 @@ import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.CheckBoxCollection
 import io.github.kdesp73.petadoption.ui.components.IconButton
 import io.github.kdesp73.petadoption.ui.components.MyCard
+import io.github.kdesp73.petadoption.ui.components.PleaseLogin
 import io.github.kdesp73.petadoption.viewmodels.SearchFiltersViewModel
 
 private const val TAG = "Search"
@@ -58,12 +59,7 @@ fun Search(room: AppDatabase, navController: NavController){
 
     val email: String? = room.userDao().getEmail()
     if(email?.isEmpty() == true){
-        Center(modifier = Modifier.fillMaxSize()) {
-            Text(text = "Please login first to use this feature")
-            IconButton(text = "Login", imageVector = Icons.Filled.AccountCircle) {
-                navigateTo(Route.Login.route, navController)
-            }
-        }
+        PleaseLogin(email = email, navController = navController)
         return
     }
 

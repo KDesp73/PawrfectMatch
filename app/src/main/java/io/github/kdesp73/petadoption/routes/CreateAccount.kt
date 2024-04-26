@@ -140,13 +140,14 @@ fun CreateAccount(navController: NavController?){
 
                 CheckboxComponent(
                     value = "",
+                    state = viewModel.termsAndConditionsAcceptedState,
                     onTextSelected = { clicked ->
                         notificationService.showBasicNotification(channel = context.getString(R.string.notif_channel_main), title = "Clicked", content = "$clicked got clicked",
                             importance = NotificationManager.IMPORTANCE_HIGH
                         )
                     },
-                    onCheckedChange = {
-                        viewModel.termsAndConditionsAcceptedState.value = !viewModel.termsAndConditionsAcceptedState.value
+                    onCheckedChange = { checked ->
+                        Log.d(TAG, "checked: $checked")
                     }
                 )
 
@@ -198,7 +199,7 @@ fun CreateAccount(navController: NavController?){
                             viewModel.emailError.value -> "Invalid Email"
                             validPassword.isFailure -> validPassword.exceptionOrNull()?.message
                             viewModel.repeatPasswordError.value -> "Passwords don't match"
-                            viewModel.termsAndConditionsAcceptedState.value-> "Please accept our Terms and Conditions"
+                            !viewModel.termsAndConditionsAcceptedState.value-> "Please accept our Terms and Conditions"
                             else -> "Success"
                         }
 

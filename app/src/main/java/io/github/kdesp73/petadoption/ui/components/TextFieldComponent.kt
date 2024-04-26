@@ -1,5 +1,7 @@
 package io.github.kdesp73.petadoption.ui.components
 
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Icon
@@ -13,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kdesp73.petadoption.enums.TextFieldType
@@ -34,6 +37,7 @@ fun TextFieldComponent(
     when (type) {
         TextFieldType.NORMAL -> {
             TextField(
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
                 isError = error,
                 value = text,
                 onValueChange = {
@@ -46,6 +50,7 @@ fun TextFieldComponent(
         }
         TextFieldType.OUTLINED -> {
             OutlinedTextField(
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
                 isError = error,
                 value = text,
                 onValueChange = {
