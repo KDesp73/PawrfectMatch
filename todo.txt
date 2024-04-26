@@ -1,8 +1,8 @@
 TODO: Home Page
 TODO: Toy Exchange
 TODO: Switch Languages
-TODO: About Composable
 TODO: resolve warnings
+TODO: About Composable
 TODO: weird font colors in light theme
 DONE: Notifications
 DONE: AccountPreview Component
@@ -53,3 +53,4 @@ DONE: Like Pet
 DONE: favourites
 DONE: specify pet location at creation
 DONE: Drawer Content
+DONE: ask for permission for notifications

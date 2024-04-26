@@ -50,7 +50,7 @@ fun MyPets(room: AppDatabase, navController: NavController){
     val imageManager = ImageManager()
     val petManager = PetManager()
 
-//    petManager.syncPets(room)
+    petManager.syncPets(room)
 
     Surface {
         Column (

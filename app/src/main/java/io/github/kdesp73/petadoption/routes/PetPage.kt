@@ -191,9 +191,14 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
                                 deleted = deleted and completed
                             }
 
+                            likedManager.removeAllLikes(pet.generateId()){ completed ->
+                                deleted = deleted and completed
+                            }
+
+                            room.petDao().delete(pet)
+
                             val notificationService = NotificationService(context)
                             if (deleted){
-                                room.petDao().delete(pet)
                                 navigateTo(Route.Home.route, navController)
                                 clearBackTracks(navController)
                                 notificationService.showBasicNotification(
@@ -202,7 +207,6 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
                                     content = context.getString(R.string.deleted_successfully, pet.name),
                                     NotificationManager.IMPORTANCE_DEFAULT
                                 )
-
                             }
                         }
                     ) {

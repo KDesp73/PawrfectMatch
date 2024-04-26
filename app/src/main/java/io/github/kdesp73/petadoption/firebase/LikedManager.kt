@@ -37,7 +37,22 @@ class LikedManager {
         } catch (_: Exception){
             -1
         }
+    }
 
+    fun removeAllLikes(petId: String, onComplete: (Boolean) -> Unit) {
+        getLikedDocumentIds(petId){ list ->
+            for (liked in list){
+                if (liked != null) {
+                    db.collection("Liked")
+                        .document(liked)
+                        .delete()
+                        .addOnSuccessListener { onComplete(true) }
+                        .addOnFailureListener { onComplete(false) }
+                }
+
+            }
+
+        }
     }
 
     suspend fun isLiked(email: String, petId: String) : Boolean? {
@@ -111,6 +126,21 @@ class LikedManager {
         }
     }
 
+    private fun getLikedDocumentIds(petId: String, onComplete: (List<String?>) -> Unit) {
+        db.collection("Liked")
+            .whereEqualTo("petId", petId)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val documentIds = task.result?.documents?.map { it.id } ?: emptyList()
+                    onComplete(documentIds)
+                } else {
+                    val exception = task.exception
+                    println("Error getting liked document IDs: $exception")
+                    onComplete(emptyList())
+                }
+            }
+    }
     private fun getLikedDocumentId(email: String, petId: String, onComplete: (List<String?>) -> Unit) {
         db.collection("Liked")
             .whereEqualTo("petId", petId)

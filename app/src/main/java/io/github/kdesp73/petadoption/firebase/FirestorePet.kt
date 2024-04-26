@@ -7,6 +7,7 @@ import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
 import io.github.kdesp73.petadoption.enums.PetType
 import io.github.kdesp73.petadoption.hash
+import io.github.kdesp73.petadoption.room.LocalPet
 
 data class FirestorePet (
     var id: String,

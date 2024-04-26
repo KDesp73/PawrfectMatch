@@ -14,7 +14,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -73,16 +75,17 @@ fun Favourites(room: AppDatabase, navController: NavController){
     }
 
     if(ids.isEmpty() || pets == null){
-        Center(modifier = Modifier.fillMaxSize()) {
+        Center(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
             LoadingAnimation(64.dp)
         }
     } else if(pets!!.isEmpty()){
-        Center(modifier = Modifier.fillMaxSize()) {
+        Center(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
             Text(text = "No favourite pets yet", fontSize = 6.em)
         }
     } else {
         LazyColumn (
             modifier = Modifier
+                .background(colorScheme.surface)
                 .padding(8.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(15.dp),
@@ -90,6 +93,7 @@ fun Favourites(room: AppDatabase, navController: NavController){
         ){
             item {
                 Text(
+                    color = colorScheme.onSurface,
                     modifier = Modifier.padding(vertical = 10.dp),
                     text = stringResource(id = R.string.route_favourites), fontSize = 6.em
                 )

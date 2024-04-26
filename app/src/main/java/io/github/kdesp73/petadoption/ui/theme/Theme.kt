@@ -2,9 +2,12 @@ package io.github.kdesp73.petadoption.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -21,34 +24,23 @@ import androidx.core.view.WindowCompat
 import io.github.kdesp73.petadoption.Theme
 import io.github.kdesp73.petadoption.enums.ThemeName
 
+private const val TAG = "AppTheme"
 
 @Composable
 fun AppTheme(
-    theme: String = ThemeName.DARK.value,
     darkColorScheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable() () -> Unit
 ) {
     val colorScheme = when {
-        theme == ThemeName.DYNAMIC.value && dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->{
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->{
             val context = LocalContext.current
-            if (darkColorScheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (isSystemInDarkTheme()) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
-        theme == ThemeName.DARK.value -> Theme.Dark.colors
-        theme == ThemeName.LIGHT.value -> Theme.Light.colors
-        theme == ThemeName.AUTO.value -> {
-            if (darkColorScheme){
-                Theme.Dark.colors
-            } else {
-                Theme.Light.colors
-            }
-        }
-        else -> Theme.Dark.colors
+        darkColorScheme -> Theme.Dark.colors
+        else -> Theme.Light.colors
     }
-
-    val textColor = determineTextColor(colorScheme?.background ?: Color.Black)
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -65,11 +57,9 @@ fun AppTheme(
         MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography,
-            
+
             content = {
-                CompositionLocalProvider(LocalContentColor provides textColor) {
-                    content()
-                }
+                content()
             }
         )
     }

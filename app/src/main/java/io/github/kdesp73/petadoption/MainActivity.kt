@@ -1,5 +1,6 @@
 package io.github.kdesp73.petadoption
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -17,6 +18,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.room.Room
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.google.firebase.FirebaseApp
 import io.github.kdesp73.petadoption.enums.ThemeName
 import io.github.kdesp73.petadoption.room.AppDatabase
@@ -58,6 +62,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalPermissionsApi::class)
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n", "RestrictedApi", "StateFlowValueCalledInComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +108,7 @@ class MainActivity : ComponentActivity() {
 
             Layout(topAppBarText = stringResource(id = R.string.app_name), navController = navController, room) {
                 NavHost(navController, startDestination = Route.Home.route) {
-                    composable(Route.Home.route) { Home() }
+                    composable(Route.Home.route) { Home(navController) }
                     composable(Route.Search.route) { Search(room, navController) }
                     composable(Route.Favourites.route) { Favourites(room, navController) }
                     composable(Route.About.route) { About() }

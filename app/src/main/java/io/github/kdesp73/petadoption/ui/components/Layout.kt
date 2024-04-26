@@ -1,6 +1,7 @@
 package io.github.kdesp73.petadoption.ui.components
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerState
@@ -41,8 +42,17 @@ fun Layout(topAppBarText: String, navController: NavHostController, room: AppDat
     LaunchedEffect(key1 = themeName) {
         themeName = room.settingsDao().getTheme()
     }
+
+    val darkMode: Boolean = when(themeName){
+        ThemeName.DARK.value -> true
+        ThemeName.LIGHT.value -> false
+        else -> isSystemInDarkTheme()
+    }
+
+
     AppTheme (
-        theme = themeName
+        darkColorScheme = darkMode,
+        dynamicColor = themeName == ThemeName.DYNAMIC.value
     ){
         Drawer(
             drawerState = drawerState,

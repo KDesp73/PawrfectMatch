@@ -99,21 +99,25 @@ class UserManager {
             .whereEqualTo("email", email)
             .get()
             .addOnSuccessListener { userDocs ->
-                val user = userDocs.documents[0]; // TODO: better check
+                val user = userDocs.documents[0] ?: null;
 
-                db.collection("UserInfo")
-                    .whereEqualTo("email", email)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        val users = mutableListOf<User>()
-                        for (document in documents) {
-                            users.add(User.documentToObject(user, document))
+                if(user != null){
+                    db.collection("UserInfo")
+                        .whereEqualTo("email", email)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            val users = mutableListOf<User>()
+                            for (document in documents) {
+                                users.add(user.let { User.documentToObject(it, document) })
+                            }
+                            onComplete(users)
                         }
-                        onComplete(users)
-                    }
-                    .addOnFailureListener { exception ->
-                        onComplete(emptyList())
-                    }
+                        .addOnFailureListener { exception ->
+                            onComplete(emptyList())
+                        }
+                } else {
+                    onComplete(emptyList())
+                }
 
             }
     }

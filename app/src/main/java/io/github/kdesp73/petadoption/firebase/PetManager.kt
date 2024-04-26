@@ -54,18 +54,39 @@ class PetManager {
         return list
     }
 
+
+    private fun checkPetExists(email: String, id: String, onComplete: (Boolean) -> Unit){
+        db.collection("Pets")
+            .whereEqualTo("ownerEmail", email)
+            .whereEqualTo("id", id)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                onComplete(snapshot.documents.isNotEmpty())
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.message.toString())
+                onComplete(false)
+            }
+    }
+    private fun checkPetExists(id: String, onComplete: (Boolean) -> Unit){
+        db.collection("Pets")
+            .whereEqualTo("id", id)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                onComplete(snapshot.documents.isNotEmpty())
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.message.toString())
+                onComplete(false)
+            }
+    }
     private fun checkPetExists(pet: FirestorePet, onComplete: (Boolean) -> Unit){
         db.collection("Pets")
             .whereEqualTo("ownerEmail", pet.ownerEmail)
+            .whereEqualTo("id", pet.id)
             .get()
             .addOnSuccessListener { snapshot ->
-                var found = false
-                for(p in snapshot.documents){
-                    if(FirestorePet(p).id == pet.id)
-                        found = true
-                }
-
-                onComplete(found)
+                onComplete(snapshot.documents.isNotEmpty())
             }
             .addOnFailureListener { exception ->
                 Log.e(TAG, exception.message.toString())
@@ -162,6 +183,7 @@ class PetManager {
 
     @OptIn(DelicateCoroutinesApi::class)
     suspend fun getPetsByIds(ids: List<String?>): List<FirestorePet> = coroutineScope {
+        if(ids.isEmpty()) return@coroutineScope emptyList()
         val deferredDocs = ids.map { id ->
             async(Dispatchers.IO) {
                 if (id != null) {
@@ -173,15 +195,11 @@ class PetManager {
         }
 
         val documents = deferredDocs.awaitAll().filterNotNull()
-        return@coroutineScope documents.map { FirestorePet(it.documents[0]) }
+        val list = documents.map { if(it.documents.isNotEmpty()) FirestorePet(it.documents[0]) else null }
+
+        return@coroutineScope list.filterNotNull()
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
-    suspend fun getFavouritePets(email: String) : List<FirestorePet?> {
-        val likedManager = LikedManager()
-
-        return emptyList()
-    }
 
     private fun getPetDocumentId(id: String, onComplete: (String?) -> Unit){
         db.collection("Pets").whereEqualTo("id", id).get()
@@ -209,14 +227,21 @@ class PetManager {
         val email = room.userDao().getEmail() ?: return
         getPetsByEmail(email) { list ->
             val localPets = room.petDao().selectPets(email)
-            if (localPets.size < list.size){
-                for (pet in list){
-                    if (!localPets.any { it.generateId() == pet.generateId() }) {
-                        val newPet = LocalPet(pet)
-                        room.petDao().insert(newPet)
+            for (pet in list){
+                if (!localPets.any { it.generateId() == pet.generateId() }) {
+                    val newPet = LocalPet(pet)
+                    room.petDao().insert(newPet)
+                }
+            }
+
+            for(localPet in localPets){
+                checkPetExists(localPet.ownerEmail, localPet.generateId()) { exists ->
+                    if (!exists){
+                        room.petDao().delete(localPet)
                     }
                 }
             }
+
         }
 
     }
