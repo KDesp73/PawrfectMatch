@@ -12,11 +12,14 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import coil.compose.rememberAsyncImagePainter
@@ -35,22 +38,20 @@ fun ToyForm(modifier: Modifier = Modifier, viewModel: ToyFormViewModel, submitAc
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        val imageModifier = Modifier.fillMaxSize()
         SelectImage(null) { action, uri ->
             val imagePainter = rememberAsyncImagePainter(uri)
             CircularImage(
-                modifier = imageModifier.clickable { action() },
+                modifier = Modifier.clickable { action() },
                 painter = imagePainter,
                 contentDescription = "Pet image",
                 size = 200.dp
             )
             viewModel.imageState.value = uri
         }
-        // TODO: change icon
         TextFieldComponent(
             viewModel.nameState,
             labelValue = stringResource(R.string.name),
-            icon = Icons.Rounded.Face,
+            icon = ImageVector.vectorResource(R.drawable.robot_solid),
             type = TextFieldType.OUTLINED
         )
         TextFieldComponent(
@@ -62,7 +63,7 @@ fun ToyForm(modifier: Modifier = Modifier, viewModel: ToyFormViewModel, submitAc
         DecimalFieldComponent(
             viewModel.priceState,
             labelValue = "Price",
-            icon = Icons.Filled.ShoppingCart,
+            icon = ImageVector.vectorResource(R.drawable.dollar_sign_solid),
             type = TextFieldType.OUTLINED
         )
 

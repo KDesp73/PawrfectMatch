@@ -1,6 +1,7 @@
 package io.github.kdesp73.petadoption.ui.components
 
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
 import io.github.kdesp73.petadoption.enums.TextFieldType
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -33,6 +35,7 @@ fun PasswordTextFieldComponent(
 ) {
     val password by state.collectAsState()
     val error by isError.collectAsState()
+    val iconModifier = Modifier.size(20.dp)
 
     when (type) {
         TextFieldType.NORMAL -> {
@@ -43,9 +46,9 @@ fun PasswordTextFieldComponent(
                 onValueChange = {
                     state.value = it
                     onValueChanged()
-                                },
+                },
                 label = { Text(labelValue) },
-                leadingIcon = { Icon(imageVector = icon, contentDescription = iconDescriptor) },
+                leadingIcon = { Icon(modifier = iconModifier, imageVector = icon, contentDescription = iconDescriptor) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
@@ -61,7 +64,7 @@ fun PasswordTextFieldComponent(
                     onValueChanged()
                                 },
                 label = { Text(labelValue) },
-                leadingIcon = { Icon(imageVector = icon, contentDescription = iconDescriptor) },
+                leadingIcon = { Icon(modifier = iconModifier, imageVector = icon, contentDescription = iconDescriptor) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )

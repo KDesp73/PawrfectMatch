@@ -1,6 +1,7 @@
 package io.github.kdesp73.petadoption.ui.components
 
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
@@ -18,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.kdesp73.petadoption.enums.TextFieldType
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -33,6 +35,7 @@ fun TextFieldComponent(
 ) {
     val text by state.collectAsState()
     val error by isError.collectAsState()
+    val iconModifier = Modifier.size(20.dp)
 
     when (type) {
         TextFieldType.NORMAL -> {
@@ -45,7 +48,7 @@ fun TextFieldComponent(
                     onValueChanged()
                 },
                 label = { Text(labelValue) },
-                leadingIcon = { Icon(imageVector = icon, contentDescription = iconDescriptor) }
+                leadingIcon = { Icon(modifier = iconModifier, imageVector = icon, contentDescription = iconDescriptor) }
             )
         }
         TextFieldType.OUTLINED -> {
@@ -58,7 +61,7 @@ fun TextFieldComponent(
                     onValueChanged()
                 },
                 label = { Text(labelValue) },
-                leadingIcon = { Icon(imageVector = icon, contentDescription = iconDescriptor) }
+                leadingIcon = { Icon(modifier = iconModifier, imageVector = icon, contentDescription = iconDescriptor) }
             )
         }
     }

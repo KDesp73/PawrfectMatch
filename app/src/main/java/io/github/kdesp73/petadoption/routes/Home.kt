@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.core.content.ContextCompat
@@ -156,7 +157,7 @@ fun Home(room: AppDatabase, navController: NavController) {
                         navigateTo(Route.MyAdditions.route + "?index=0", navController = navController)
                     }
                     BigIconButton(
-                        imageVector = Icons.Filled.Star,
+                        imageVector = ImageVector.vectorResource(R.drawable.robot_solid),
                         contentDescription = stringResource(
                             R.string.route_my_toys
                         )
@@ -174,7 +175,11 @@ fun Home(room: AppDatabase, navController: NavController) {
                             R.string.my_account
                         )
                     ){
-                        navigateTo(Route.UserPage.route + "?email=${room.userDao().getEmail()}", navController = navController)
+                        navigateTo(
+                            Route.UserPage.route + "?email=${room.userDao().getEmail()}",
+                            navController = navController,
+                            restore = false
+                        )
                     }
 //                    BigIconButton(resId = R.drawable.paw_solid, contentDescription = "My Animals")
                 }

@@ -16,7 +16,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.R
@@ -39,22 +41,22 @@ fun PetInfoForm(modifier: Modifier = Modifier, viewModel: PetFormViewModel, subm
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ){
-        val imageModifier = Modifier.fillMaxSize()
         SelectImage (null){ action, uri ->
             val imagePainter = rememberAsyncImagePainter(uri)
             CircularImage(
-                modifier = imageModifier.clickable { action() },
+                modifier = Modifier.clickable { action() },
                 painter = imagePainter,
                 contentDescription = "Pet image",
                 size = 200.dp
             )
             viewModel.imageState.value = uri
         }
-        // TODO: change icon
-        TextFieldComponent(viewModel.nameState, labelValue = stringResource(R.string.name), icon = Icons.Rounded.Face, type = TextFieldType.OUTLINED)
+        TextFieldComponent(viewModel.nameState, labelValue = stringResource(R.string.name), icon = ImageVector.vectorResource(R.drawable.paw_solid), type = TextFieldType.OUTLINED)
         TextFieldComponent(viewModel.locationState, labelValue = stringResource(id = R.string.location), icon = Icons.Rounded.LocationOn, type = TextFieldType.OUTLINED)
 
-        Row {
+        Row (
+            horizontalArrangement = Arrangement.spacedBy(20.dp)
+        ){
             Dropdown(
                 state = viewModel.typeState,
                 title = stringResource(R.string.type),

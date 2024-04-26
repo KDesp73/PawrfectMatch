@@ -1,6 +1,7 @@
 package io.github.kdesp73.petadoption.ui.components
 
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
@@ -13,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import io.github.kdesp73.petadoption.enums.TextFieldType
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -28,6 +30,7 @@ fun EmailFieldComponent(
 ) {
     val text by state.collectAsState()
     val error by isError.collectAsState()
+    val iconModifier = Modifier.size(20.dp)
 
     when (type) {
         TextFieldType.NORMAL -> {
@@ -40,7 +43,7 @@ fun EmailFieldComponent(
                     onValueChange()
                                 },
                 label = { Text(labelValue) },
-                leadingIcon = { Icon(imageVector = icon, contentDescription = iconDescriptor) },
+                leadingIcon = { Icon(modifier = iconModifier, imageVector = icon, contentDescription = iconDescriptor) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
         }
@@ -54,7 +57,7 @@ fun EmailFieldComponent(
                     onValueChange()
                                 },
                 label = { Text(labelValue) },
-                leadingIcon = { Icon(imageVector = icon, contentDescription = iconDescriptor) },
+                leadingIcon = { Icon(modifier = iconModifier, imageVector = icon, contentDescription = iconDescriptor) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
         }
