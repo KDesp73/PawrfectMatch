@@ -52,6 +52,7 @@ import io.github.kdesp73.petadoption.ui.components.IconButton
 import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
 import io.github.kdesp73.petadoption.ui.components.PetCard
 import io.github.kdesp73.petadoption.ui.components.PleaseLogin
+import io.github.kdesp73.petadoption.ui.components.ToyCard
 import io.github.kdesp73.petadoption.ui.theme.AppTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -146,7 +147,7 @@ fun FavouriteToys(room: AppDatabase, navController: NavController){
             }
             items(toys!!) { item ->
                 if (item != null) {
-                    // TODO: ToyCard
+                    ToyCard(toy = item, id = item.id, navController = navController)
                 }
             }
             item { Spacer(modifier = Modifier.height(20.dp)) }

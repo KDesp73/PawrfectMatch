@@ -70,6 +70,7 @@ import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
 import io.github.kdesp73.petadoption.ui.components.MyCard
 import io.github.kdesp73.petadoption.ui.components.PetCard
 import io.github.kdesp73.petadoption.ui.components.PleaseLogin
+import io.github.kdesp73.petadoption.ui.components.ToyCard
 import io.github.kdesp73.petadoption.viewmodels.SearchFiltersViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -137,8 +138,7 @@ fun SearchToys(room: AppDatabase, navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             items(list!!){ item ->
-                Text(text = item.name)
-                // TODO: write ToyCard
+                ToyCard(toy = item, id = item.id, navController = navController)
             }
         }
     }

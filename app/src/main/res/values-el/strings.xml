@@ -127,4 +127,5 @@
     <string name="route_my_additions">Οι προσθήκες μου</string>
     <string name="pets">Κατοικίδια</string>
     <string name="toys">Παιχνίδια</string>
+    <string name="route_toy_showcase">Προβολή Παιχνιδιού</string>
 </resources>

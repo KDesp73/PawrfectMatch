@@ -6,6 +6,7 @@ sealed class Route (val route: String, @StringRes val resId: Int){
     object SearchResults : Route(route = "search_results", R.string.route_search_results)
     object UserPage : Route(route = "user_page", R.string.route_user_page)
     object PetPage : Route(route = "pet_page", R.string.route_pet_showcase)
+    object ToyPage : Route(route = "toy_page", R.string.route_toy_showcase)
     object MyPets : Route(route = "my_pets", resId = R.string.route_my_pets)
     object MyToys : Route(route = "my_toys", resId = R.string.route_my_toys)
     object MyAdditions : Route(route = "my_additions", resId = R.string.route_my_additions)

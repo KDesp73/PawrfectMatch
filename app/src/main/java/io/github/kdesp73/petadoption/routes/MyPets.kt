@@ -70,12 +70,6 @@ fun MyPets(room: AppDatabase, navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally,
         ){
             val landscape = isLandscape(LocalConfiguration.current)
-            Text(
-                modifier = Modifier.padding(vertical = 20.dp),
-                text = stringResource(id = Route.MyPets.resId),
-                fontSize = if(landscape) 4.em else 6.em,
-                color = MaterialTheme.colorScheme.onBackground
-            )
             @Composable
             fun PetList(){
                 if(pets != null){

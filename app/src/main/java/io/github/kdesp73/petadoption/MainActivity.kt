@@ -42,6 +42,7 @@ import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.SearchResults
 import io.github.kdesp73.petadoption.routes.Settings
 import io.github.kdesp73.petadoption.routes.ShowPet
+import io.github.kdesp73.petadoption.routes.ShowToy
 import io.github.kdesp73.petadoption.routes.SignIn
 import io.github.kdesp73.petadoption.routes.UserPage
 import io.github.kdesp73.petadoption.ui.components.Layout
@@ -158,6 +159,15 @@ class MainActivity : ComponentActivity() {
                     ) { backStackEntry ->
                         backStackEntry.arguments?.getString("email")
                             ?.let { Login(navController, it, room) }
+                    }
+                    composable(
+                        route = Route.ToyPage.route + "?id={id}",
+                        arguments = listOf(navArgument(
+                            name = "id",
+                        ) { defaultValue = "" })
+                    ) { backStackEntry ->
+                        backStackEntry.arguments?.getString("id")
+                            ?.let { ShowToy(it, room, navController) }
                     }
                     composable(
                         route = Route.PetPage.route + "?id={id}",

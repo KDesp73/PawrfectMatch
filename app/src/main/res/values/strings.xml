@@ -131,4 +131,5 @@
     <string name="route_my_additions">My Additions</string>
     <string name="pets">Pets</string>
     <string name="toys">Toys</string>
+    <string name="route_toy_showcase">Toy Preview</string>
 </resources>

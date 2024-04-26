@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.Pet
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.Toy
 import io.github.kdesp73.petadoption.firebase.ImageManager
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.LocalPet
@@ -33,8 +34,47 @@ import kotlinx.coroutines.async
 
 private const val TAG = "PetCard"
 
+
 @Composable
-private fun Contents(modifier: Modifier, pet: Pet, uri: String?, id: String, navController: NavController?){
+private fun ToyContents(modifier: Modifier, toy: Toy, uri: String?, id: String, navController: NavController?){
+    MyCard (
+        modifier = modifier
+            .clickable {
+                if (navController != null) {
+                    navigateTo(
+                        Route.ToyPage.route + "?id=$id",
+                        navController = navController,
+                        popUpToStartDestination = false,
+                        launchAsSingleTop = false,
+                        restore = false
+                    )
+                }
+            }
+            .height(200.dp)
+            .fillMaxWidth(),
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val painter = rememberAsyncImagePainter(model = uri)
+            CircularImage(
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.padding(horizontal = 10.dp),
+                painter = painter,
+                contentDescription = "",
+                size = 150.dp
+            )
+            toy.ToComposable()
+        }
+    }
+}
+
+@Composable
+private fun PetContents(modifier: Modifier, pet: Pet, uri: String?, id: String, navController: NavController?){
     MyCard (
         modifier = modifier
             .clickable {
@@ -71,6 +111,55 @@ private fun Contents(modifier: Modifier, pet: Pet, uri: String?, id: String, nav
     }
 }
 
+
+@SuppressLint("RememberReturnType")
+@Composable
+fun ToyCard(
+    modifier: Modifier = Modifier,
+    toy: Toy,
+    id: String?,
+    uri: Uri?,
+    navController: NavController?
+){
+    ToyContents(
+        modifier = modifier,
+        toy = toy,
+        uri = uri.toString(),
+        id = id.toString(),
+        navController
+    )
+}
+
+@OptIn(DelicateCoroutinesApi::class)
+@SuppressLint("RememberReturnType")
+@Composable
+fun ToyCard(
+    modifier: Modifier = Modifier,
+    toy: Toy,
+    id: String?,
+    navController: NavController?
+){
+    val imageManager = ImageManager()
+    var uri by remember { mutableStateOf<Uri?>(null) }
+
+    LaunchedEffect(key1 = uri) {
+        val deferredResult = GlobalScope.async {
+            imageManager.getImageUrl(ImageManager.toys+ id + ".jpg")
+        }
+
+        uri = deferredResult.await()
+    }
+
+
+    ToyContents(
+        modifier = modifier,
+        toy = toy,
+        uri = uri.toString(),
+        id = id.toString(),
+        navController
+    )
+}
+
 @SuppressLint("RememberReturnType")
 @Composable
 fun PetCard(
@@ -80,7 +169,7 @@ fun PetCard(
     uri: Uri?,
     navController: NavController?
 ){
-    Contents(
+    PetContents(
         modifier = modifier,
         pet = pet,
         uri = uri.toString(),
@@ -88,7 +177,6 @@ fun PetCard(
         navController
     )
 }
-
 
 @OptIn(DelicateCoroutinesApi::class)
 @SuppressLint("RememberReturnType")
@@ -111,7 +199,7 @@ fun PetCard(
     }
 
 
-    Contents(
+    PetContents(
         modifier = modifier,
         pet = pet,
         uri = uri.toString(),
