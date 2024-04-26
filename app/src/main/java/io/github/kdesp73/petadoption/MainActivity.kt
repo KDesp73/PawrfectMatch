@@ -35,7 +35,9 @@ import io.github.kdesp73.petadoption.routes.CreateAccount
 import io.github.kdesp73.petadoption.routes.Favourites
 import io.github.kdesp73.petadoption.routes.Home
 import io.github.kdesp73.petadoption.routes.Login
+import io.github.kdesp73.petadoption.routes.MyAdditions
 import io.github.kdesp73.petadoption.routes.MyPets
+import io.github.kdesp73.petadoption.routes.MyToys
 import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.SearchResults
 import io.github.kdesp73.petadoption.routes.Settings
@@ -125,7 +127,18 @@ class MainActivity : ComponentActivity() {
                     composable(Route.AddToy.route) { AddToy(navController, room) }
                     composable(Route.ChangePassword.route) { ChangePassword(room, navController) }
                     composable(Route.CreateAccount.route) { CreateAccount(navController)}
-                    composable(Route.MyPets.route) { MyPets(room = room, navController) }
+                    composable(
+                        route = Route.MyAdditions.route + "?index={index}",
+                        arguments = listOf(
+                            navArgument(
+                                name = "index"
+                            ) { defaultValue = 0 },
+                        )
+                    ) { backStackEntry ->
+                        backStackEntry.arguments?.getInt("index")
+                            ?.let { MyAdditions(tabIndex = it, room = room, navController = navController) }
+                    }
+
                     composable(
                         route = Route.SearchResults.route + "?search_options={search_options}",
                         arguments = listOf(

@@ -19,6 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -144,8 +145,21 @@ fun Home(room: AppDatabase, navController: NavController) {
                             id = R.string.route_my_pets
                         )
                     ) {
-                        navigateTo(Route.MyPets.route, navController = navController)
+                        navigateTo(Route.MyAdditions.route + "?index=0", navController = navController)
                     }
+                    BigIconButton(
+                        imageVector = Icons.Filled.Star,
+                        contentDescription = stringResource(
+                            R.string.route_my_toys
+                        )
+                    ){
+                        navigateTo(Route.MyAdditions.route + "?index=1", navController = navController)
+                    }
+                }
+                Row (
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
                     BigIconButton(
                         imageVector = Icons.Filled.AccountCircle,
                         contentDescription = stringResource(
@@ -154,14 +168,8 @@ fun Home(room: AppDatabase, navController: NavController) {
                     ){
                         navigateTo(Route.UserPage.route + "?email=${room.userDao().getEmail()}", navController = navController)
                     }
+//                    BigIconButton(resId = R.drawable.paw_solid, contentDescription = "My Animals")
                 }
-//                Row (
-//                    horizontalArrangement = Arrangement.SpaceEvenly,
-//                    verticalAlignment = Alignment.CenterVertically
-//                ){
-//                    BigIconButton(resId = R.drawable.paw_solid, contentDescription = "My Animals")
-//                    BigIconButton(resId = R.drawable.paw_solid, contentDescription = "My Animals")
-//                }
             }
         }
     }

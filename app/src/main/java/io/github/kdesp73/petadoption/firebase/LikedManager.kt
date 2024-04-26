@@ -11,24 +11,29 @@ class LikedManager {
     private val TAG = "LikedManager"
     private val db = FirebaseFirestore.getInstance()
 
-    suspend fun getLikedPetIds(email: String) : List<String>{
+    companion object {
+        val pets = "LikedPets"
+        val toys = "LikedToys"
+    }
+
+    suspend fun getLikedIds(collection: String, email: String) : List<String>{
         return try {
-            val querySnapshot = db.collection("Liked")
+            val querySnapshot = db.collection(collection)
                 .whereEqualTo("userEmail", email)
                 .get()
                 .await()
 
-            val list = querySnapshot.documents.map { it["petId"].toString() }
+            val list = querySnapshot.documents.map { it["id"].toString() }
             return list
         } catch (_: Exception){
             emptyList<String>()
         }
     }
 
-    suspend fun countLikes(petId: String) : Int {
+    suspend fun countLikes(collection: String, id: String) : Int {
         return try {
-            val task = db.collection("Liked")
-                .whereEqualTo("petId", petId)
+            val task = db.collection(collection)
+                .whereEqualTo("id", id)
                 .count()
                 .get(AggregateSource.SERVER)
                 .await()
@@ -39,27 +44,25 @@ class LikedManager {
         }
     }
 
-    fun removeAllLikes(petId: String, onComplete: (Boolean) -> Unit) {
-        getLikedDocumentIds(petId){ list ->
+    fun removeAllLikes(collection: String, id: String, onComplete: (Boolean) -> Unit) {
+        getLikedDocumentIds(collection, id){ list ->
             for (liked in list){
                 if (liked != null) {
-                    db.collection("Liked")
+                    db.collection(collection)
                         .document(liked)
                         .delete()
                         .addOnSuccessListener { onComplete(true) }
                         .addOnFailureListener { onComplete(false) }
                 }
-
             }
-
         }
     }
 
-    suspend fun isLiked(email: String, petId: String) : Boolean? {
+    suspend fun isLiked(collection: String, email: String, id: String) : Boolean? {
         return try {
-            val querySnapshot = db.collection("Liked")
+            val querySnapshot = db.collection(collection)
                 .whereEqualTo("userEmail", email)
-                .whereEqualTo("petId", petId)
+                .whereEqualTo("id", id)
                 .get()
                 .await()
 
@@ -69,11 +72,11 @@ class LikedManager {
         }
     }
 
-    private fun isLiked(email: String, petId: String, onComplete: (Boolean?) -> Unit){
+    private fun isLiked(collection: String, email: String, id: String, onComplete: (Boolean?) -> Unit){
         try {
-            db.collection("Liked")
+            db.collection(collection)
                 .whereEqualTo("userEmail", email)
-                .whereEqualTo("petId", petId)
+                .whereEqualTo("id", id)
                 .get()
                 .addOnSuccessListener { query ->
                     onComplete(query.documents.isNotEmpty())
@@ -88,14 +91,14 @@ class LikedManager {
         }
     }
 
-    fun likePet(email: String, petId: String, onComplete : (Boolean) -> Unit){
-        isLiked(email, petId){ isLiked ->
+    fun like(collection: String, email: String, id: String, onComplete : (Boolean) -> Unit){
+        isLiked(collection, email, id){ isLiked ->
             Log.d(TAG, "isLiked: $isLiked")
             if(isLiked != null && !isLiked){
-                db.collection("Liked")
+                db.collection(collection)
                     .add(hashMapOf(
                         "userEmail" to email,
-                        "petId" to petId
+                        "id" to id
                     ))
                     .addOnCompleteListener { snapshot ->
                         onComplete(snapshot.isComplete)
@@ -107,13 +110,13 @@ class LikedManager {
         }
     }
 
-    fun unlikePet(email: String, petId: String, onComplete: (Boolean) -> Unit) {
-        getLikedDocumentId(email, petId){ ids ->
-            for (id in ids){
-                Log.d(TAG, "DocID: $id")
-                if(id != null){
-                    db.collection("Liked")
-                        .document(id)
+    fun unlike(collection: String, email: String, id: String, onComplete: (Boolean) -> Unit) {
+        getLikedDocumentId(collection, email, id){ ids ->
+            for (_id in ids){
+                Log.d(TAG, "DocID: $_id")
+                if(_id != null){
+                    db.collection(collection)
+                        .document(_id)
                         .delete()
                         .addOnSuccessListener { snapshot ->
                             onComplete(true)
@@ -126,9 +129,9 @@ class LikedManager {
         }
     }
 
-    private fun getLikedDocumentIds(petId: String, onComplete: (List<String?>) -> Unit) {
-        db.collection("Liked")
-            .whereEqualTo("petId", petId)
+    private fun getLikedDocumentIds(collection: String, id: String, onComplete: (List<String?>) -> Unit) {
+        db.collection(collection)
+            .whereEqualTo("id", id)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -141,9 +144,9 @@ class LikedManager {
                 }
             }
     }
-    private fun getLikedDocumentId(email: String, petId: String, onComplete: (List<String?>) -> Unit) {
-        db.collection("Liked")
-            .whereEqualTo("petId", petId)
+    private fun getLikedDocumentId(collection: String, email: String, id: String, onComplete: (List<String?>) -> Unit) {
+        db.collection(collection)
+            .whereEqualTo("id", id)
             .whereEqualTo("userEmail", email)
             .get()
             .addOnCompleteListener { task ->

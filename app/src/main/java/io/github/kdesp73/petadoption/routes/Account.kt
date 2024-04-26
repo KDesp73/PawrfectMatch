@@ -90,13 +90,13 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
                 Button(onClick = {
                     if (navController != null) {
                         navigateTo(
-                            Route.MyPets.route,
+                            Route.MyAdditions.route + "?index=0",
                             navController = navController,
                             popUpToStartDestination = false,
                         )
                     }
                 }) {
-                    Text(text = stringResource(R.string.my_pets))
+                    Text(text = stringResource(R.string.route_my_additions))
                 }
             }
         },

@@ -123,4 +123,8 @@
     <string name="welcome_to">Καλωσήρθες στο</string>
     <string name="my_account">Ο Λογαριασμός μου</string>
     <string name="no_pets_added_yet">Δεν προστέθηκαν κατοικίδια</string>
+    <string name="route_my_toys">Τα παιχνίδια μου</string>
+    <string name="route_my_additions">Οι προσθήκες μου</string>
+    <string name="pets">Κατοικίδια</string>
+    <string name="toys">Παιχνίδια</string>
 </resources>

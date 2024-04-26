@@ -69,7 +69,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.runBlocking
 
 private const val TAG = "PetPage"
 
@@ -100,7 +99,7 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
 
     LaunchedEffect(key1 = null) {
         val deferredResult = GlobalScope.async {
-            likedManager.isLiked(email, petId)
+            likedManager.isLiked(LikedManager.pets, email, petId)
         }
 
         liked = deferredResult.await() == true
@@ -150,11 +149,11 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
                             Log.d(TAG, "Updated like: $liked")
 
                             if(liked){
-                                likedManager.likePet(email, petId){ completed ->
+                                likedManager.like(LikedManager.pets, email, petId){ completed ->
                                     Log.d(TAG, "Liked pet: $completed")
                                 }
                             } else {
-                                likedManager.unlikePet(email, petId) { completed ->
+                                likedManager.unlike(LikedManager.pets, email, petId) { completed ->
                                     Log.d(TAG, "Unliked pet: $completed")
                                 }
                             }
@@ -191,7 +190,7 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
                                 deleted = deleted and completed
                             }
 
-                            likedManager.removeAllLikes(pet.generateId()){ completed ->
+                            likedManager.removeAllLikes(LikedManager.pets, pet.generateId()){ completed ->
                                 deleted = deleted and completed
                             }
 

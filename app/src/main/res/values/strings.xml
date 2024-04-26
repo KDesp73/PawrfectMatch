@@ -127,4 +127,8 @@
     <string name="welcome_to">"Welcome to"</string>
     <string name="my_account">My Account</string>
     <string name="no_pets_added_yet">No pets added yet</string>
+    <string name="route_my_toys">My Toys</string>
+    <string name="route_my_additions">My Additions</string>
+    <string name="pets">Pets</string>
+    <string name="toys">Toys</string>
 </resources>

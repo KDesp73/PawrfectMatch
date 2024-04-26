@@ -75,6 +75,24 @@ class ToyManager {
         }
     }
 
+    suspend fun getToys(): List<FirestoreToy>{
+        val list = mutableListOf<FirestoreToy>()
+
+        try {
+            val querySnapshot = db.collection(collection)
+                .get()
+                .await()
+
+            for(doc in querySnapshot.documents) {
+                list.add(FirestoreToy(doc))
+            }
+        } catch (_: Exception) {
+        }
+
+        return list
+
+    }
+
     fun getToysByEmail(email: String, onComplete: (List<FirestoreToy>) -> Unit) {
         val list = mutableListOf<FirestoreToy>()
 
@@ -95,8 +113,8 @@ class ToyManager {
         } catch (_: Exception) {
         }
     }
-    suspend fun getPetsByEmail(email: String) : List<FirestorePet> {
-        val list = mutableListOf<FirestorePet>()
+    suspend fun getToyByEmail(email: String) : List<FirestoreToy> {
+        val list = mutableListOf<FirestoreToy>()
 
         try {
             val querySnapshot = db.collection(collection)
@@ -105,7 +123,7 @@ class ToyManager {
                 .await()
 
             for(doc in querySnapshot.documents) {
-                list.add(FirestorePet(doc))
+                list.add(FirestoreToy(doc))
             }
         } catch (_: Exception) {
         }
@@ -113,7 +131,7 @@ class ToyManager {
         return list
     }
 
-    suspend fun getPetByEmailAndId(email: String, id: String) : FirestorePet? {
+    suspend fun getToyByEmailAndId(email: String, id: String) : FirestoreToy? {
         return try {
             val querySnapshot = db.collection(collection)
                 .whereEqualTo("ownerEmail", email)
@@ -122,14 +140,14 @@ class ToyManager {
                 .await()
 
             if(querySnapshot.documents.isNotEmpty()) {
-                FirestorePet(querySnapshot.documents[0])
+                FirestoreToy(querySnapshot.documents[0])
             } else null
         } catch (_: Exception) {
             null
         }
     }
 
-    suspend fun getPetById(id: String) : FirestorePet? {
+    suspend fun getToyById(id: String) : FirestoreToy? {
         return try {
             val querySnapshot = db.collection(collection)
                 .whereEqualTo("id", id)
@@ -137,7 +155,7 @@ class ToyManager {
                 .await()
 
             if(querySnapshot.documents.isNotEmpty()) {
-                FirestorePet(querySnapshot.documents[0])
+                FirestoreToy(querySnapshot.documents[0])
             } else null
         } catch (_: Exception) {
             null
