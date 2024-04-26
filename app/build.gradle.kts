@@ -75,6 +75,7 @@ dependencies {
     implementation("com.google.mlkit:common:18.10.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.accompanist:accompanist-permissions:0.28.0")
 
     implementation("com.catppuccin:catppuccin-palette:1.0.0")
 

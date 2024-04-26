@@ -1,9 +1,9 @@
-TODO: Toy Exchange
 TODO: Switch Languages
 TODO: resolve warnings
 TODO: About Composable
 TODO: weird font colors in light theme
 TODO: add logged in collection in firebase
+TODO: ask for permission for notifications
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -53,5 +53,5 @@ DONE: Like Pet
 DONE: favourites
 DONE: specify pet location at creation
 DONE: Drawer Content
-DONE: ask for permission for notifications
 DONE: Home Page
+DONE: Toy Exchange

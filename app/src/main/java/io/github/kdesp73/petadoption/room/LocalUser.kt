@@ -83,7 +83,6 @@ data class LocalUser (
 
     @Composable
     fun ToComposable(height: Dp){
-        val color = MaterialTheme.colorScheme.onPrimaryContainer
         val textModifier = Modifier
             .padding(2.dp)
 
@@ -107,23 +106,23 @@ data class LocalUser (
             val iconModifier = Modifier.size(20.dp)
             InfoRow {
                 Icon(modifier = iconModifier, imageVector = Icons.Filled.Person, contentDescription = "")
-                Text(modifier = textModifier, text = "$firstName $lastName", color = color)
+                Text(modifier = textModifier, text = "$firstName $lastName")
             }
             InfoRow {
                 Icon(modifier = iconModifier, imageVector = Icons.Filled.Email, contentDescription = "")
-                Text(modifier = textModifier, text = email, color = color)
+                Text(modifier = textModifier, text = email)
             }
             InfoRow {
                 Icon(modifier = iconModifier, imageVector = Icons.Filled.Phone, contentDescription = "")
-                Text(modifier = textModifier, text = phone ?: "", color = color)
+                Text(modifier = textModifier, text = phone ?: "")
             }
             InfoRow {
                 Icon(modifier = iconModifier, imageVector = Icons.Filled.LocationOn, contentDescription = "")
-                Text(modifier = textModifier, text = location, color = color)
+                Text(modifier = textModifier, text = location)
             }
             InfoRow {
                 Icon(modifier = iconModifier, imageVector = Icons.Filled.Face, contentDescription = "")
-                Text(modifier = textModifier, text = gender.toString().lowercase().replaceFirstChar { it.uppercase() }, color = color)
+                Text(modifier = textModifier, text = gender.toString().lowercase().replaceFirstChar { it.uppercase() })
             }
         }
     }

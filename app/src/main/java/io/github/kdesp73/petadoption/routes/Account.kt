@@ -42,7 +42,10 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
     val scrollState = rememberScrollState()
 
     VerticalScaffold(
-        modifier = Modifier.padding(6.dp).fillMaxSize().verticalScroll(scrollState),
+        modifier = Modifier
+            .padding(6.dp)
+            .fillMaxSize()
+            .verticalScroll(scrollState),
         top = {
             Column (
                 verticalArrangement = Arrangement.spacedBy(10.dp)

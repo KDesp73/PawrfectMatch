@@ -2,7 +2,11 @@ package io.github.kdesp73.petadoption.routes
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.NotificationManager
+import android.content.pm.PackageManager
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,10 +37,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
@@ -46,6 +52,7 @@ import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.IconButton
 import io.github.kdesp73.petadoption.ui.components.MyCard
 import io.github.kdesp73.petadoption.ui.components.PleaseLogin
+import io.github.kdesp73.petadoption.ui.components.RequestNotificationPermissionDialog
 import io.github.kdesp73.petadoption.ui.components.VerticalScaffold
 
 @Composable
@@ -113,6 +120,7 @@ fun Home(room: AppDatabase, navController: NavController) {
     val notificationService = NotificationService(context = context)
 
     val scrollState = rememberScrollState()
+
     Column (
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -171,15 +179,6 @@ fun Home(room: AppDatabase, navController: NavController) {
 //                    BigIconButton(resId = R.drawable.paw_solid, contentDescription = "My Animals")
                 }
             }
-        }
-    }
-
-    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-        val notificationPermission = rememberPermissionState(
-            permission = Manifest.permission.POST_NOTIFICATIONS
-        )
-        if (!notificationPermission.status.isGranted) {
-            notificationPermission.launchPermissionRequest()
         }
     }
 }

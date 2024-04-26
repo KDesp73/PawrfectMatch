@@ -1,10 +1,8 @@
 package io.github.kdesp73.petadoption.routes
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,14 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -33,27 +25,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.firebase.FirestorePet
 import io.github.kdesp73.petadoption.firebase.FirestoreToy
 import io.github.kdesp73.petadoption.firebase.LikedManager
 import io.github.kdesp73.petadoption.firebase.PetManager
 import io.github.kdesp73.petadoption.firebase.ToyManager
-import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.Center
-import io.github.kdesp73.petadoption.ui.components.IconButton
 import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
 import io.github.kdesp73.petadoption.ui.components.PetCard
 import io.github.kdesp73.petadoption.ui.components.PleaseLogin
 import io.github.kdesp73.petadoption.ui.components.ToyCard
-import io.github.kdesp73.petadoption.ui.theme.AppTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -68,6 +55,11 @@ fun Favourites(room: AppDatabase, navController: NavController) {
     val tabs = listOf(stringResource(R.string.pets), stringResource(R.string.toys))
 
     Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            color = colorScheme.onSurface,
+            modifier = Modifier.padding(10.dp),
+            text = stringResource(id = R.string.route_favourites), fontSize = 6.em
+        )
         TabRow(selectedTabIndex = index) {
             tabs.forEachIndexed { i, title ->
                 Tab(text = { Text(title) },
@@ -127,7 +119,7 @@ fun FavouriteToys(room: AppDatabase, navController: NavController){
         Center(modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)) {
-            Text(text = "No favourite pets yet", fontSize = 6.em)
+            Text(text = stringResource(id = R.string.no_favourites_yet), fontSize = 6.em)
         }
     } else {
         LazyColumn (
@@ -138,13 +130,6 @@ fun FavouriteToys(room: AppDatabase, navController: NavController){
             verticalArrangement = Arrangement.spacedBy(15.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            item {
-                Text(
-                    color = colorScheme.onSurface,
-                    modifier = Modifier.padding(vertical = 10.dp),
-                    text = stringResource(id = R.string.route_favourites), fontSize = 6.em
-                )
-            }
             items(toys!!) { item ->
                 if (item != null) {
                     ToyCard(toy = item, id = item.id, navController = navController)
@@ -199,7 +184,7 @@ fun FavouritePets(room: AppDatabase, navController: NavController){
         Center(modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)) {
-            Text(text = "No favourite pets yet", fontSize = 6.em)
+            Text(text = stringResource(R.string.no_favourites_yet), fontSize = 6.em)
         }
     } else {
         LazyColumn (
@@ -210,13 +195,6 @@ fun FavouritePets(room: AppDatabase, navController: NavController){
             verticalArrangement = Arrangement.spacedBy(15.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            item {
-                Text(
-                    color = colorScheme.onSurface,
-                    modifier = Modifier.padding(vertical = 10.dp),
-                    text = stringResource(id = R.string.route_favourites), fontSize = 6.em
-                )
-            }
             items(pets!!) { item ->
                 if (item != null) {
                     PetCard(pet = item, id = item.id, navController = navController)

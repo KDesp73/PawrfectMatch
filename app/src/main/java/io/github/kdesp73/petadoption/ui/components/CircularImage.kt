@@ -61,7 +61,7 @@ fun CircularImage(
     placeholderId: Int = R.drawable.profile_pic_placeholder
 ) {
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .size(size)
             .padding(5.dp),
         shape = CircleShape,
@@ -77,7 +77,7 @@ fun CircularImage(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    modifier = modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(),
                     painter = painter,
                     contentDescription = contentDescription,
                     contentScale = contentScale
@@ -113,7 +113,7 @@ fun CircularImage(
     placeholderId: Int = R.drawable.profile_pic_placeholder
 ) {
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .size(size)
             .padding(5.dp),
         shape = CircleShape,
@@ -125,13 +125,13 @@ fun CircularImage(
             Image(
                 painter = p,
                 contentDescription = contentDescription,
-                modifier = modifier,
+                modifier = Modifier,
                 contentScale = contentScale
             )
         } else {
             // Placeholder or loading indicator when painter is null
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .background(Color.LightGray),
                 contentAlignment = Alignment.Center
@@ -139,7 +139,7 @@ fun CircularImage(
                 Image(
                     painter = painterResource(id = placeholderId),
                     contentDescription = "profile image",
-                    modifier = modifier
+                    modifier = Modifier
                         .size(size),
                     contentScale = contentScale
                 )

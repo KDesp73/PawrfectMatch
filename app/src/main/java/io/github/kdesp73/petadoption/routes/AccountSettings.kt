@@ -107,11 +107,10 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ){
-            val imageModifier = Modifier.fillMaxSize()
             SelectImage(null) { action, uri ->
                 val imagePainter = rememberAsyncImagePainter(viewModel.imageState.value ?: uri)
                 CircularImage(
-                    modifier = imageModifier.clickable { action() },
+                    modifier = Modifier.clickable { action() },
                     painter = imagePainter,
                     contentDescription = "User image",
                     size = 200.dp

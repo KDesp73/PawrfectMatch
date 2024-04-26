@@ -75,7 +75,7 @@
     <string name="old_password_was_not_confirmed">Ο παλιός κωδικός δεν επιβεβαιώθηκε</string>
     <string name="new_password_was_not_confirmed">Ο νέος κωδικός δεν επιβεβαιώθηκε</string>
     <string name="name_cannot_be_empty">Το όνομα δεν μπορεί να είναι κενό</string>
-    <string name="you_need_to_select_an_image">Πρέπει να επιλέψεις εικόνα</string>
+    <string name="you_need_to_select_an_image">Πρέπει να επιλέξεις εικόνα</string>
     <string name="password_must_have_at_least_eight_characters">Ο κωδικός πρέπει να περιέχει τουλάχιστον 8 χαρακτήρες</string>
     <string name="password_must_not_contain_whitespace">Ο κωδικός πρέπει να μήν έχει κενό χαρακτήρα</string>
     <string name="password_must_contain_at_least_one_digit">Ο κωδικός πρέπει να περιέχει τουλάχιστον έναν αριθμό</string>
@@ -128,4 +128,7 @@
     <string name="pets">Κατοικίδια</string>
     <string name="toys">Παιχνίδια</string>
     <string name="route_toy_showcase">Προβολή Παιχνιδιού</string>
+    <string name="no_favourites_yet">Δεν βρέθηκαν αγαπημένα</string>
+    <string name="approved">Επιβεβαιώθηκε</string>
+    <string name="thank_you_for_allowing_notifications">Ευχαριστούμε που αποδεχτήκατε τις ειδοποιήσεις</string>
 </resources>

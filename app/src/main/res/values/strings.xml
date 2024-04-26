@@ -132,4 +132,7 @@
     <string name="pets">Pets</string>
     <string name="toys">Toys</string>
     <string name="route_toy_showcase">Toy Preview</string>
+    <string name="no_favourites_yet">No favourites yet</string>
+    <string name="approved">Approved</string>
+    <string name="thank_you_for_allowing_notifications">Thank you for allowing notifications</string>
 </resources>
