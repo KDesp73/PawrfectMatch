@@ -69,25 +69,33 @@ fun CircularImage(
         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
     ) {
         if (painter != null) {
-            Image(
-                painter = painter,
-                contentDescription = contentDescription,
-                modifier = modifier,
-                contentScale = contentScale
-            )
-        } else {
-            // Placeholder or loading indicator when painter is null
             Box(
                 modifier = Modifier
+                    .size(size)
                     .fillMaxSize()
                     .background(Color.LightGray),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
+                    modifier = Modifier.fillMaxSize(),
+                    painter = painter,
+                    contentDescription = contentDescription,
+                    contentScale = contentScale
+                )
+            }
+        } else {
+            // Placeholder or loading indicator when painter is null
+            Box(
+                modifier = Modifier
+                    .size(size)
+                    .fillMaxSize()
+                    .background(Color.LightGray),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    modifier = Modifier.fillMaxSize(),
                     painter = painterResource(id = placeholderId),
                     contentDescription = "profile image",
-                    modifier = modifier
-                        .size(size),
                     contentScale = contentScale
                 )
             }

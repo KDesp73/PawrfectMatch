@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -59,6 +60,7 @@ private fun Contents(modifier: Modifier, pet: Pet, uri: String?, id: String, nav
         ) {
             val painter = rememberAsyncImagePainter(model = uri)
             CircularImage(
+                contentScale = ContentScale.Crop,
                 modifier = Modifier.padding(horizontal = 10.dp),
                 painter = painter,
                 contentDescription = "",

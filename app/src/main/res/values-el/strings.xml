@@ -120,4 +120,6 @@
     <string name="name">Όνομα</string>
     <string name="repeat_password">Επιβεβαίωση Κωδικού</string>
     <string name="name_must_not_be_longer_than_16_characters">Το όνομα δεν μπορεί να είναι πάνω απο 16 χαρακτήρες</string>
+    <string name="welcome_to">Καλωσήρθες στο</string>
+    <string name="my_account">Ο Λογαριασμός μου</string>
 </resources>

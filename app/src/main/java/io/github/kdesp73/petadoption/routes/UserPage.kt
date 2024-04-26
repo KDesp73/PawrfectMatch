@@ -87,8 +87,8 @@ fun UserPage(email: String, navController: NavController){
                 InfoBox(label = stringResource(id = R.string.gender), info = genderFromValue[user?.info?.gender]?.label)
                 InfoBox(label = stringResource(id = R.string.location), info = user?.info?.location)
             }
-            InfoBox(width = 250.dp, label = stringResource(id = R.string.email), info = email)
-            InfoBox(width = 250.dp, label = stringResource(id = R.string.phone), info = user?.info?.phone)
+            InfoBox(width = 280.dp, label = stringResource(id = R.string.email), info = email)
+            InfoBox(width = 280.dp, label = stringResource(id = R.string.phone), info = user?.info?.phone)
         } else {
             Center(modifier = Modifier.fillMaxSize()) {
                 LoadingAnimation(64.dp)

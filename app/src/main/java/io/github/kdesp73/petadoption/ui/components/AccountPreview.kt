@@ -134,7 +134,7 @@ fun AccountPreview(user: LocalUser?, navController: NavController?){
         ) {
             if (user != null) {
                 if (!user.loggedIn) {
-                    Center(modifier = Modifier) {
+                    Center(modifier = Modifier.fillMaxSize()) {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(20.dp)
                         ) {

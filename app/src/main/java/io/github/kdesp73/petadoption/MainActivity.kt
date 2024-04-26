@@ -108,7 +108,7 @@ class MainActivity : ComponentActivity() {
 
             Layout(topAppBarText = stringResource(id = R.string.app_name), navController = navController, room) {
                 NavHost(navController, startDestination = Route.Home.route) {
-                    composable(Route.Home.route) { Home(navController) }
+                    composable(Route.Home.route) { Home(room, navController) }
                     composable(Route.Search.route) { Search(room, navController) }
                     composable(Route.Favourites.route) { Favourites(room, navController) }
                     composable(Route.About.route) { About() }
