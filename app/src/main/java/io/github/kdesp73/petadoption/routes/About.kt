@@ -78,7 +78,7 @@ fun About() {
     val context = LocalContext.current
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(horizontal = 16.dp, vertical = 20.dp)
             .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally

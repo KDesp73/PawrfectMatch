@@ -2,6 +2,7 @@ package io.github.kdesp73.petadoption
 
 import android.R.attr.height
 import android.R.attr.width
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -9,8 +10,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
+import android.os.Build
+import androidx.activity.ComponentActivity
 import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
 import java.io.FileNotFoundException
 import kotlin.random.Random
 
@@ -19,6 +24,16 @@ class NotificationService(private val context: Context) {
 
     private val notificationManager =
         context.getSystemService(NotificationManager::class.java)
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun createNotificationChannel(context: Context, id: String, name: String, importance: Int){
+        val notificationManager = context.getSystemService(ComponentActivity.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(NotificationChannel(
+            id,
+            name,
+            importance
+        ))
+    }
 
     fun showBasicNotification(channel: String, title: String, content: String, importance: Int) {
         val notification = NotificationCompat.Builder(context, channel)

@@ -134,4 +134,5 @@
     <string name="an_app_by">Μια εφαρμογή από τον</string>
     <string name="konstantinos_despoinidis">Κωνσταντίνο Δεσποινίδη</string>
     <string name="please_login_first_to_use_this_feature">Συνδέσου για να χρησιμοποιήσεις αυτή την λειτουργία</string>
+    <string name="connect_to_a_network_to_use_this_feature">" Συνδέσου σε δίκτυο για να χρησιμοποιήσεις αυτή την λειτουργία"</string>
 </resources>

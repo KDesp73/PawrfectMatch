@@ -31,6 +31,7 @@ import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.firebase.ImageManager
 import io.github.kdesp73.petadoption.firebase.ImageManager.Companion.pets
 import io.github.kdesp73.petadoption.firebase.PetManager
+import io.github.kdesp73.petadoption.imageBitmapFromBitmap
 import io.github.kdesp73.petadoption.isLandscape
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
@@ -46,11 +47,35 @@ import kotlinx.coroutines.async
 private const val TAG = "MyPets"
 
 @OptIn(DelicateCoroutinesApi::class)
+@Composable
+private fun PetList(pets: List<LocalPet>?, navController: NavController){
+    val imageManager = ImageManager()
+    if(pets != null){
+        for(pet in pets){
+            var uri by remember { mutableStateOf(Uri.EMPTY) }
+            LaunchedEffect(pet) {
+                val deferredResult: Deferred<Uri?> = GlobalScope.async {
+                    imageManager.getImageUrl(ImageManager.pets + pet.generateId() + ".jpg")
+                }
+                uri = deferredResult.await()
+            }
+
+            PetCard(
+                pet = pet,
+                uri = uri,
+                id = pet.id.toString(),
+                navController = navController
+            )
+        }
+    }
+}
+
+
+@OptIn(DelicateCoroutinesApi::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun MyPets(room: AppDatabase, navController: NavController){
     val scrollState = rememberScrollState()
-    val imageManager = ImageManager()
     val petManager = PetManager()
     var pets by remember { mutableStateOf<List<LocalPet>?>(null) }
 
@@ -62,65 +87,41 @@ fun MyPets(room: AppDatabase, navController: NavController){
         petManager.syncPets(room)
     }
 
-    Surface {
-        Column (
-            modifier = Modifier
-                .verticalScroll(scrollState)
-                .padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ){
-            val landscape = isLandscape(LocalConfiguration.current)
-            @Composable
-            fun PetList(){
-                if(pets != null){
-                    for(pet in pets!!){
-                        var uri by remember { mutableStateOf(Uri.EMPTY) }
-                        LaunchedEffect(pet) {
-                            val deferredResult: Deferred<Uri?> = GlobalScope.async {
-                                imageManager.getImageUrl(ImageManager.pets + pet.generateId() + ".jpg")
-                            }
-                            uri = deferredResult.await()
-                        }
-
-                        PetCard(
-                            pet = pet,
-                            uri = uri,
-                            id = pet.id.toString(),
-                            navController = navController
-                        )
-                    }
-                }
+    Column (
+        modifier = Modifier.padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ){
+        val landscape = isLandscape(LocalConfiguration.current)
+        if(pets == null){
+            Center(modifier = Modifier.fillMaxSize()) {
+                LoadingAnimation(64.dp)
             }
-            if(pets == null){
-                Center(modifier = Modifier.fillMaxSize()) {
-                    LoadingAnimation(64.dp)
+        } else if(pets!!.isEmpty()){
+            Center(modifier = Modifier.fillMaxSize()) {
+                Text(text = stringResource(R.string.no_pets_added_yet), fontSize = 6.em)
+            }
+        } else{
+            if(!landscape){
+                Column (
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .verticalScroll(scrollState)
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(15.dp)
+                ){
+                    PetList(pets, navController)
                 }
-            } else if(pets!!.isEmpty()){
-                Center(modifier = Modifier.fillMaxSize()) {
-                    Text(text = stringResource(R.string.no_pets_added_yet), fontSize = 6.em)
-                }
-            } else{
-                if(!landscape){
-                    Column (
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(15.dp)
-                    ){
-                        PetList()
-                    }
-                } else {
-                    Row (
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxSize()
-                            .horizontalScroll(scrollState),
-                        horizontalArrangement = Arrangement.spacedBy(15.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        PetList()
-                    }
+            } else {
+                Row (
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxSize()
+                        .horizontalScroll(scrollState),
+                    horizontalArrangement = Arrangement.spacedBy(15.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    PetList(pets, navController)
                 }
             }
         }

@@ -6,7 +6,6 @@ TODO: ask for permission for notifications
 TODO: app icon
 TODO: better color scheme
 TODO: expand image on click
-TODO: Landscape orientation features
 TODO: edit addition
 DONE: Notifications
 DONE: AccountPreview Component
@@ -60,3 +59,5 @@ DONE: Home Page
 DONE: Toy Exchange
 DONE: About Composable
 DONE: better way to logout
+DONE: Landscape orientation features
+DONE: check wifi connection

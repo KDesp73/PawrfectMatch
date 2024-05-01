@@ -63,6 +63,7 @@ import io.github.kdesp73.petadoption.firebase.PetManager
 import io.github.kdesp73.petadoption.firebase.ToyManager
 import io.github.kdesp73.petadoption.isLoggedIn
 import io.github.kdesp73.petadoption.isNotLoggedIn
+import io.github.kdesp73.petadoption.isOnline
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.Center
@@ -70,6 +71,7 @@ import io.github.kdesp73.petadoption.ui.components.CheckBoxCollection
 import io.github.kdesp73.petadoption.ui.components.IconButton
 import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
 import io.github.kdesp73.petadoption.ui.components.MyCard
+import io.github.kdesp73.petadoption.ui.components.NoWifiConnection
 import io.github.kdesp73.petadoption.ui.components.PetCard
 import io.github.kdesp73.petadoption.ui.components.PleaseLogin
 import io.github.kdesp73.petadoption.ui.components.ToyCard
@@ -89,6 +91,11 @@ fun Search(room: AppDatabase, navController: NavController){
     val email: String? = room.userDao().getEmail()
     if(isNotLoggedIn(room)){
         PleaseLogin(email = email, navController = navController)
+        return
+    }
+
+    if(!isOnline(LocalContext.current)){
+        NoWifiConnection()
         return
     }
 

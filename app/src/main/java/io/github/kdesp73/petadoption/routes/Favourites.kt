@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -37,9 +38,11 @@ import io.github.kdesp73.petadoption.firebase.PetManager
 import io.github.kdesp73.petadoption.firebase.ToyManager
 import io.github.kdesp73.petadoption.isLoggedIn
 import io.github.kdesp73.petadoption.isNotLoggedIn
+import io.github.kdesp73.petadoption.isOnline
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
+import io.github.kdesp73.petadoption.ui.components.NoWifiConnection
 import io.github.kdesp73.petadoption.ui.components.PetCard
 import io.github.kdesp73.petadoption.ui.components.PleaseLogin
 import io.github.kdesp73.petadoption.ui.components.ToyCard
@@ -59,6 +62,11 @@ fun Favourites(room: AppDatabase, navController: NavController) {
     val email: String? = room.userDao().getEmail()
     if(isNotLoggedIn(room)){
         PleaseLogin(email = email, navController = navController)
+        return
+    }
+
+    if(!isOnline(LocalContext.current)){
+        NoWifiConnection()
         return
     }
 

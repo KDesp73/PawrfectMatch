@@ -139,4 +139,5 @@
     <string name="konstantinos_despoinidis">Konstantinos Despoinidis</string>
     <string name="app_version" translatable="false">v1.0-beta</string>
     <string name="please_login_first_to_use_this_feature">Please login first to use this feature</string>
+    <string name="connect_to_a_network_to_use_this_feature">Connect to a network to use this feature</string>
 </resources>
