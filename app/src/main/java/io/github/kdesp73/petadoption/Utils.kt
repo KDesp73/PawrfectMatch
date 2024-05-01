@@ -1,21 +1,19 @@
 package io.github.kdesp73.petadoption
 
-import android.app.LocaleManager
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Build
-import android.os.LocaleList
-import androidx.appcompat.app.AppCompatDelegate
+import android.net.Uri
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import io.github.kdesp73.petadoption.firebase.User
+import io.github.kdesp73.petadoption.room.AppDatabase
+import io.github.kdesp73.petadoption.room.LocalUser
 import java.security.MessageDigest
 import java.util.Locale
 
@@ -102,4 +100,30 @@ fun isLandscape(configuration: Configuration) : Boolean {
     val screenWidth = configuration.screenWidthDp.dp
 
     return screenWidth > screenHeight
+}
+
+fun openURL(context: Context, url: String) {
+    val urlIntent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse(url)
+    )
+    context.startActivity(urlIntent)
+}
+
+fun isLoggedIn(room: AppDatabase): Boolean{
+    return room.userDao().getUsers().isNotEmpty()
+}
+
+fun isNotLoggedIn(room: AppDatabase): Boolean{
+    return room.userDao().getUsers().isEmpty()
+}
+
+fun logOut(room: AppDatabase){
+    room.userDao().deleteAll()
+}
+
+fun logIn(room: AppDatabase, user: User){
+    val userDao = room.userDao()
+
+    userDao.insert(LocalUser(user = user, loggedIn = true))
 }

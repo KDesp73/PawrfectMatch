@@ -32,7 +32,7 @@ interface LocalUserDao {
     fun getUsers(): List<LocalUser>
 
     @Query("SELECT * FROM LocalUser WHERE id = 0")
-    fun getUser(): LocalUser
+    fun getUser(): LocalUser?
 
     @Update
     fun update(user: LocalUser)

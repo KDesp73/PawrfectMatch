@@ -1,9 +1,13 @@
 TODO: Switch Languages
 TODO: resolve warnings
-TODO: About Composable
 TODO: weird font colors in light theme
 TODO: add logged in collection in firebase
 TODO: ask for permission for notifications
+TODO: app icon
+TODO: better color scheme
+TODO: expand image on click
+TODO: Landscape orientation features
+TODO: edit addition
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -42,7 +46,6 @@ DONE: Better (cleaner) UI
 DONE: beta download website
 DONE: password requirements
 DONE: fix drawer width
-DONE: Landscape orientation features
 DONE: owner page
 DONE: Search using filters
 DONE: fix register form issue
@@ -55,3 +58,5 @@ DONE: specify pet location at creation
 DONE: Drawer Content
 DONE: Home Page
 DONE: Toy Exchange
+DONE: About Composable
+DONE: better way to logout

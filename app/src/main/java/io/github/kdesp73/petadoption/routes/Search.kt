@@ -61,6 +61,8 @@ import io.github.kdesp73.petadoption.firebase.FirestorePet
 import io.github.kdesp73.petadoption.firebase.FirestoreToy
 import io.github.kdesp73.petadoption.firebase.PetManager
 import io.github.kdesp73.petadoption.firebase.ToyManager
+import io.github.kdesp73.petadoption.isLoggedIn
+import io.github.kdesp73.petadoption.isNotLoggedIn
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.Center
@@ -84,6 +86,12 @@ fun Search(room: AppDatabase, navController: NavController){
 
     val tabs = listOf(stringResource(R.string.pets), stringResource(R.string.toys))
 
+    val email: String? = room.userDao().getEmail()
+    if(isNotLoggedIn(room)){
+        PleaseLogin(email = email, navController = navController)
+        return
+    }
+
     Column(modifier = Modifier.fillMaxWidth()) {
         TabRow(selectedTabIndex = index) {
             tabs.forEachIndexed { i, title ->
@@ -94,8 +102,8 @@ fun Search(room: AppDatabase, navController: NavController){
             }
         }
         when (index) {
-            0 -> SearchPets(room, navController)
-            1 -> SearchToys(room, navController)
+            0 -> SearchPets(navController)
+            1 -> SearchToys(navController)
             else -> Text("No index")
         }
     }
@@ -104,7 +112,7 @@ fun Search(room: AppDatabase, navController: NavController){
 @OptIn(DelicateCoroutinesApi::class)
 @SuppressLint("MutableCollectionMutableState")
 @Composable
-fun SearchToys(room: AppDatabase, navController: NavController){
+fun SearchToys(navController: NavController){
     val toyManager= ToyManager()
 
     var list by remember { mutableStateOf<List<FirestoreToy>?>(null) }
@@ -146,16 +154,11 @@ fun SearchToys(room: AppDatabase, navController: NavController){
 }
 
 @Composable
-fun SearchPets(room: AppDatabase, navController: NavController){
+fun SearchPets(navController: NavController){
     val context = LocalContext.current
     val viewModel = SearchFiltersViewModel()
     viewModel.reset()
 
-    val email: String? = room.userDao().getEmail()
-    if(email?.isEmpty() == true){
-        PleaseLogin(email = email, navController = navController)
-        return
-    }
 
     val scrollState = rememberScrollState()
 

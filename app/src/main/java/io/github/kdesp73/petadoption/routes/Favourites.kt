@@ -35,6 +35,8 @@ import io.github.kdesp73.petadoption.firebase.FirestoreToy
 import io.github.kdesp73.petadoption.firebase.LikedManager
 import io.github.kdesp73.petadoption.firebase.PetManager
 import io.github.kdesp73.petadoption.firebase.ToyManager
+import io.github.kdesp73.petadoption.isLoggedIn
+import io.github.kdesp73.petadoption.isNotLoggedIn
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
@@ -53,6 +55,12 @@ fun Favourites(room: AppDatabase, navController: NavController) {
     var index by remember { mutableIntStateOf(0) }
 
     val tabs = listOf(stringResource(R.string.pets), stringResource(R.string.toys))
+
+    val email: String? = room.userDao().getEmail()
+    if(isNotLoggedIn(room)){
+        PleaseLogin(email = email, navController = navController)
+        return
+    }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
@@ -83,12 +91,7 @@ fun FavouriteToys(room: AppDatabase, navController: NavController){
     val toyManager = ToyManager()
     var toys by remember { mutableStateOf<List<FirestoreToy?>?>(null) }
     var ids by remember { mutableStateOf<List<String?>>(emptyList()) }
-
     val email: String? = room.userDao().getEmail()
-    if(email?.isEmpty() == true){
-        PleaseLogin(email = email, navController = navController)
-        return
-    }
 
     LaunchedEffect(null) {
         if (email != null) {
@@ -148,12 +151,7 @@ fun FavouritePets(room: AppDatabase, navController: NavController){
     val petManager = PetManager()
     var pets by remember { mutableStateOf<List<FirestorePet?>?>(null) }
     var ids by remember { mutableStateOf<List<String?>>(emptyList()) }
-
     val email: String? = room.userDao().getEmail()
-    if(email?.isEmpty() == true){
-        PleaseLogin(email = email, navController = navController)
-        return
-    }
 
     LaunchedEffect(null) {
         if (email != null) {

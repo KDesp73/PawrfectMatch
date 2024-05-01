@@ -60,7 +60,6 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             if(roomDatabase.settingsDao().isFirstRun()){
                 roomDatabase.settingsDao().insert(io.github.kdesp73.petadoption.room.Settings(theme = ThemeName.LIGHT.name, language = "en", firstRun = false))
-                roomDatabase.userDao().insert(LocalUser())
             }
         }
     }
@@ -74,7 +73,7 @@ class MainActivity : ComponentActivity() {
 
         Log.wtf(TAG, "Application Started")
         super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(this);
+        FirebaseApp.initializeApp(this)
         val room = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,

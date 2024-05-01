@@ -41,6 +41,7 @@ import io.github.kdesp73.petadoption.checkEmail
 import io.github.kdesp73.petadoption.enums.CustomAlignment
 import io.github.kdesp73.petadoption.enums.TextFieldType
 import io.github.kdesp73.petadoption.hash
+import io.github.kdesp73.petadoption.logIn
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalUser
@@ -121,9 +122,7 @@ fun Login(navController: NavController, email: String, roomDatabase: AppDatabase
                                 if(users.isNotEmpty()) {
                                     val hash = users[0].password
                                     if(hash.let { hash(viewModel.passwordState.value).compareTo(it) } == 0){
-                                        val userDao = roomDatabase.userDao()
-
-                                        userDao.insert(LocalUser(user = users[0], loggedIn = true))
+                                        logIn(roomDatabase, users[0])
 
                                         notificationService.showBasicNotification(
                                             context.getString(R.string.notif_channel_main),

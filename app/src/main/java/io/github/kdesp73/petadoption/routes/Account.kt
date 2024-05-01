@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.enums.CustomAlignment
+import io.github.kdesp73.petadoption.isLoggedIn
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.AccountPreview
@@ -34,11 +35,10 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 private const val TAG = "Account"
 
 @SuppressLint("CoroutineCreationDuringComposition")
-@OptIn(DelicateCoroutinesApi::class)
 @Composable
-fun Account(navController: NavController?, roomDatabase: AppDatabase?){
-    val userDao = roomDatabase?.userDao()
-    val user = userDao?.getUser()
+fun Account(navController: NavController, roomDatabase: AppDatabase){
+    val userDao = roomDatabase.userDao()
+    val user = userDao.getUser()
     val scrollState = rememberScrollState()
 
     VerticalScaffold(
@@ -52,7 +52,7 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
             ){
                 AccountPreview(user = user, navController = navController)
 
-                if(user?.loggedIn == true) {
+                if(isLoggedIn(roomDatabase)) {
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
@@ -64,24 +64,20 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
                             icon = Icons.Filled.Add,
                             text = stringResource(R.string.add_a_pet)
                         ) {
-                            if (navController != null) {
-                                navigateTo(
-                                    Route.AddPet.route,
-                                    navController,
-                                )
-                            }
+                            navigateTo(
+                                Route.AddPet.route,
+                                navController,
+                            )
                         }
                         HalfButton(
                             height = buttonHeight,
                             icon = Icons.Filled.Add,
                             text = stringResource(R.string.add_a_toy)
                         ) {
-                            if (navController != null) {
-                                navigateTo(
-                                    Route.AddToy.route,
-                                    navController,
-                                )
-                            }
+                            navigateTo(
+                                Route.AddToy.route,
+                                navController,
+                            )
                         }
                     }
                 }
@@ -89,15 +85,13 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
         },
         bottomAlignment = CustomAlignment.END,
         bottom = {
-            if(user?.loggedIn == true) {
+            if(isLoggedIn(roomDatabase)) {
                 Button(onClick = {
-                    if (navController != null) {
-                        navigateTo(
-                            Route.MyAdditions.route + "?index=0",
-                            navController = navController,
-                            popUpToStartDestination = false,
-                        )
-                    }
+                    navigateTo(
+                        Route.MyAdditions.route + "?index=0",
+                        navController = navController,
+                        popUpToStartDestination = false,
+                    )
                 }) {
                     Text(text = stringResource(R.string.route_my_additions))
                 }
@@ -107,13 +101,4 @@ fun Account(navController: NavController?, roomDatabase: AppDatabase?){
         }
     )
 
-}
-
-@Preview
-@Composable
-fun AccountPagePreview(){
-    Account(
-        null,
-        null,
-    )
 }

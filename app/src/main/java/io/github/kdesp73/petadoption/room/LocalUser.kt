@@ -27,6 +27,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import io.github.kdesp73.petadoption.firebase.User
 import io.github.kdesp73.petadoption.enums.ProfileType
+import io.github.kdesp73.petadoption.enums.genderFromValue
 import io.github.kdesp73.petadoption.firebase.UserInfo
 
 @Entity
@@ -122,7 +123,7 @@ data class LocalUser (
             }
             InfoRow {
                 Icon(modifier = iconModifier, imageVector = Icons.Filled.Face, contentDescription = "")
-                Text(modifier = textModifier, text = gender.toString().lowercase().replaceFirstChar { it.uppercase() })
+                Text(modifier = textModifier, text = genderFromValue[gender]?.label.toString())
             }
         }
     }

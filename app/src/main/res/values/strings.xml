@@ -135,4 +135,8 @@
     <string name="no_favourites_yet">No favourites yet</string>
     <string name="approved">Approved</string>
     <string name="thank_you_for_allowing_notifications">Thank you for allowing notifications</string>
+    <string name="an_app_by">An app by</string>
+    <string name="konstantinos_despoinidis">Konstantinos Despoinidis</string>
+    <string name="app_version" translatable="false">v1.0-beta</string>
+    <string name="please_login_first_to_use_this_feature">Please login first to use this feature</string>
 </resources>

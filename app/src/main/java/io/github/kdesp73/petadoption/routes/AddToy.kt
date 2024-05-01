@@ -33,7 +33,7 @@ fun AddToy(navController: NavController, room: AppDatabase){
     val userDao = room.userDao()
     val notificationService = NotificationService(context)
 
-    viewModel.locationState.value = room.userDao().getUser().location
+    viewModel.locationState.value = room.userDao().getUser()?.location ?: return
 
     ToyForm(viewModel = viewModel) {
         viewModel.log(TAG)

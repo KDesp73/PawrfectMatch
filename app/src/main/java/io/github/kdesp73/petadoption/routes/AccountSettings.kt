@@ -48,6 +48,7 @@ import io.github.kdesp73.petadoption.enums.genderFromValue
 import io.github.kdesp73.petadoption.firebase.ImageManager
 import io.github.kdesp73.petadoption.firebase.UserInfo
 import io.github.kdesp73.petadoption.firebase.UserManager
+import io.github.kdesp73.petadoption.logOut
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalUser
@@ -71,7 +72,7 @@ private const val TAG = "AccountSettings"
 @Composable
 fun AccountSettings(navController: NavController, room: AppDatabase) {
     val userDao = room.userDao()
-    val user = userDao.getUsers()[0]
+    val user = userDao.getUser() ?: return
     val context = LocalContext.current
     val notificationService = NotificationService(context)
     val imageManager = ImageManager()
@@ -222,7 +223,7 @@ fun AccountSettings(navController: NavController, room: AppDatabase) {
                 text = stringResource(R.string.log_out),
                 icon = Icons.AutoMirrored.Filled.ExitToApp
             ) {
-                userDao.insert(LocalUser()) // Log out
+                logOut(room)
                 navigateTo(Route.Home.route, navController)
 
             }

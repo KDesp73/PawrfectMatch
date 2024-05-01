@@ -131,4 +131,7 @@
     <string name="no_favourites_yet">Δεν βρέθηκαν αγαπημένα</string>
     <string name="approved">Επιβεβαιώθηκε</string>
     <string name="thank_you_for_allowing_notifications">Ευχαριστούμε που αποδεχτήκατε τις ειδοποιήσεις</string>
+    <string name="an_app_by">Μια εφαρμογή από τον</string>
+    <string name="konstantinos_despoinidis">Κωνσταντίνο Δεσποινίδη</string>
+    <string name="please_login_first_to_use_this_feature">Συνδέσου για να χρησιμοποιήσεις αυτή την λειτουργία</string>
 </resources>

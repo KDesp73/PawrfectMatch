@@ -18,7 +18,7 @@ interface SettingsDao {
     @Query("SELECT language FROM Settings WHERE id = 0")
     fun getLanguage(): String
 
-    @Query("SELECT first_run FROM Settings WHERE id = 0")
+    @Query("SELECT COUNT(1) WHERE EXISTS (SELECT * FROM Settings)")
     fun isFirstRun(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

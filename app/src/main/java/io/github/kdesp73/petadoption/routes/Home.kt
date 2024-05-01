@@ -47,6 +47,8 @@ import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.isLoggedIn
+import io.github.kdesp73.petadoption.isNotLoggedIn
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.Center
@@ -141,7 +143,7 @@ fun Home(room: AppDatabase, navController: NavController) {
             modifier = Modifier
         ){
             val email: String? = room.userDao().getEmail()
-            if(email?.isEmpty() == true){
+            if(isNotLoggedIn(room)){
                 PleaseLogin(msg = null, email = email, navController = navController)
             } else{
                 Row (
