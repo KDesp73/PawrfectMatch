@@ -72,6 +72,23 @@ class LikedManager {
         }
     }
 
+    fun updateLikes(collection: String, oldId: String, newId: String, onComplete: (Boolean) -> Unit){
+        db.collection(collection)
+            .whereEqualTo("id", oldId)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (doc in documents.documents) {
+                    db.collection(collection)
+                        .document(doc.id)
+                        .update("id", newId)
+                }
+                onComplete(true)
+            }
+            .addOnFailureListener { onComplete(false) }
+
+
+    }
+
     private fun isLiked(collection: String, email: String, id: String, onComplete: (Boolean?) -> Unit){
         try {
             db.collection(collection)

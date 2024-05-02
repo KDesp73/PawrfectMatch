@@ -18,11 +18,11 @@ data class LocalPet(
     @ColumnInfo(name = "age") override var age: String,
     @ColumnInfo(name = "gender") override var gender: String,
     @ColumnInfo(name = "location") override var location: String,
-    @ColumnInfo(name = "owner_email") var ownerEmail: String,
+    @ColumnInfo(name = "owner_email") override var ownerEmail: String,
     @ColumnInfo(name = "size") override var size: String,
     @ColumnInfo(name = "type") override var type: String,
     @ColumnInfo(name = "image_uri") var imageUri: String
-) : Pet(name, age, gender, location, type, size){
+) : Pet(name, age, gender, location, type, size, ownerEmail){
     companion object {
         val example = LocalPet(
             name = "Kitty",
@@ -46,16 +46,4 @@ data class LocalPet(
         type = pet.type,
         imageUri = ""
     )
-
-    fun generateId(): String {
-        return hash(
-            name +
-                    age +
-                    gender +
-                    location +
-                    type +
-                    size +
-                    ownerEmail
-        )
-    }
 }

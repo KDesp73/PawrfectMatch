@@ -16,6 +16,42 @@ class ImageManager {
         val toys = "toys/"
     }
 
+    fun downloadImage(path: String, onComplete: (ByteArray?) -> Unit){
+        val ref = storage.child(path)
+        ref.getBytes(1024 * 1024)
+            .addOnSuccessListener { bytes ->
+                onComplete(bytes)
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+
+    fun renameImage(oldPath: String, newPath: String, onComplete: (Boolean) -> Unit){
+        downloadImage(oldPath){ bytes ->
+            if (bytes != null) {
+                uploadImage(bytes, newPath, onSuccess = {onComplete(true)}, onFailure = {onComplete(false)})
+            }
+        }
+        deleteImage(oldPath) {}
+    }
+
+    fun uploadImage(imageByteArray: ByteArray, path: String, onSuccess: (imageUrl: String) -> Unit, onFailure: (Exception) -> Unit) {
+        val storageRef = storage
+        val imageRef = storageRef.child(path)
+
+        imageRef.putBytes(imageByteArray)
+            .addOnSuccessListener { taskSnapshot ->
+                imageRef.downloadUrl.addOnSuccessListener { uri ->
+                    onSuccess(uri.toString())
+                }.addOnFailureListener {
+                    onFailure(it)
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
 
     private fun uploadImage(uri: Uri, fileName: String, path: String, onComplete: (String?) -> Unit) {
         val storageRef = storage.child("$path$fileName.jpg")
@@ -39,7 +75,7 @@ class ImageManager {
     }
 
     fun uploadPetImage(uri: Uri, filename: String, onComplete: (String?) -> Unit){
-        uploadImage(uri, filename, "pets/"){ url ->
+        uploadImage(uri, filename, ImageManager.pets){ url ->
             onComplete(url)
         }
     }

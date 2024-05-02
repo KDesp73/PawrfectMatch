@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.Tasks.await
 import com.google.android.play.integrity.internal.i
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import io.github.kdesp73.petadoption.Pet
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
 import io.github.kdesp73.petadoption.viewmodels.SearchOptions
@@ -54,6 +55,32 @@ class PetManager {
         return list
     }
 
+    fun updatePet(id: String, pet: FirestorePet, onComplete: (Boolean) -> Unit){
+        getPetDocumentId(id){ documentId ->
+            if (documentId != null){
+                db.collection("Pets")
+                    .document(documentId)
+                    .update(pet.toMap())
+                    .addOnSuccessListener { onComplete(true) }
+                    .addOnFailureListener { onComplete(false) }
+            } else {
+                onComplete(false)
+            }
+        }
+    }
+    fun updatePet(id: String, pet: Pet, onComplete: (Boolean) -> Unit){
+        getPetDocumentId(id){ documentId ->
+            if (documentId != null){
+                db.collection("Pets")
+                    .document(documentId)
+                    .update(pet.toMap())
+                    .addOnSuccessListener { onComplete(true) }
+                    .addOnFailureListener { onComplete(false) }
+            } else {
+                onComplete(false)
+            }
+        }
+    }
 
     private fun checkPetExists(email: String, id: String, onComplete: (Boolean) -> Unit){
         db.collection("Pets")

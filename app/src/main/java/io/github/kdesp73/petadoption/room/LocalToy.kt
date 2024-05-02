@@ -21,4 +21,11 @@ data class LocalToy (
         price = toy.price,
         ownerEmail = toy.ownerEmail
     )
+
+    constructor(toy: Toy) : this (
+        name = toy.name,
+        location = toy.location,
+        price = toy.price,
+        ownerEmail = toy.ownerEmail
+    )
 }

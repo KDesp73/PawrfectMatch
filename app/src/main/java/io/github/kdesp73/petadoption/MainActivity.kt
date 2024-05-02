@@ -1,6 +1,5 @@
 package io.github.kdesp73.petadoption
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -19,12 +18,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.room.Room
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 import com.google.firebase.FirebaseApp
 import io.github.kdesp73.petadoption.enums.ThemeName
 import io.github.kdesp73.petadoption.room.AppDatabase
-import io.github.kdesp73.petadoption.room.LocalUser
 import io.github.kdesp73.petadoption.routes.About
 import io.github.kdesp73.petadoption.routes.Account
 import io.github.kdesp73.petadoption.routes.AccountSettings
@@ -32,12 +28,12 @@ import io.github.kdesp73.petadoption.routes.AddPet
 import io.github.kdesp73.petadoption.routes.AddToy
 import io.github.kdesp73.petadoption.routes.ChangePassword
 import io.github.kdesp73.petadoption.routes.CreateAccount
+import io.github.kdesp73.petadoption.routes.EditPet
+import io.github.kdesp73.petadoption.routes.EditToy
 import io.github.kdesp73.petadoption.routes.Favourites
 import io.github.kdesp73.petadoption.routes.Home
 import io.github.kdesp73.petadoption.routes.Login
 import io.github.kdesp73.petadoption.routes.MyAdditions
-import io.github.kdesp73.petadoption.routes.MyPets
-import io.github.kdesp73.petadoption.routes.MyToys
 import io.github.kdesp73.petadoption.routes.Search
 import io.github.kdesp73.petadoption.routes.SearchResults
 import io.github.kdesp73.petadoption.routes.Settings
@@ -74,6 +70,9 @@ class MainActivity : ComponentActivity() {
         Log.wtf(TAG, "Application Started")
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
+//        Firebase.appCheck.installAppCheckProviderFactory(
+//            PlayIntegrityAppCheckProviderFactory.getInstance(),
+//        )
         val room = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
@@ -115,18 +114,35 @@ class MainActivity : ComponentActivity() {
                     composable(Route.Favourites.route) { Favourites(room, navController) }
                     composable(Route.About.route) { About() }
                     composable(Route.Settings.route) { Settings(room) }
-                    composable(route = Route.Account.route) {
-                        Account(
-                            navController = navController,
-                            roomDatabase = room
-                        )
-                    }
+                    composable(Route.Account.route) { Account(navController = navController, roomDatabase = room) }
                     composable(Route.AccountSettings.route) { AccountSettings(navController, room) }
                     composable(Route.SignIn.route) { SignIn(navController) }
                     composable(Route.AddPet.route) { AddPet(navController, room) }
                     composable(Route.AddToy.route) { AddToy(navController, room) }
                     composable(Route.ChangePassword.route) { ChangePassword(room, navController) }
                     composable(Route.CreateAccount.route) { CreateAccount(navController)}
+                    composable(
+                        route = Route.EditPet.route + "?id={id}",
+                        arguments = listOf(
+                            navArgument(
+                                name = "id"
+                            ) { defaultValue = "" },
+                        )
+                    ) { backStackEntry ->
+                        backStackEntry.arguments?.getString("id")
+                            ?.let { EditPet(id = it, room, navController) }
+                    }
+                    composable(
+                        route = Route.EditToy.route + "?id={id}",
+                        arguments = listOf(
+                            navArgument(
+                                name = "id"
+                            ) { defaultValue = "" },
+                        )
+                    ) { backStackEntry ->
+                        backStackEntry.arguments?.getString("id")
+                            ?.let { EditToy(id = it, room, navController) }
+                    }
                     composable(
                         route = Route.MyAdditions.route + "?index={index}",
                         arguments = listOf(

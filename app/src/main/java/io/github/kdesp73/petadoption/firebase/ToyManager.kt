@@ -2,6 +2,8 @@ package io.github.kdesp73.petadoption.firebase
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import io.github.kdesp73.petadoption.Pet
+import io.github.kdesp73.petadoption.Toy
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
 import io.github.kdesp73.petadoption.room.LocalToy
@@ -71,6 +73,35 @@ class ToyManager {
                     .addOnFailureListener { exception ->
                         onComplete(false)
                     }
+            }
+        }
+    }
+
+    fun updateToy(id: String, toy: FirestoreToy, onComplete: (Boolean) -> Unit){
+        getToyDocumentId(id){ documentId ->
+            Log.d(TAG, "id: $documentId")
+            if (documentId != null){
+                db.collection("Toys")
+                    .document(documentId)
+                    .update(toy.toMap())
+                    .addOnSuccessListener { onComplete(true) }
+                    .addOnFailureListener { onComplete(false) }
+            } else {
+                onComplete(false)
+            }
+        }
+    }
+
+    fun updateToy(id: String, toy: Toy, onComplete: (Boolean) -> Unit){
+        getToyDocumentId(toy.generateId()){ documentId ->
+            if (documentId != null){
+                db.collection("Toys")
+                    .document(documentId)
+                    .update(toy.toMap())
+                    .addOnSuccessListener { onComplete(true) }
+                    .addOnFailureListener { onComplete(false) }
+            } else {
+                onComplete(false)
             }
         }
     }

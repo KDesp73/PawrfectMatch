@@ -42,7 +42,7 @@ fun PetInfoForm(modifier: Modifier = Modifier, viewModel: PetFormViewModel, subm
         verticalArrangement = Arrangement.SpaceEvenly
     ){
         SelectImage (null){ action, uri ->
-            val imagePainter = rememberAsyncImagePainter(uri)
+            val imagePainter = rememberAsyncImagePainter(viewModel.imageState.value ?: uri)
             CircularImage(
                 modifier = Modifier.clickable { action() },
                 painter = imagePainter,

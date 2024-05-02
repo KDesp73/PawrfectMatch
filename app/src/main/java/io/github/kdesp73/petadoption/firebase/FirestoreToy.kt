@@ -11,6 +11,15 @@ data class FirestoreToy (
     override var price: Float,
     override var ownerEmail: String,
 ) : Toy(name, location, price, ownerEmail){
+    override fun toMap() : HashMap<String, Any>{
+        return hashMapOf(
+            "id" to id,
+            "name" to name,
+            "location" to location,
+            "price" to price,
+            "ownerEmail" to ownerEmail,
+        )
+    }
 
     constructor(
         name: String,

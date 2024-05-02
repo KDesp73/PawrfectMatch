@@ -39,7 +39,7 @@ fun ToyForm(modifier: Modifier = Modifier, viewModel: ToyFormViewModel, submitAc
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         SelectImage(null) { action, uri ->
-            val imagePainter = rememberAsyncImagePainter(uri)
+            val imagePainter = rememberAsyncImagePainter(viewModel.imageState.value ?: uri)
             CircularImage(
                 modifier = Modifier.clickable { action() },
                 painter = imagePainter,

@@ -114,6 +114,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     implementation("com.google.firebase:firebase-storage")
     implementation("com.google.firebase:firebase-perf")
+//    implementation("com.google.firebase:firebase-appcheck-playintegrity")
     /*  Firebase  **/
 
     /** Coil  */

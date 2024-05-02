@@ -4,12 +4,23 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import io.github.kdesp73.petadoption.MainActivity
+import io.github.kdesp73.petadoption.Pet
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.enums.Gender
 import io.github.kdesp73.petadoption.enums.PetAge
 import io.github.kdesp73.petadoption.enums.PetSize
 import io.github.kdesp73.petadoption.enums.PetType
+import io.github.kdesp73.petadoption.enums.genderFromValue
+import io.github.kdesp73.petadoption.enums.petAgeFromValue
+import io.github.kdesp73.petadoption.enums.petSizeFromValue
+import io.github.kdesp73.petadoption.enums.petTypeFromValue
+import io.github.kdesp73.petadoption.firebase.ImageManager
+import io.github.kdesp73.petadoption.hash
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.runBlocking
 
 class PetFormViewModel : ViewModel(){
     var imageState = MutableStateFlow<Uri?>(null)
@@ -19,6 +30,26 @@ class PetFormViewModel : ViewModel(){
     var typeState = MutableStateFlow(PetType.DOG.label)
     var genderState = MutableStateFlow(Gender.MALE.label)
     var locationState = MutableStateFlow("")
+    var saveImageUri: Uri? = null
+
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun init(pet: Pet){
+        val imageManager = ImageManager()
+        val deferredResult = GlobalScope.async {
+            imageManager.getImageUrl(ImageManager.pets + pet.generateId() + ".jpg")
+        }
+        runBlocking {
+            imageState.value = deferredResult.await()
+            saveImageUri = imageState.value
+        }
+        nameState.value = pet.name
+        ageState.value = petAgeFromValue[pet.age]?.label.toString()
+        sizeState.value = petSizeFromValue[pet.size]?.label.toString()
+        typeState.value = petTypeFromValue[pet.type]?.label.toString()
+        genderState.value = genderFromValue[pet.gender]?.label.toString()
+        locationState.value = pet.location
+    }
 
     fun reset(){
         imageState.value = null

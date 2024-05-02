@@ -135,4 +135,11 @@
     <string name="konstantinos_despoinidis">Κωνσταντίνο Δεσποινίδη</string>
     <string name="please_login_first_to_use_this_feature">Συνδέσου για να χρησιμοποιήσεις αυτή την λειτουργία</string>
     <string name="connect_to_a_network_to_use_this_feature">" Συνδέσου σε δίκτυο για να χρησιμοποιήσεις αυτή την λειτουργία"</string>
+    <string name="no_toys_added_yet">Δεν προστέθηκαν παιχνίδια</string>
+    <string name="delete">Διαγραφή</string>
+    <string name="edit">Επεξεργασία</string>
+    <string name="route_edit_pet">Επεξεργασία Κατοικιδίου</string>
+    <string name="route_edit_toy">Επεξεργασία Παιχνιδιού</string>
+    <string name="toy_updated_successfully">Το παιχνίδι ενημερώθηκε</string>
+    <string name="pet_updated_successfully">Το κατοικίδιο ενημερώθηκε</string>
 </resources>

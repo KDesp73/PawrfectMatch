@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
@@ -166,6 +167,34 @@ private fun Showcase(toy: LocalToy, uri: String?, navController: NavController, 
                 }
                 Spacer(modifier = Modifier.height(5.dp))
                 if(toy.ownerEmail == email){
+                    Column (
+                        verticalArrangement = Arrangement.spacedBy(15.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Button(
+                            colors = ButtonColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
+                                disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
+                            ),
+                            onClick = {
+                                navigateTo(
+                                    Route.EditToy.route + "?id=${toyId}",
+                                    navController,
+                                )
+                            }
+                        ) {
+                            Row (
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                verticalAlignment = Alignment.CenterVertically
+                            ){
+                                Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit Icon")
+                                Text(text = stringResource(R.string.edit))
+                            }
+                        }
+
+                    }
                     Button(
                         colors = ButtonColors(
                             containerColor = Color.Red,

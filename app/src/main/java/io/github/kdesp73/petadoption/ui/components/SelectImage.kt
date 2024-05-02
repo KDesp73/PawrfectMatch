@@ -34,12 +34,12 @@ fun SelectImage(
     containerButton: @Composable (action: () -> Unit, image: Uri?) -> Unit,
 ){
     var imageUri by remember {
-        mutableStateOf<Uri?>(null)
+        mutableStateOf<Uri?>(defaultUri)
     }
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         imageUri = uri
     }
-    containerButton({ launcher.launch("image/*") }, defaultUri ?: imageUri)
+    containerButton({ launcher.launch("image/*") }, imageUri)
 }

@@ -122,7 +122,7 @@ class UserManager {
 
     fun updateInfo(info: UserInfo, onComplete: (Boolean) -> Unit){
         getUserInfoDocumentId(info.email){ id ->
-            if(id != null)
+            if(id != null){
                 db.collection("UserInfo")
                     .document(id)
                     .update(info.toMap())
@@ -132,6 +132,9 @@ class UserManager {
                     .addOnFailureListener {
                         onComplete(false)
                     }
+            } else {
+                onComplete(false)
+            }
         }
     }
 

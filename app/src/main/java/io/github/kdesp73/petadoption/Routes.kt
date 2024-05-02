@@ -4,6 +4,8 @@ import androidx.annotation.StringRes
 
 sealed class Route (val route: String, @StringRes val resId: Int){
     object SearchResults : Route(route = "search_results", R.string.route_search_results)
+    object EditPet: Route(route = "edit_pet", R.string.route_edit_pet)
+    object EditToy : Route(route = "edit_toy", R.string.route_edit_toy)
     object UserPage : Route(route = "user_page", R.string.route_user_page)
     object PetPage : Route(route = "pet_page", R.string.route_pet_showcase)
     object ToyPage : Route(route = "toy_page", R.string.route_toy_showcase)

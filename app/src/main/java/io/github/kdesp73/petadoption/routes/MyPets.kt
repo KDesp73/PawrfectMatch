@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,11 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.R
-import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.firebase.ImageManager
-import io.github.kdesp73.petadoption.firebase.ImageManager.Companion.pets
 import io.github.kdesp73.petadoption.firebase.PetManager
-import io.github.kdesp73.petadoption.imageBitmapFromBitmap
 import io.github.kdesp73.petadoption.isLandscape
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalPet
@@ -48,7 +43,7 @@ private const val TAG = "MyPets"
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
-private fun PetList(pets: List<LocalPet>?, navController: NavController){
+private fun ToyList(pets: List<LocalPet>?, navController: NavController){
     val imageManager = ImageManager()
     if(pets != null){
         for(pet in pets){
@@ -110,7 +105,7 @@ fun MyPets(room: AppDatabase, navController: NavController){
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(15.dp)
                 ){
-                    PetList(pets, navController)
+                    ToyList(pets, navController)
                 }
             } else {
                 Row (
@@ -121,7 +116,7 @@ fun MyPets(room: AppDatabase, navController: NavController){
                     horizontalArrangement = Arrangement.spacedBy(15.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    PetList(pets, navController)
+                    ToyList(pets, navController)
                 }
             }
         }

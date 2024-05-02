@@ -20,8 +20,21 @@ open class Pet (
     open val gender: String,
     open val location: String,
     open val type: String,
-    open val size: String
+    open val size: String,
+    open val ownerEmail: String
 ) {
+
+    open fun toMap(): HashMap<String, Any>{
+        return hashMapOf(
+            "name" to name,
+            "age" to age,
+            "gender" to gender,
+            "location" to location,
+            "type" to type,
+            "size" to size,
+            "ownerEmail" to ownerEmail
+        )
+    }
 
     @Composable
     fun ToComposable() {
@@ -37,5 +50,17 @@ open class Pet (
             Text(text = petAgeFromValue[age]?.label.toString(), color = color)
             Text(text = petSizeFromValue[size]?.label.toString(), color = color)
         }
+    }
+
+    fun generateId(): String {
+        return hash(
+            name +
+                    age +
+                    gender +
+                    location +
+                    type +
+                    size +
+                    ownerEmail
+        )
     }
 }

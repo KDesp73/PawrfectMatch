@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
@@ -106,7 +107,7 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
         Log.d(TAG, "isLiked: $liked")
     }
 
-    LaunchedEffect(key1 = owner) {
+    LaunchedEffect(key1 = null) {
         val userDeferredResult: Deferred<User?> = GlobalScope.async {
             userManager.getUserByEmail(pet.ownerEmail)
         }
@@ -172,49 +173,79 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
                 }
                 Spacer(modifier = Modifier.height(5.dp))
                 if(pet.ownerEmail == email){
-                    Button(
-                        colors = ButtonColors(
-                            containerColor = Color.Red,
-                            contentColor = Color.White,
-                            disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
-                            disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
-
-                        ),
-                        onClick = {
-                            var deleted: Boolean = true
-                            petManager.deletePetById(pet.generateId()) { completed ->
-                                deleted = deleted and completed
-                            }
-
-                            imageManager.deleteImage(ImageManager.pets + pet.generateId() + ".jpg") { completed ->
-                                deleted = deleted and completed
-                            }
-
-                            likedManager.removeAllLikes(LikedManager.pets, pet.generateId()){ completed ->
-                                deleted = deleted and completed
-                            }
-
-                            room.petDao().delete(pet)
-
-                            val notificationService = NotificationService(context)
-                            if (deleted){
-                                clearBackTracks(navController = navController)
-                                navigateTo(Route.Home.route, navController)
-                                notificationService.showBasicNotification(
-                                    context.getString(R.string.notif_channel_main),
-                                    context.getString(R.string.success),
-                                    content = context.getString(R.string.deleted_successfully, pet.name),
-                                    NotificationManager.IMPORTANCE_DEFAULT
+                    Column (
+                        verticalArrangement = Arrangement.spacedBy(15.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Button(
+                            colors = ButtonColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
+                                disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
+                            ),
+                            onClick = {
+                                navigateTo(
+                                    Route.EditPet.route + "?id=${petId}",
+                                    navController,
+                                    restore = false,
                                 )
                             }
+                        ) {
+                            Row (
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                verticalAlignment = Alignment.CenterVertically
+                            ){
+                                Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit Icon")
+                                Text(text = stringResource(R.string.edit))
+                            }
                         }
-                    ) {
-                        Row (
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically
-                        ){
-                            Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
-                            Text(text = "Delete")
+
+                        Button(
+                            colors = ButtonColors(
+                                containerColor = Color.Red,
+                                contentColor = Color.White,
+                                disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
+                                disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
+
+                            ),
+                            onClick = {
+                                var deleted: Boolean = true
+                                petManager.deletePetById(pet.generateId()) { completed ->
+                                    deleted = deleted and completed
+                                }
+
+                                imageManager.deleteImage(ImageManager.pets + pet.generateId() + ".jpg") { completed ->
+                                    deleted = deleted and completed
+                                }
+
+                                likedManager.removeAllLikes(LikedManager.pets, pet.generateId()){ completed ->
+                                    deleted = deleted and completed
+                                }
+
+                                room.petDao().delete(pet)
+
+                                val notificationService = NotificationService(context)
+                                if (deleted){
+                                    navController.navigate(Route.Home.route) {
+                                        popUpTo(Route.Home.route)
+                                    }
+                                    notificationService.showBasicNotification(
+                                        context.getString(R.string.notif_channel_main),
+                                        context.getString(R.string.success),
+                                        content = context.getString(R.string.deleted_successfully, pet.name),
+                                        NotificationManager.IMPORTANCE_DEFAULT
+                                    )
+                                }
+                            }
+                        ) {
+                            Row (
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                verticalAlignment = Alignment.CenterVertically
+                            ){
+                                Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
+                                Text(text = stringResource(R.string.delete))
+                            }
                         }
                     }
                 } else {

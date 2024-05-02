@@ -17,20 +17,19 @@ data class FirestorePet (
     override var location: String = "Tatooine",
     override var type: String = PetType.DOG.label,
     override var size: String = PetSize.LARGE.label,
-    var ownerEmail: String,
-) : Pet(name, age, gender, location, type, size){
-
-
-    fun generateId(): String {
-        return hash(
-            name +
-                    age +
-                    gender +
-                    location +
-                    type +
-                    size +
-                    ownerEmail
-        )
+    override var ownerEmail: String,
+) : Pet(name, age, gender, location, type, size, ownerEmail){
+    override fun toMap() : HashMap<String, Any>{
+       return hashMapOf(
+           "id" to id,
+           "name" to name,
+           "age" to age,
+           "gender" to gender,
+           "location" to location,
+           "type" to type,
+           "size" to size,
+           "ownerEmail" to ownerEmail
+       )
     }
 
     fun getImageFile() : String {

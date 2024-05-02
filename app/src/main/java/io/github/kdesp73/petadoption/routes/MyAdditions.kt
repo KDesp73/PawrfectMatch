@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.firebase.PetManager
+import io.github.kdesp73.petadoption.firebase.ToyManager
 import io.github.kdesp73.petadoption.room.AppDatabase
 
 @Composable
@@ -27,6 +29,9 @@ fun MyAdditions(tabIndex: Int = 0, room: AppDatabase, navController: NavControll
     var index by remember { mutableIntStateOf(tabIndex) }
 
     val tabs = listOf(stringResource(id = Route.MyPets.resId), stringResource(id = Route.MyToys.resId))
+
+    PetManager().syncPets(room)
+    ToyManager().syncToys(room)
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(

@@ -18,6 +18,15 @@ open class Toy (
     open val price: Float,
     open val ownerEmail: String,
 ){
+    open fun toMap(): HashMap<String, Any> {
+        return hashMapOf(
+            "name" to name,
+            "location" to location,
+            "price" to price,
+            "ownerEmail" to ownerEmail,
+        )
+    }
+
     @Composable
     fun ToComposable(){
         Column(
@@ -36,4 +45,5 @@ open class Toy (
             name + location + price.toString() + ownerEmail
         )
     }
+
 }
