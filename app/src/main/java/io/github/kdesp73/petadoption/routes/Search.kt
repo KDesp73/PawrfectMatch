@@ -254,7 +254,6 @@ fun SearchPets(navController: NavController){
                         Route.SearchResults.route + "?search_options=${viewModel.serialize()}",
                         navController = navController,
                         popUpToStartDestination = false,
-                        launchAsSingleTop = false
                     )
                 }
             ) {

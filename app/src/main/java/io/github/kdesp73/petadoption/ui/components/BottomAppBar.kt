@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.navigateTo
 
 @Composable
 fun BottomBar(navController: NavController) {
@@ -30,13 +31,13 @@ fun BottomBar(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceAround
             ){
                 IconButton(onClick = {
-                    navController.navigate(Route.Home.route){
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navigateTo(
+                        route = Route.Home.route,
+                        navController = navController,
+                        popUpToStartDestination = true,
+                        saveStateOnPopUpTo = false,
+                        restore = false
+                    )
                 }) {
                     Icon(
                         modifier = iconModifier,
@@ -45,13 +46,13 @@ fun BottomBar(navController: NavController) {
                     )
                 }
                 IconButton(onClick = {
-                    navController.navigate(Route.Search.route){
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navigateTo(
+                        route = Route.Search.route,
+                        navController = navController,
+                        popUpToStartDestination = true,
+                        saveStateOnPopUpTo = false,
+                        restore = false
+                    )
                 }) {
                     Icon(
                         modifier = iconModifier,
@@ -60,13 +61,13 @@ fun BottomBar(navController: NavController) {
                     )
                 }
                 IconButton(onClick = {
-                    navController.navigate(Route.Favourites.route){
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navigateTo(
+                        route = Route.Favourites.route,
+                        navController = navController,
+                        popUpToStartDestination = true,
+                        saveStateOnPopUpTo = false,
+                        restore = false
+                    )
                 }) {
                     Icon(
                         modifier = iconModifier,

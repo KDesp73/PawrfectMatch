@@ -57,13 +57,14 @@ fun navigateTo(
     route: String,
     navController: NavController,
     popUpToStartDestination: Boolean = true,
+    saveStateOnPopUpTo: Boolean = true,
     launchAsSingleTop: Boolean = true,
     restore: Boolean = true
 ) {
     navController.navigate(route) {
         if (popUpToStartDestination) {
             popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
+                saveState = saveStateOnPopUpTo
             }
         }
         launchSingleTop = true

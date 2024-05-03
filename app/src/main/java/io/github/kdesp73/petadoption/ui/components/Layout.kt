@@ -63,7 +63,15 @@ fun Layout(topAppBarText: String, navController: NavHostController, room: AppDat
                     AppBar(
                         topAppBarText = topAppBarText,
                         menuAction = { menuAction(scope, drawerState) },
-                        accountAction = { navigateTo(Route.Account.route, navController) }
+                        accountAction = {
+                            navigateTo(
+                                route = Route.Account.route,
+                                navController = navController,
+                                popUpToStartDestination = true,
+                                saveStateOnPopUpTo = false,
+                                restore = false
+                            )
+                        }
                     )
                 },
                 content =  { innerPadding ->

@@ -3,7 +3,6 @@ TODO: resolve warnings
 TODO: weird font colors in light theme
 TODO: ask for permission for notifications
 TODO: app icon
-TODO: better color scheme
 TODO: expand image on click
 DONE: Notifications
 DONE: AccountPreview Component
@@ -61,3 +60,4 @@ DONE: Landscape orientation features
 DONE: check wifi connection
 DONE: edit addition
 DONE: sort pets and toys using queries
+DONE: better color scheme
