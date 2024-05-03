@@ -5,7 +5,6 @@ TODO: ask for permission for notifications
 TODO: app icon
 TODO: better color scheme
 TODO: expand image on click
-TODO: sort pets and toys using queries
 DONE: Notifications
 DONE: AccountPreview Component
 DONE: Routing
@@ -61,3 +60,4 @@ DONE: better way to logout
 DONE: Landscape orientation features
 DONE: check wifi connection
 DONE: edit addition
+DONE: sort pets and toys using queries
