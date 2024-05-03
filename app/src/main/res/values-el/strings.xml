@@ -142,4 +142,8 @@
     <string name="route_edit_toy">Επεξεργασία Παιχνιδιού</string>
     <string name="toy_updated_successfully">Το παιχνίδι ενημερώθηκε</string>
     <string name="pet_updated_successfully">Το κατοικίδιο ενημερώθηκε</string>
+    <string name="no_changes">Καμία αλλαγή</string>
+    <string name="alphabetically">Αλφαβητικά</string>
+    <string name="oldest">Παλαιότερο</string>
+    <string name="newest">Νεότερο</string>
 </resources>

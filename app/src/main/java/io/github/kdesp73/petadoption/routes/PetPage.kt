@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.net.Uri
 import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,7 +26,6 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,7 +46,6 @@ import coil.compose.rememberAsyncImagePainter
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
-import io.github.kdesp73.petadoption.clearBackTracks
 import io.github.kdesp73.petadoption.enums.genderFromValue
 import io.github.kdesp73.petadoption.enums.petAgeFromValue
 import io.github.kdesp73.petadoption.enums.petSizeFromValue
@@ -65,6 +65,7 @@ import io.github.kdesp73.petadoption.ui.components.CircularImage
 import io.github.kdesp73.petadoption.ui.components.InfoBox
 import io.github.kdesp73.petadoption.ui.components.InfoBoxClickable
 import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
+import io.github.kdesp73.petadoption.ui.components.Modal
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -98,6 +99,8 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
     val email = room.userDao().getEmail() ?: return
     val petId = pet.generateId()
 
+    val modalState = MutableStateFlow(false)
+
     LaunchedEffect(key1 = null) {
         val deferredResult = GlobalScope.async {
             likedManager.isLiked(LikedManager.pets, email, petId)
@@ -115,163 +118,174 @@ private fun Showcase(pet: LocalPet, uri: String?, navController: NavController, 
         owner = userDeferredResult.await()
     }
 
-    Surface {
-        Column(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(15.dp)
-        ) {
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(15.dp)
+    ) {
 
-            if(owner == null){
-                Center(modifier = Modifier.fillMaxSize()) {
-                    LoadingAnimation(64.dp)
+        if(owner == null){
+            Center(modifier = Modifier.fillMaxSize()) {
+                LoadingAnimation(64.dp)
+            }
+        } else {
+            val painter = rememberAsyncImagePainter(model = uri)
+            val heart = MutableStateFlow<ImageVector>(if (liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder)
+            CircularImage(
+                modifier = Modifier.clickable {
+                    Log.d(TAG, "Image clicked")
+                    modalState.value = true
+                },
+                painter = painter,
+                contentDescription = "Pet image",
+                size = 200.dp
+            )
+            Row (
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(text = pet.name, fontSize = 6.em, color = MaterialTheme.colorScheme.primary)
+                if(pet.ownerEmail != email){
+                    CircularIconButton(
+                        state = heart,
+                        description = "",
+                        bg = MaterialTheme.colorScheme.background,
+                        size = 40.dp
+                    ) {
+                        liked = !liked
+                        heart.value = if(liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+
+                        Log.d(TAG, "Updated like: $liked")
+
+                        if(liked){
+                            likedManager.like(LikedManager.pets, email, petId){ completed ->
+                                Log.d(TAG, "Liked pet: $completed")
+                            }
+                        } else {
+                            likedManager.unlike(LikedManager.pets, email, petId) { completed ->
+                                Log.d(TAG, "Unliked pet: $completed")
+                            }
+                        }
+                    }
                 }
-            } else {
-                val painter = rememberAsyncImagePainter(model = uri)
-                val heart = MutableStateFlow<ImageVector>(if (liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder)
-                CircularImage(painter = painter, contentDescription = "Pet image", size = 200.dp)
-                Row (
-                    horizontalArrangement = Arrangement.spacedBy(20.dp),
-                    verticalAlignment = Alignment.CenterVertically
+            }
+            Spacer(modifier = Modifier.height(5.dp))
+
+            InfoBoxRow {
+                InfoBox(label = stringResource(id = R.string.type), info = petTypeFromValue[pet.type]?.label)
+                InfoBox(label = stringResource(R.string.gender), info = genderFromValue[pet.gender]?.label)
+            }
+            InfoBoxRow {
+                InfoBox(label = stringResource(id = R.string.age), info = petAgeFromValue[pet.age]?.label)
+                InfoBox(label = stringResource(id = R.string.size), info = petSizeFromValue[pet.size]?.label)
+            }
+            Spacer(modifier = Modifier.height(5.dp))
+            if(pet.ownerEmail == email){
+                Column (
+                    verticalArrangement = Arrangement.spacedBy(15.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    Text(text = pet.name, fontSize = 6.em, color = MaterialTheme.colorScheme.primary)
-                    if(pet.ownerEmail != email){
-                        CircularIconButton(
-                            state = heart,
-                            description = "",
-                            bg = MaterialTheme.colorScheme.background,
-                            size = 40.dp
-                        ) {
-                            liked = !liked
-                            heart.value = if(liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
-
-                            Log.d(TAG, "Updated like: $liked")
-
-                            if(liked){
-                                likedManager.like(LikedManager.pets, email, petId){ completed ->
-                                    Log.d(TAG, "Liked pet: $completed")
-                                }
-                            } else {
-                                likedManager.unlike(LikedManager.pets, email, petId) { completed ->
-                                    Log.d(TAG, "Unliked pet: $completed")
-                                }
-                            }
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(5.dp))
-
-                InfoBoxRow {
-                    InfoBox(label = stringResource(id = R.string.type), info = petTypeFromValue[pet.type]?.label)
-                    InfoBox(label = stringResource(R.string.gender), info = genderFromValue[pet.gender]?.label)
-                }
-                InfoBoxRow {
-                    InfoBox(label = stringResource(id = R.string.age), info = petAgeFromValue[pet.age]?.label)
-                    InfoBox(label = stringResource(id = R.string.size), info = petSizeFromValue[pet.size]?.label)
-                }
-                Spacer(modifier = Modifier.height(5.dp))
-                if(pet.ownerEmail == email){
-                    Column (
-                        verticalArrangement = Arrangement.spacedBy(15.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ){
-                        Button(
-                            colors = ButtonColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
-                                disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
-                            ),
-                            onClick = {
-                                navigateTo(
-                                    Route.EditPet.route + "?id=${petId}",
-                                    navController,
-                                    restore = false,
-                                )
-                            }
-                        ) {
-                            Row (
-                                horizontalArrangement = Arrangement.SpaceEvenly,
-                                verticalAlignment = Alignment.CenterVertically
-                            ){
-                                Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit Icon")
-                                Text(text = stringResource(R.string.edit))
-                            }
-                        }
-
-                        Button(
-                            colors = ButtonColors(
-                                containerColor = Color.Red,
-                                contentColor = Color.White,
-                                disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
-                                disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
-
-                            ),
-                            onClick = {
-                                var deleted: Boolean = true
-                                petManager.deletePetById(pet.generateId()) { completed ->
-                                    deleted = deleted and completed
-                                }
-
-                                imageManager.deleteImage(ImageManager.pets + pet.generateId() + ".jpg") { completed ->
-                                    deleted = deleted and completed
-                                }
-
-                                likedManager.removeAllLikes(LikedManager.pets, pet.generateId()){ completed ->
-                                    deleted = deleted and completed
-                                }
-
-                                room.petDao().delete(pet)
-
-                                val notificationService = NotificationService(context)
-                                if (deleted){
-                                    navController.navigate(Route.Home.route) {
-                                        popUpTo(Route.Home.route)
-                                    }
-                                    notificationService.showBasicNotification(
-                                        context.getString(R.string.notif_channel_main),
-                                        context.getString(R.string.success),
-                                        content = context.getString(R.string.deleted_successfully, pet.name),
-                                        NotificationManager.IMPORTANCE_DEFAULT
-                                    )
-                                }
-                            }
-                        ) {
-                            Row (
-                                horizontalArrangement = Arrangement.SpaceEvenly,
-                                verticalAlignment = Alignment.CenterVertically
-                            ){
-                                Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
-                                Text(text = stringResource(R.string.delete))
-                            }
-                        }
-                    }
-                } else {
-                    if(owner?.info?.firstName != null){
-                        InfoBoxClickable(
-                            label = stringResource(R.string.owner),
-                            width = 200.dp,
-                            height = 100.dp,
-                            infoFontSize = 4.em.value,
-                            info = (owner?.info?.firstName)
-                        ) {
+                    Button(
+                        colors = ButtonColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
+                            disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
+                        ),
+                        onClick = {
                             navigateTo(
-                                Route.UserPage.route + "?email=${owner?.email}",
-                                navController = navController,
-                                popUpToStartDestination = false
+                                Route.EditPet.route + "?id=${petId}",
+                                navController,
+                                restore = false,
                             )
                         }
-                    } else {
-                        LoadingAnimation()
+                    ) {
+                        Row (
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit Icon")
+                            Text(text = stringResource(R.string.edit))
+                        }
+                    }
+
+                    Button(
+                        colors = ButtonColors(
+                            containerColor = Color.Red,
+                            contentColor = Color.White,
+                            disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
+                            disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
+
+                        ),
+                        onClick = {
+                            var deleted: Boolean = true
+                            petManager.deletePetById(pet.generateId()) { completed ->
+                                deleted = deleted and completed
+                            }
+
+                            imageManager.deleteImage(ImageManager.pets + pet.generateId() + ".jpg") { completed ->
+                                deleted = deleted and completed
+                            }
+
+                            likedManager.removeAllLikes(LikedManager.pets, pet.generateId()){ completed ->
+                                deleted = deleted and completed
+                            }
+
+                            room.petDao().delete(pet)
+
+                            val notificationService = NotificationService(context)
+                            if (deleted){
+                                navController.navigate(Route.Home.route) {
+                                    popUpTo(Route.Home.route)
+                                }
+                                notificationService.showBasicNotification(
+                                    context.getString(R.string.notif_channel_main),
+                                    context.getString(R.string.success),
+                                    content = context.getString(R.string.deleted_successfully, pet.name),
+                                    NotificationManager.IMPORTANCE_DEFAULT
+                                )
+                            }
+                        }
+                    ) {
+                        Row (
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete Icon")
+                            Text(text = stringResource(R.string.delete))
+                        }
                     }
                 }
-
+            } else {
+                if(owner?.info?.firstName != null){
+                    InfoBoxClickable(
+                        label = stringResource(R.string.owner),
+                        width = 200.dp,
+                        height = 100.dp,
+                        infoFontSize = 4.em.value,
+                        info = (owner?.info?.firstName)
+                    ) {
+                        navigateTo(
+                            Route.UserPage.route + "?email=${owner?.email}",
+                            navController = navController,
+                            popUpToStartDestination = false
+                        )
+                    }
+                } else {
+                    LoadingAnimation()
+                }
             }
+
+        }
+    } // Container
+    Modal(state = modalState){
+        Center(modifier = Modifier.fillMaxSize()) {
+            val painter = rememberAsyncImagePainter(model = uri)
+            Image(painter = painter, contentDescription = "Modal image")
         }
     }
-
 }
 
 @SuppressLint("CoroutineCreationDuringComposition")

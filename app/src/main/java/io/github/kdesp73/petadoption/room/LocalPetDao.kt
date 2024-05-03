@@ -11,6 +11,9 @@ interface LocalPetDao {
     @Query("SELECT * FROM LocalPet WHERE owner_email = :ownerEmail")
     fun selectPets(ownerEmail: String) : List<LocalPet>
 
+    @Query("SELECT * FROM LocalPet WHERE owner_email = :ownerEmail ORDER BY name ASC")
+    fun selectPetsAlphabetically(ownerEmail: String) : List<LocalPet>
+
     @Query("SELECT * FROM LocalPet WHERE id = :id")
     fun selectPetFromId(id: Int) : LocalPet?
 

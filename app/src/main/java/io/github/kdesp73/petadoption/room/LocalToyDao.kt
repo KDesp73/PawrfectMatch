@@ -14,6 +14,9 @@ interface LocalToyDao {
     @Query("SELECT * FROM LocalToy WHERE id = :id")
     fun selectToyFromId(id: Int) : LocalToy?
 
+    @Query("SELECT * FROM LocalToy WHERE owner_email = :ownerEmail ORDER BY name ASC")
+    fun selectToysAlphabetically(ownerEmail: String) : List<LocalToy>
+
     @Insert
     fun insert(vararg toy: LocalToy)
 

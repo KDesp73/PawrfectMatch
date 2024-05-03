@@ -94,7 +94,8 @@ fun EditPet(id: String, room: AppDatabase, navController: NavController){
 
                 if(id == updatedPet.id && viewModel.imageState.value == Uri.EMPTY){
                     Log.d(TAG, "No changes")
-                    Toast.makeText(context, "No changes", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        context.getString(R.string.no_changes), Toast.LENGTH_SHORT).show()
                 } else {
                     var error = false
                     petManager.updatePet(id, updatedPet){ completed ->

@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import io.github.kdesp73.petadoption.R
+import io.github.kdesp73.petadoption.enums.Orientation
 import io.github.kdesp73.petadoption.firebase.ImageManager
 import io.github.kdesp73.petadoption.firebase.ToyManager
 import io.github.kdesp73.petadoption.isLandscape
@@ -32,6 +31,7 @@ import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.room.LocalToy
 import io.github.kdesp73.petadoption.ui.components.Center
 import io.github.kdesp73.petadoption.ui.components.LoadingAnimation
+import io.github.kdesp73.petadoption.ui.components.OptionPicker
 import io.github.kdesp73.petadoption.ui.components.ToyCard
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -70,13 +70,23 @@ fun MyToys(room: AppDatabase, navController: NavController){
     val toyManager = ToyManager()
     var toys by remember { mutableStateOf<List<LocalToy>?>(null) }
 
-    LaunchedEffect(key1 = null) {
-        toys = room.userDao().getEmail()?.let { room.toyDao().selectToys(it) }!!
+    val options = listOf(
+        stringResource(R.string.alphabetically),
+        stringResource(R.string.oldest),
+        stringResource(R.string.newest)
+    )
+    var sortBy by remember { mutableStateOf(options[0]) }
+    toyManager.syncToys(room)
+
+    LaunchedEffect(key1 = sortBy) {
+        toys = when(sortBy){
+            options[0] -> room.userDao().getEmail()?.let { room.toyDao().selectToysAlphabetically(it) }
+            options[1] -> room.userDao().getEmail()?.let { room.toyDao().selectToys(it) }
+            options[2] -> room.userDao().getEmail()?.let { room.toyDao().selectToys(it) }?.reversed()
+            else -> null
+        }
     }
 
-    LaunchedEffect(key1 = toys) {
-        toyManager.syncToys(room)
-    }
 
     Column (
         modifier = Modifier.padding(8.dp),
@@ -92,6 +102,9 @@ fun MyToys(room: AppDatabase, navController: NavController){
                 Text(text = stringResource(R.string.no_toys_added_yet), fontSize = 6.em)
             }
         } else{
+            OptionPicker(value = sortBy, options = options, orientation = Orientation.HORIZONTAL, width = 200.dp){ option ->
+                sortBy = option
+            }
             if(!landscape){
                 Column (
                     modifier = Modifier

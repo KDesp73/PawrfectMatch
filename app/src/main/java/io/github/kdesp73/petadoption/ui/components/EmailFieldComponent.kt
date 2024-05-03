@@ -37,6 +37,7 @@ fun EmailFieldComponent(
             TextField(
                 modifier = Modifier.horizontalScroll(rememberScrollState()),
                 isError = error,
+                placeholder = { Text("john@doe.xyz") },
                 value = text,
                 onValueChange = {
                     state.value = it
@@ -51,6 +52,7 @@ fun EmailFieldComponent(
             OutlinedTextField(
                 modifier = Modifier.horizontalScroll(rememberScrollState()),
                 isError = error,
+                placeholder = { Text("john@doe.xyz") },
                 value = text,
                 onValueChange = {
                     state.value = it

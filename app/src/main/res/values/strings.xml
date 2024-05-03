@@ -147,4 +147,8 @@
     <string name="route_edit_toy">Edit Toy</string>
     <string name="toy_updated_successfully">Toy updated successfully</string>
     <string name="pet_updated_successfully">Pet updated successfully</string>
+    <string name="no_changes">No changes</string>
+    <string name="alphabetically">Alphabetically</string>
+    <string name="oldest">Oldest</string>
+    <string name="newest">Newest</string>
 </resources>

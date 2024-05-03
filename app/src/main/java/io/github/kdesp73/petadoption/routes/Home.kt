@@ -1,12 +1,6 @@
 package io.github.kdesp73.petadoption.routes
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.app.NotificationManager
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,10 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -38,25 +30,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import io.github.kdesp73.petadoption.MainActivity
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
-import io.github.kdesp73.petadoption.isLoggedIn
 import io.github.kdesp73.petadoption.isNotLoggedIn
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
 import io.github.kdesp73.petadoption.ui.components.Center
-import io.github.kdesp73.petadoption.ui.components.IconButton
 import io.github.kdesp73.petadoption.ui.components.MyCard
 import io.github.kdesp73.petadoption.ui.components.PleaseLogin
-import io.github.kdesp73.petadoption.ui.components.RequestNotificationPermissionDialog
-import io.github.kdesp73.petadoption.ui.components.VerticalScaffold
 
 @Composable
 private fun BigIconButton(
@@ -116,7 +100,6 @@ private fun BigIconButton(
 }
 
 @SuppressLint("PermissionLaunchedDuringComposition")
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun Home(room: AppDatabase, navController: NavController) {
     val context = LocalContext.current

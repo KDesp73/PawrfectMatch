@@ -21,6 +21,7 @@ class PetManager {
     private val TAG = "PetManager"
     private val db = FirebaseFirestore.getInstance()
 
+    // TODO: better filtering
     suspend fun filterPets(options: SearchOptions): MutableList<FirestorePet> {
         fun typeIncluded(pet: FirestorePet): Boolean{
             return options.type[pet.type] == true
