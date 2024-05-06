@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Icon
@@ -35,6 +36,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import io.github.kdesp73.petadoption.NotificationService
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
+import io.github.kdesp73.petadoption.isLandscape
 import io.github.kdesp73.petadoption.isNotLoggedIn
 import io.github.kdesp73.petadoption.navigateTo
 import io.github.kdesp73.petadoption.room.AppDatabase
@@ -49,7 +51,11 @@ private fun BigIconButton(
     contentDescription: String,
     action: () -> Unit = {}
 ){
-    val width = LocalConfiguration.current.screenWidthDp.dp / 2 - 30.dp
+    val width = if(isLandscape(LocalConfiguration.current)){
+        180.dp
+    } else {
+        LocalConfiguration.current.screenWidthDp.dp / 2 - 30.dp
+    }
     MyCard (
         modifier = modifier
             .clickable {
@@ -77,25 +83,12 @@ private fun BigIconButton(
     contentDescription: String,
     action: () -> Unit = {}
 ){
-    val width = LocalConfiguration.current.screenWidthDp.dp / 2 - 30.dp
-    MyCard (
-        modifier = modifier
-            .clickable {
-                action()
-            }
-            .padding(horizontal = 5.dp)
-            .width(width)
-            .height(width)
-    ){
-        Center(modifier = Modifier.fillMaxSize()) {
-            Text(text = contentDescription, fontSize = 4.em)
-            Spacer(modifier = Modifier.height(15.dp))
-            Icon(
-                modifier = Modifier.size(50.dp),
-                painter = painterResource(id = resId),
-                contentDescription = contentDescription
-            )
-        }
+    BigIconButton(
+        modifier = modifier,
+        imageVector = ImageVector.vectorResource(resId),
+        contentDescription = contentDescription
+    ) {
+        action()
     }
 }
 
@@ -108,7 +101,9 @@ fun Home(room: AppDatabase, navController: NavController) {
     val scrollState = rememberScrollState()
 
     Column (
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -120,6 +115,7 @@ fun Home(room: AppDatabase, navController: NavController) {
             Text(text = stringResource(R.string.welcome_to), fontSize = 5.em)
             Text(text = stringResource(id = R.string.app_name), fontSize = 10.em, color = MaterialTheme.colorScheme.primary)
         }
+        Spacer(modifier = Modifier.height(10.dp))
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -129,46 +125,83 @@ fun Home(room: AppDatabase, navController: NavController) {
             if(isNotLoggedIn(room)){
                 PleaseLogin(msg = null, email = email, navController = navController)
             } else{
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    BigIconButton(
-                        resId = R.drawable.paw_solid,
-                        contentDescription = stringResource(
-                            id = R.string.route_my_pets
-                        )
-                    ) {
-                        navigateTo(Route.MyAdditions.route + "?index=0", navController = navController)
-                    }
-                    BigIconButton(
-                        imageVector = ImageVector.vectorResource(R.drawable.robot_solid),
-                        contentDescription = stringResource(
-                            R.string.route_my_toys
-                        )
+                if (!isLandscape(LocalConfiguration.current)){
+                    Row (
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
                     ){
-                        navigateTo(Route.MyAdditions.route + "?index=1", navController = navController)
+                        BigIconButton(
+                            resId = R.drawable.paw_solid,
+                            contentDescription = stringResource(
+                                id = R.string.route_my_pets
+                            )
+                        ) {
+                            navigateTo(Route.MyAdditions.route + "?index=0", navController = navController)
+                        }
+                        BigIconButton(
+                            imageVector = ImageVector.vectorResource(R.drawable.robot_solid),
+                            contentDescription = stringResource(
+                                R.string.route_my_toys
+                            )
+                        ){
+                            navigateTo(Route.MyAdditions.route + "?index=1", navController = navController)
+                        }
                     }
-                }
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    BigIconButton(
-                        imageVector = Icons.Filled.AccountCircle,
-                        contentDescription = stringResource(
-                            R.string.my_account
-                        )
+                    Row (
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
                     ){
-                        navigateTo(
-                            Route.UserPage.route + "?email=${room.userDao().getEmail()}",
-                            navController = navController,
-                            restore = false
-                        )
-                    }
+                        BigIconButton(
+                            imageVector = Icons.Filled.AccountCircle,
+                            contentDescription = stringResource(
+                                R.string.my_account
+                            )
+                        ){
+                            navigateTo(
+                                Route.UserPage.route + "?email=${room.userDao().getEmail()}",
+                                navController = navController,
+                                restore = false
+                            )
+                        }
 //                    BigIconButton(resId = R.drawable.paw_solid, contentDescription = "My Animals")
+                    }
+                } else {
+                    Row (
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        BigIconButton(
+                            resId = R.drawable.paw_solid,
+                            contentDescription = stringResource(
+                                id = R.string.route_my_pets
+                            )
+                        ) {
+                            navigateTo(Route.MyAdditions.route + "?index=0", navController = navController)
+                        }
+                        BigIconButton(
+                            imageVector = ImageVector.vectorResource(R.drawable.robot_solid),
+                            contentDescription = stringResource(
+                                R.string.route_my_toys
+                            )
+                        ){
+                            navigateTo(Route.MyAdditions.route + "?index=1", navController = navController)
+                        }
+                        BigIconButton(
+                            imageVector = Icons.Filled.AccountCircle,
+                            contentDescription = stringResource(
+                                R.string.my_account
+                            )
+                        ){
+                            navigateTo(
+                                Route.UserPage.route + "?email=${room.userDao().getEmail()}",
+                                navController = navController,
+                                restore = false
+                            )
+                        }
+                    }
                 }
             }
         }
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }

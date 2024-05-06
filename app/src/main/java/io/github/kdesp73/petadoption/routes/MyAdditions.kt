@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -22,6 +23,7 @@ import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.Route
 import io.github.kdesp73.petadoption.firebase.PetManager
 import io.github.kdesp73.petadoption.firebase.ToyManager
+import io.github.kdesp73.petadoption.isLandscape
 import io.github.kdesp73.petadoption.room.AppDatabase
 
 @Composable
@@ -34,11 +36,13 @@ fun MyAdditions(tabIndex: Int = 0, room: AppDatabase, navController: NavControll
     ToyManager().syncToys(room)
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(10.dp),
-            text = stringResource(id = R.string.route_my_additions), fontSize = 6.em
-        )
+        if(!isLandscape(LocalConfiguration.current)){
+            Text(
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(10.dp),
+                text = stringResource(id = R.string.route_my_additions), fontSize = 6.em
+            )
+        }
         TabRow(selectedTabIndex = index) {
             tabs.forEachIndexed { i, title ->
                 Tab(text = { Text(title) },
