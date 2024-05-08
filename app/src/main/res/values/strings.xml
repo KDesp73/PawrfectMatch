@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">PetAdoption</string>
+    <string name="app_name" translatable="false">PawrfectMatch</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
     <string name="gender_other">Other</string>

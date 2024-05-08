@@ -53,10 +53,8 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun roomInit(roomDatabase: AppDatabase){
-        lifecycleScope.launch {
-            if(roomDatabase.settingsDao().getSettings() == null){
-                roomDatabase.settingsDao().insert(io.github.kdesp73.petadoption.room.Settings(theme = ThemeName.LIGHT.name, language = "en", firstRun = false))
-            }
+        if(roomDatabase.settingsDao().getSettings() == null){
+            roomDatabase.settingsDao().insert(io.github.kdesp73.petadoption.room.Settings(theme = ThemeName.LIGHT.name, language = "en", firstRun = false))
         }
     }
 
@@ -99,13 +97,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
-            /*
-            var currentRoute by remember { mutableStateOf(Routes.HOME.tag) }
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentDestination = navBackStackEntry?.destination?.route
-
-            currentRoute = currentDestination ?: ""
-             */
 
             Layout(topAppBarText = stringResource(id = R.string.app_name), navController = navController, room) {
                 NavHost(navController, startDestination = Route.Home.route) {
