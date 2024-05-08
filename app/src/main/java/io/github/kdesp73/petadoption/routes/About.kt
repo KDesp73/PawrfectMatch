@@ -129,7 +129,7 @@ fun About() {
             text = "Source Code",
             imageVector = ImageVector.vectorResource(R.drawable.github)
         ) {
-            openURL(context, "https://github.com/KDesp73/PetAdoption")
+            openURL(context, "https://github.com/KDesp73/PawrfectMatch")
         }
     }
 }
