@@ -41,41 +41,6 @@ import io.github.kdesp73.petadoption.openURL
 import io.github.kdesp73.petadoption.ui.components.IconButton
 
 @Composable
-private fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit) {
-    val initialText = stringResource(R.string.by_continuing_you_accept_our)
-    val privacyPolicyText = stringResource(R.string.privacy_policy)
-    val andText = stringResource(R.string.and)
-    val termsAndConditionsText = stringResource(R.string.terms_of_use)
-
-    val annotatedString = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
-            append(initialText)
-        }
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-            pushStringAnnotation(tag = privacyPolicyText, annotation = privacyPolicyText)
-            append(privacyPolicyText)
-        }
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
-            append(andText)
-        }
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-            pushStringAnnotation(tag = termsAndConditionsText, annotation = termsAndConditionsText)
-            append(termsAndConditionsText)
-        }
-    }
-
-    ClickableText(text = annotatedString, onClick = { offset ->
-        annotatedString.getStringAnnotations(offset, offset)
-            .firstOrNull()?.also { span ->
-                Log.d("ClickableTextComponent", "{${span.item}}")
-
-                if ((span.item == termsAndConditionsText) || (span.item == privacyPolicyText)) {
-                    onTextSelected(span.item)
-                }
-            }
-    })
-}
-@Composable
 fun About() {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
@@ -95,7 +60,7 @@ fun About() {
             contentAlignment = Alignment.Center
         ) {
             Image(
-                imageVector = ImageVector.vectorResource(R.drawable.paw_solid), // TODO: change with app icon
+                imageVector = ImageVector.vectorResource(id = R.drawable.paw_solid),
                 modifier = Modifier.fillMaxSize(),
                 contentDescription = "App Icon",
                 contentScale = ContentScale.Crop
