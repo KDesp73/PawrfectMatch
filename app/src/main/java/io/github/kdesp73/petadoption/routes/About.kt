@@ -1,7 +1,9 @@
 package io.github.kdesp73.petadoption.routes
 
-import android.util.Log
-import androidx.compose.foundation.BorderStroke
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,21 +13,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -35,11 +38,16 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.core.graphics.drawable.toBitmap
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import io.github.kdesp73.petadoption.R
 import io.github.kdesp73.petadoption.openURL
 import io.github.kdesp73.petadoption.ui.components.IconButton
 
+fun dpToPx(dp: Float, context: Context): Float {
+    val density = context.resources.displayMetrics.density
+    return dp * density
+}
 @Composable
 fun About() {
     val context = LocalContext.current
@@ -52,18 +60,23 @@ fun About() {
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val sizeDp = 200.dp
+        val size = dpToPx(sizeDp.value, LocalContext.current).toInt()
         Box(
             modifier = Modifier
-                .clip(shape = RoundedCornerShape(15.dp))
-                .size(150.dp)
-                .background(Color.LightGray),
+                .clip(shape = RoundedCornerShape(40.dp))
+                .size(sizeDp),
             contentAlignment = Alignment.Center
         ) {
+            val appIcon =
+                LocalContext.current.packageManager.getApplicationIcon("io.github.kdesp73.petadoption")
+            val appIconBitmap = appIcon.toBitmap(size, size)
+
             Image(
-                imageVector = ImageVector.vectorResource(id = R.drawable.paw_solid),
+                painter = BitmapPainter(appIconBitmap.asImageBitmap()),
                 modifier = Modifier.fillMaxSize(),
                 contentDescription = "App Icon",
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.FillBounds
             )
         }
         Text(text = stringResource(R.string.an_app_by))
