@@ -47,6 +47,7 @@ import io.github.kdesp73.petadoption.firebase.User
 import io.github.kdesp73.petadoption.firebase.UserInfo
 import io.github.kdesp73.petadoption.firebase.UserManager
 import io.github.kdesp73.petadoption.hash
+import io.github.kdesp73.petadoption.openURL
 import io.github.kdesp73.petadoption.ui.components.CheckboxComponent
 import io.github.kdesp73.petadoption.ui.components.EmailFieldComponent
 import io.github.kdesp73.petadoption.ui.components.PasswordTextFieldComponent
@@ -142,9 +143,11 @@ fun CreateAccount(navController: NavController?){
                     value = "",
                     state = viewModel.termsAndConditionsAcceptedState,
                     onTextSelected = { clicked ->
-                        notificationService.showBasicNotification(channel = context.getString(R.string.notif_channel_main), title = "Clicked", content = "$clicked got clicked",
-                            importance = NotificationManager.IMPORTANCE_HIGH
-                        )
+                        if (clicked == context.getString(R.string.privacy_policy)){
+                            openURL(context = context, "https://www.termsfeed.com/live/77e4e757-c0f2-4f6b-b019-8ff943bc6652")
+                        } else {
+                            openURL(context, "https://users.iee.ihu.gr/~iee2021035/pawrfect-match-terms-and-conditions/")
+                        }
                     },
                     onCheckedChange = { checked ->
                         Log.d(TAG, "checked: $checked")
